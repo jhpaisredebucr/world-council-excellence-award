@@ -125,7 +125,7 @@ export default function DashboardMember({dashboardData, userData}) {
                     
                     <Button
                         onClick={() => setIsQROpen(true)}
-                        className="flex bg-[#5C4138] p-3 rounded-xl text-white"
+                        className="flex bg-(--primary) p-3 rounded-xl text-white"
                         width="px-4">
                         QR Code
                     </Button>
