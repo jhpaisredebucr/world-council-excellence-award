@@ -109,7 +109,7 @@ export default function SideBar({
             </div>
         </div>
 
-        <div className="relative hidden h-full w-56 shrink-0 overflow-y-auto bg-white py-6 no-scrollbar md:block">
+<div className="relative hidden h-full w-56 shrink-0 overflow-y-auto bg-white py-6 no-scrollbar md:block">
 
             {/* TITLE */}
             {/* <p className="text-3xl font-semibold mb-6 pl-6">
