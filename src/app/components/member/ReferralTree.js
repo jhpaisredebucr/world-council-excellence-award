@@ -145,12 +145,10 @@ function ProfileNode({ data, onInfoClick }) {
           fontWeight: 500,
           lineHeight: 1.2,
           textAlign: 'center',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
           width: '100%',
           marginTop: '2px',
           paddingRight: '18px', // Account for info button space
+          paddingLeft: '18px', // Keep text centered
         }}
       >
         {label}

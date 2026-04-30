@@ -58,7 +58,7 @@ export default function DashboardLayout({ children }) {
   if (error) return <ErrorText label={error} fullScreen />;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+<div className="h-screen bg-gray-100 flex flex-col overflow-hidden">
       <UploadImageModal
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
@@ -71,7 +71,7 @@ export default function DashboardLayout({ children }) {
         onMenuToggle={() => setIsMobileMenuOpen((prev) => !prev)}
       />
 
-      <div className="relative flex-1 md:flex md:min-h-0">
+<div className="flex h-screen overflow-hidden">
         <SideBar
           role={user.userInfo.role}
           isMobileMenuOpen={isMobileMenuOpen}
@@ -79,7 +79,7 @@ export default function DashboardLayout({ children }) {
         />
 
         <main
-          className={`w-full flex-1 px-4 py-5 sm:px-6 md:px-8 lg:px-10 ${
+          className={`flex-1 overflow-y-auto px-4 py-5 sm:px-6 md:px-8 lg:px-10 ${
             user.userInfo?.role === "admin" ? "py-4" : "py-6"
           }`}
         >
