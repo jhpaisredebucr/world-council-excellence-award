@@ -6,7 +6,7 @@ import MemberReferredMembers from "@/app/components/ui/MemberReferredMembers";
 import Card from "@/app/components/card/Card";
 import { useRouter } from "next/navigation";
 import Title from "@/app/components/ui/Title";
-import QRCode from "react-qr-code";
+import QRCodeModal from "@/app/components/modal/QRCodeModal";
 
 export default function ReferralsContainer({
   userData,
@@ -14,6 +14,7 @@ export default function ReferralsContainer({
 }) {
   const [selectedDashboardData, setSelectedDashboardData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isQROpen, setIsQROpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
   const referralLink = `${API_HOST}/home/signup?ref=${userData?.userInfo?.referral_code}`;
@@ -27,12 +28,11 @@ export default function ReferralsContainer({
 
   return (
     <>
-{/* HEADER */}
+      {/* HEADER */}
       <div className="bg-white p-2 rounded-xl">
         <div className="flex gap-4 p-2 justify-between items-center border-2 border-gray-200 border-dotted rounded-xl">
 
           <div className="flex gap-4 items-center">
-            <QRCode value={referralLink} size={64} />
             <div className="flex gap-2">
               <p>Your Referral Code:</p>
               <p className="font-bold">
@@ -40,13 +40,22 @@ export default function ReferralsContainer({
               </p>
             </div>
           </div>
-
-          <button
-            onClick={() => router.push("/u/referrals/genealogy")}
-            className="p-2 bg-(--primary) text-white rounded-lg"
-          >
-            Open Member Tree
-          </button>
+          
+          <div className="flex gap-2">
+            <button
+              onClick={() => setIsQROpen(true)}
+              className="p-2 bg-[#5C4138] text-white rounded-lg hover:opacity-90 transition"
+            >
+              Show QR Code
+            </button>
+            <button
+              onClick={() => router.push("/u/referrals/genealogy")}
+              className="p-2 bg-(--primary) text-white rounded-lg"
+            >
+              Open Member Tree
+            </button>
+          </div>
+          
         </div>
       </div>
 
@@ -107,6 +116,13 @@ export default function ReferralsContainer({
           isOpen={isOpen}
         />
       )}
+
+      {/* QR CODE MODAL */}
+      <QRCodeModal
+        isOpen={isQROpen}
+        onClose={() => setIsQROpen(false)}
+        value={referralLink}
+      />
     </>
   );
 }

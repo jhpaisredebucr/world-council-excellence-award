@@ -7,12 +7,15 @@ import Button from "../ui/Button";
 import Card from "../card/Card"
 import FormPdf from "./FormPdf";
 import { useState } from "react";
-    export default function DashboardMember({dashboardData, userData}) {
+import QRCodeModal from "../modal/QRCodeModal";
+
+export default function DashboardMember({dashboardData, userData}) {
     const router = useRouter();
     const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
     const referralLink = `${API_HOST}/home/signup?ref=${userData?.userInfo?.referral_code}`;
 
     const [copied, setCopied] = useState(false);
+    const [isQROpen, setIsQROpen] = useState(false);
 
     const handleCopy = async () => {
         await navigator.clipboard.writeText(referralLink);
@@ -96,17 +99,21 @@ import { useState } from "react";
                         
                         {copied ? "Copied" : "Copy Link"}
                     </Button>
+                    
+                    <Button
+                        onClick={() => setIsQROpen(true)}
+                        className="flex bg-[#5C4138] p-3 rounded-xl text-white"
+                        width="px-4">
+                        QR Code
+                    </Button>
                 </div>
             </Card>
-            {/* <Card title="" value="" info=""/>
-            <Card title="" value="" info=""/>
-            <Card title="" value="" info=""/>
-            <Card title="" value="" info=""/>
-            <Card title="" value="" info=""/>
-            <Card title="" value="" info=""/>
-            <Card title="" value="" info=""/>
-            <Card title="" value="" info=""/> */}
-            {/* <FormPdf/>   */}
+            
+            <QRCodeModal
+                isOpen={isQROpen}
+                onClose={() => setIsQROpen(false)}
+                value={referralLink}
+            />
         </div>
     )
 }
