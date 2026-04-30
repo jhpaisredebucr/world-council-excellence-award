@@ -29,7 +29,7 @@ export default function OrdersMember({ orders = [], products = [], userData }) {
                 return (
                     <div key={order.id || i} className="mt-2 rounded-lg bg-white p-4 shadow-sm md:grid md:grid-cols-6 md:p-5">
                         <div className="mb-2 text-sm text-gray-600 md:mb-0 md:text-base md:text-black">
-                            {format(new Date(order.created_at), "MMM dd, yyyy")}
+                            {format(new Date(order.created_at), "MMM dd, yyyy HH:mm")}
                         </div>
 
                         <div className="mb-1 md:mb-0">

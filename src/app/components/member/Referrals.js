@@ -32,7 +32,7 @@ export default function ReferralsMember({ setIsOpen, isOpen,  referrals, role = 
                 >
                     <div>{user.username}</div>
                     <div>{user.first_name} {user.last_name}</div>
-                    <div>{format(new Date(user.created_at), "MMM dd, yyyy")}</div>
+                    <div>{format(new Date(user.created_at), "MMM dd, yyyy HH:mm")}</div>
 
                     <span
                         className={

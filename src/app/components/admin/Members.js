@@ -150,7 +150,7 @@ export default function MembersAdmin({ dashboardData, onRefresh }) {
                     </div>
                     <div className="md:block">
                         <span className="md:hidden font-semibold text-gray-500">Date Joined: </span>
-                        {format(new Date(user.created_at), "MMM dd, yyyy")}
+                        {format(new Date(user.created_at), "MMM dd, yyyy HH:mm")}
                     </div>
                     <div className="flex items-center justify-between md:block">
                         <div className="flex items-center gap-2">

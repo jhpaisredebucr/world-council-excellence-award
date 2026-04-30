@@ -13,7 +13,15 @@ export async function getMemberDashboardData({
     const safeLimit = Math.min(parseInt(limit), 100);
     const safeOffset = parseInt(offset);
 
-    // Get referred members
+    // Get total count of level 1 referred members
+    const totalCountRes = await query(
+      `SELECT COUNT(*) AS total_count FROM users WHERE referred_by = $1`,
+      [userReferralCode]
+    );
+
+    const totalReferredMembers = Number(totalCountRes[0]?.total_count || 0);
+
+    // Get referred members (level 1 descendants)
     const referredMembers = await query(
       `
       SELECT 
@@ -23,12 +31,7 @@ export async function getMemberDashboardData({
           u.referral_code,
           u.created_at,
           p.first_name,
-          p.last_name,
-          (
-            SELECT COUNT(*) 
-            FROM users u2 
-            WHERE u2.referred_by = u.referral_code
-          ) AS total_count
+          p.last_name
       FROM users u
       JOIN user_profiles p ON p.user_id = u.id
       WHERE u.referred_by = $1
@@ -37,11 +40,6 @@ export async function getMemberDashboardData({
       `,
       [userReferralCode, safeLimit, safeOffset]
     );
-
-    const totalReferredMembers =
-      referredMembers.length > 0
-        ? Number(referredMembers[0].total_count)
-        : 0;
 
     const pendingCount = referredMembers.filter(
       (member) => member.status === "pending"
@@ -80,11 +78,15 @@ export async function getMemberDashboardData({
 
     const userBalance = totalCommissionValue - totalSpent;
 
+    const activeMembers = totalReferredMembers - pendingCount;
+
     return {
       dashboardData: {
         totalReferredMembers,
         pendingCount,
+        activeMembers,
         totalCommissionValue,
+        totalSpent,
         userBalance,
         referredMembers,
       },

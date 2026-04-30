@@ -50,7 +50,7 @@ export default function Transactions({ transactions = [], userData, onRefresh, l
       {/* ROWS */}
 {Array.isArray(transactions) && transactions.map((t, i) => (
         <div key={t.id || i} className="mt-2 rounded-lg bg-white p-4 shadow-sm md:grid md:grid-cols-7 md:p-5">
-          <div className="mb-2 text-sm text-gray-600 md:mb-0 md:text-base md:text-black">{format(new Date(t.created_at), "MMM dd, yyyy")}</div>
+          <div className="mb-2 text-sm text-gray-600 md:mb-0 md:text-base md:text-black">{format(new Date(t.created_at), "MMM dd, yyyy HH:mm")}</div>
 
           <div className="mb-1 md:mb-0">
             <span className="text-xs text-gray-500 md:hidden">Type: </span>

@@ -53,7 +53,7 @@ export default function Commissions({commissions}) {
                     key={index}
                     className="grid grid-cols-4 shadow-sm p-5 rounded-lg bg-white mt-2"
                 >
-                    <div>{format(new Date(commission.created_at), "MMM dd, yyyy")}</div>
+                    <div>{format(new Date(commission.created_at), "MMM dd, yyyy HH:mm")}</div>
                     <div>{commission.referred_first_name} {commission.referred_last_name}</div>
                     <div>{commission.reward_amount} CREDITS</div>
                     <span

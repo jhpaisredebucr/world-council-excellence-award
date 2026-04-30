@@ -89,14 +89,38 @@ export default function DashboardMember({dashboardData, userData}) {
             color="bg-orange-200" 
             value={`${dashboardData?.totalCommissionValue} CREDITS`} 
             info="" 
-            bold="font-bold"
-            colSpan="sm:col-span-2"/>
+            bold="font-semibold"
+            colSpan="sm:col-span-1"/>
+
+            <Card title="Total Spent"
+            src="/icons/money-thin.svg" 
+            color="bg-purple-200" 
+            value={`₱${dashboardData?.totalSpent}`} 
+            info="" 
+            bold="font-semibold"
+            colSpan="sm:col-span-1"/>
 
             <Card title="Total Referred" 
             src="/icons/referrals.svg" 
             color="bg-red-300" 
-            bold="font-bold"
+            bold="font-semibold"
             value={dashboardData?.totalReferredMembers} 
+            info="" 
+            colSpan="sm:col-span-1"/>
+
+            <Card title="Active Members" 
+            src="/icons/dashboard.svg" 
+            color="bg-green-200" 
+            bold="font-semibold"
+            value={dashboardData?.activeMembers} 
+            info="" 
+            colSpan="sm:col-span-1"/>
+
+            <Card title="Pending Members" 
+            src="/icons/announcement.svg" 
+            color="bg-yellow-200" 
+            bold="font-semibold"
+            value={dashboardData?.pendingCount} 
             info="" 
             colSpan="sm:col-span-2"/>
             
