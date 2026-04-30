@@ -28,6 +28,7 @@ export async function GET(req) {
           u.package,
           p.first_name, 
           p.last_name,
+          p.img_url,
 
           COALESCE(SUM(rr.reward_amount), 0) AS earnings_from_user,
 
@@ -51,7 +52,7 @@ export async function GET(req) {
 
       GROUP BY 
         u.id, u.username, u.status, u.referral_code, u.created_at,
-        p.first_name, p.last_name, u.referral_code
+        p.first_name, p.last_name, p.img_url, u.referral_code
 
       ORDER BY u.created_at DESC
       LIMIT $2 OFFSET $3

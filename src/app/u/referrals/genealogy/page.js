@@ -36,9 +36,10 @@ export default function Page() {
           status: userRes.profile?.status ?? 'approved',
           earnings_from_user: '0.00',
           total_count: 0,
-          package: userRes.userInfo.package || 'N/A'
+          package: userRes.userInfo.package || 'N/A',
+          profile_image: userRes.profile?.img_url || ''
         };
-
+        
         const root = {
           id: userRes.userInfo.referral_code,
           name: `${(userRes.profile?.first_name ?? 'N/A')} ${(userRes.profile?.last_name ?? '')} (You)`,
@@ -48,8 +49,8 @@ export default function Page() {
 
         const directChildren = (dashRes.dashboardData?.referredMembers || []).map(member => ({
           id: member.referral_code,
-          name: `${(member.first_name ?? 'N/A')} ${member.last_name ?? ''} [${member.status ?? 'pending'}]\n₱${member.earnings_from_user ?? '0.00'}`,
-          data: { fullData: member },
+          name: `${(member.first_name ?? 'N/A')} ${member.last_name ?? ''} [${member.status ?? 'pending'}`,
+          data: { fullData: { ...member, profile_image: member.img_url || '' } },
           children: []
         })); 
 
@@ -79,34 +80,34 @@ export default function Page() {
       {/* TREE AREA */}
       <div className="w-full h-[calc(100vh-64px-56px)] overflow-hidden">
 
-{rootTree ? (
-        <>
-          <ReferralTree
-            data={rootTree}
-            fetchChildren={async (refCode) => {
-              const res = await fetchJson(`/api/portal/member?referralCode=${refCode}&userId=${userData.userInfo.id}`
-              );
-              return res.data || [];
-            }}
-            maxDepth={3}
-          />
-          {userData?.referredBy && (
-            <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-4 rounded-lg shadow border max-w-md mx-auto z-20">
-              <h3 className="font-bold text-sm mb-1">↑ Referred by:</h3>
-              <p className="text-sm">
-                <span className="font-mono bg-secondary/20 px-2 py-1 rounded text-xs mr-2 text-primary">
-                  {userData.referredBy.referral_code}
-                </span>
-                {userData.referredBy.username}
-              </p>
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="h-full flex items-center justify-center text-gray-500">
-          No referrals yet
-        </div>
-      )}
+        {rootTree ? (
+          <>
+            <ReferralTree
+              data={rootTree}
+              fetchChildren={async (refCode) => {
+                const res = await fetchJson(`/api/portal/member?referralCode=${refCode}&userId=${userData.userInfo.id}`
+                );
+                return res.data || [];
+              }}
+              maxDepth={3}
+            />
+            {userData?.referredBy && (
+              <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-4 rounded-lg shadow border max-w-md mx-auto z-20">
+                <h3 className="font-bold text-sm mb-1">↑ Referred by:</h3>
+                <p className="text-sm">
+                  <span className="font-mono bg-secondary/20 px-2 py-1 rounded text-xs mr-2 text-primary">
+                    {userData.referredBy.referral_code}
+                  </span>
+                  {userData.referredBy.username}
+                </p>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="h-full flex items-center justify-center text-gray-500">
+            No referrals yet
+          </div>
+        )}
 
       </div>
 
