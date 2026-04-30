@@ -6,6 +6,7 @@ import MemberReferredMembers from "@/app/components/ui/MemberReferredMembers";
 import Card from "@/app/components/card/Card";
 import { useRouter } from "next/navigation";
 import Title from "@/app/components/ui/Title";
+import QRCode from "react-qr-code";
 
 export default function ReferralsContainer({
   userData,
@@ -14,6 +15,8 @@ export default function ReferralsContainer({
   const [selectedDashboardData, setSelectedDashboardData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
+  const referralLink = `${API_HOST}/home/signup?ref=${userData?.userInfo?.referral_code}`;
 
   const router = useRouter();
 
@@ -24,15 +27,18 @@ export default function ReferralsContainer({
 
   return (
     <>
-      {/* HEADER */}
+{/* HEADER */}
       <div className="bg-white p-2 rounded-xl">
         <div className="flex gap-4 p-2 justify-between items-center border-2 border-gray-200 border-dotted rounded-xl">
 
-          <div className="flex gap-2">
-            <p>Your Referral Code:</p>
-            <p className="font-bold">
-              {userData?.userInfo?.referral_code}
-            </p>
+          <div className="flex gap-4 items-center">
+            <QRCode value={referralLink} size={64} />
+            <div className="flex gap-2">
+              <p>Your Referral Code:</p>
+              <p className="font-bold">
+                {userData?.userInfo?.referral_code}
+              </p>
+            </div>
           </div>
 
           <button
@@ -41,7 +47,6 @@ export default function ReferralsContainer({
           >
             Open Member Tree
           </button>
-
         </div>
       </div>
 
