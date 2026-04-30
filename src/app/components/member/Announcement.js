@@ -75,7 +75,7 @@ export default function AnnouncementMember({ announcements, userData }) {
           icon="/icons/announcement.svg"
         />
         
-        <div className="flex gap-2 w-full md:w-auto flex-shrink-0">
+        <div className="flex gap-2 w-full md:w-auto shrink-0">
           <input
               type="text"
               placeholder="Search"
@@ -85,43 +85,47 @@ export default function AnnouncementMember({ announcements, userData }) {
           />
           <button 
               onClick={() => setSearchTerm('')}
-              className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 whitespace-nowrap flex-shrink-0"
+              className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 whitespace-nowrap shrink-0"
           >
               Clear
           </button>
         </div>
       </div>
       
-      {/* Facebook API Announcement Card */}
-      <div className="mb-5 p-5 rounded-lg shadow-[0_0_4px_rgba(0,0,0,0.10)] bg-white border-2 border-blue-500">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
-              f
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {/* Regular Announcements */}
+        <div className="space-y-4 lg:col-span-2">
+          {filterAnnouncements.map((announcement) => (
+            <AnnouncementCard
+                key={announcement.id}
+                announcements={announcement}
+                role={role}
+            />
+          ))}
+        </div>
+        
+        {/* Facebook API Announcement Card */}
+        <div className="lg:col-span-1">
+          <div className="p-5 rounded-lg shadow-[0_0_4px_rgba(0,0,0,0.10)] bg-white border-2 border-blue-500 sticky top-5">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+                  f
+                </div>
+                <div>
+                  <p className="font-semibold text-blue-600">Facebook API Integration</p>
+                  <p className="text-sm text-gray-400">System Announcement</p>
+                </div>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-blue-600">Facebook API Integration</p>
-              <p className="text-sm text-gray-400">System Announcement</p>
-            </div>
+            <p className="font-semibold my-5 text-lg">
+              Facebook API Now Available
+            </p>
+            <p className="text-gray-700">
+              We're excited to announce that Facebook API integration is now live! Connect your Facebook account to enable social sharing, profile synchronization, and enhanced networking features. Check your settings to get started.
+            </p>
           </div>
         </div>
-        <p className="font-semibold my-5 text-lg">
-          Facebook API Now Available
-        </p>
-        <p className="text-gray-700">
-          We're excited to announce that Facebook API integration is now live! Connect your Facebook account to enable social sharing, profile synchronization, and enhanced networking features. Check your settings to get started.
-        </p>
-      </div>
-      
-      {/* Regular Announcements */}
-      <div className="space-y-4">
-        {filterAnnouncements.map((announcement) => (
-          <AnnouncementCard
-              key={announcement.id}
-              announcements={announcement}
-              role={role}
-          />
-        ))}
       </div>
     </div>
   );
