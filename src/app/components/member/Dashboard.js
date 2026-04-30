@@ -18,12 +18,35 @@ export default function DashboardMember({dashboardData, userData}) {
     const [isQROpen, setIsQROpen] = useState(false);
 
     const handleCopy = async () => {
-        await navigator.clipboard.writeText(referralLink);
-        setCopied(true);
-        
-        setTimeout(() => {
-            setCopied(false);
-        }, 2000);
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(referralLink);
+            } else {
+                // Fallback for mobile browsers and non-secure contexts
+                const textArea = document.createElement('textarea');
+                textArea.value = referralLink;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                textArea.style.top = '0';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                } catch (err) {
+                    console.error('Fallback copy failed', err);
+                    throw err;
+                }
+                document.body.removeChild(textArea);
+            }
+            setCopied(true);
+            
+            setTimeout(() => {
+                setCopied(false);
+            }, 2000);
+        } catch (err) {
+            console.error('Copy failed', err);
+        }
     };
 
     return (
