@@ -9,8 +9,26 @@ import SignUpApproval from "./SignUpApproval";
 // 🔧 Toggle this ON/OFF for debugging
 const DEBUG_PRESET = true;
 
+const STEP_TITLES = [
+  "",
+  "Account Information",
+  "Background Information", 
+  "Choose Plan",
+  "Payment Details",
+  "Approval"
+];
+
+const STEP_DESCRIPTIONS = [
+  "",
+  "Create your account credentials",
+  "Tell us more about yourself",
+  "Select your membership plan",
+  "Complete your payment",
+  "Review your submission"
+];
+
 export default function SignUpForm({ refCode }) {
-const [step, setStep] = useState(1);
+  const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
   const generatePresetData = () => {
@@ -76,57 +94,116 @@ const [step, setStep] = useState(1);
     DEBUG_PRESET ? generatePresetData() : generateEmptyData()
   );
 
+  const nextStep = () => !isLoading && setStep(prev => Math.min(prev + 1, 5));
+  const prevStep = () => !isLoading && setStep(prev => Math.max(prev - 1, 1));
+
   return (
-    <>
-{step === 1 && (
-        <SignUpInfo
-          formData={formData}
-          setFormData={setFormData}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          nextStep={() => !isLoading && setStep(prev => prev + 1)}
-          prevStep={() => !isLoading && setStep(prev => prev - 1)}
-          refCode={refCode}
-        />
-      )}
-      {step === 2 && (
-        <SignUpBackgroundInfo
-          formData={formData}
-          setFormData={setFormData}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          nextStep={() => !isLoading && setStep(prev => prev + 1)}
-          prevStep={() => !isLoading && setStep(prev => prev - 1)}
-        />
-      )}
-      {step === 3 && (
-        <SignUpPlan
-          formData={formData}
-          setFormData={setFormData}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          nextStep={() => !isLoading && setStep(prev => prev + 1)}
-          prevStep={() => !isLoading && setStep(prev => prev - 1)}
-        />
-      )}
-      {step === 4 && (
-        <SignUpPayment
-          formData={formData}
-          setFormData={setFormData}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          nextStep={() => !isLoading && setStep(prev => prev + 1)}
-          prevStep={() => !isLoading && setStep(prev => prev - 1)}
-        />
-      )}
-      {step === 5 && (
-        <SignUpApproval
-          formData={formData}
-          setFormData={setFormData}
-          nextStep={() => setStep(prev => prev + 1)}
-          prevStep={() => setStep(prev => prev - 1)}
-        />
-      )}
-    </>
+    <div className="min-h-screen py-4 px-4 sm:py-6 sm:px-6 lg:py-8 lg:px-8">
+      {/* Mobile-optimized container */}
+      <div className="w-full max-w-7xl mx-auto">
+        
+        {/* Progress Indicator - Mobile First */}
+        <div className="mb-6 sm:mb-8 text-center">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-6">
+            Create Your Account
+          </h1>
+          
+          {/* Mobile: Compact progress indicator - Centered */}
+          <div className="sm:hidden max-w-xs mx-auto">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-600">
+                Step {step} of 5
+              </span>
+              <span className="text-sm font-medium text-(--primary)">
+                {Math.round((step / 5) * 100)}%
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="bg-(--primary) h-2 rounded-full transition-all duration-300"
+                style={{ width: `${(step / 5) * 100}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-600 mt-2">
+              {STEP_DESCRIPTIONS[step]}
+            </p>
+          </div>
+          
+          {/* Desktop: Percentage progress bar - Centered */}
+          <div className="hidden sm:block max-w-xs mx-auto">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-600">
+                Step {step} of 5
+              </span>
+              <span className="text-sm font-medium text-(--primary)">
+                {Math.round((step / 5) * 100)}%
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className="bg-(--primary) h-2 rounded-full transition-all duration-300"
+                style={{ width: `${(step / 5) * 100}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-600 mt-2 text-center">
+              {STEP_DESCRIPTIONS[step]}
+            </p>
+          </div>
+        </div>
+
+        {/* Form Content */}
+        <div className="w-full">
+          {step === 1 && (
+            <SignUpInfo
+              formData={formData}
+              setFormData={setFormData}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              nextStep={nextStep}
+              prevStep={prevStep}
+              refCode={refCode}
+            />
+          )}
+          {step === 2 && (
+            <SignUpBackgroundInfo
+              formData={formData}
+              setFormData={setFormData}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              nextStep={nextStep}
+              prevStep={prevStep}
+            />
+          )}
+          {step === 3 && (
+            <SignUpPlan
+              formData={formData}
+              setFormData={setFormData}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              nextStep={nextStep}
+              prevStep={prevStep}
+            />
+          )}
+          {step === 4 && (
+            <SignUpPayment
+              formData={formData}
+              setFormData={setFormData}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              nextStep={nextStep}
+              prevStep={prevStep}
+            />
+          )}
+          {step === 5 && (
+            <SignUpApproval
+              formData={formData}
+              setFormData={setFormData}
+              nextStep={nextStep}
+              prevStep={prevStep}
+            />
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

@@ -250,29 +250,21 @@ export default function SignUpPayment({
             />
 
 
-            <div className="w-full max-w-md sm:max-w-lg lg:max-w-2xl xl:max-w-4xl mx-auto bg-white shadow-xl rounded-2xl border border-gray-100 p-4 sm:p-6 lg:p-8"> 
+            <div className="w-full max-w-md sm:max-w-lg lg:max-w-2xl xl:max-w-4xl mx-auto p-3 sm:p-4 md:p-6 lg:p-8"> 
 
 
-                {/* HEADER */}
-                <div className="mb-8 text-center md:text-left flex justify-between">
+                {/* HEADER - Mobile Optimized */}
+                <div className="mb-6 sm:mb-8 text-center md:text-left flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
 
-                    <div>
-                        <h2 className="text-2xl font-semibold text-gray-800">
+                    <div className="flex-1">
+                        <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
                             Payment Details
                         </h2>
 
-                        <p className="text-gray-500 mt-1">
+                        <p className="text-gray-500 mt-1 text-sm sm:text-base">
                             Complete your membership payment.
                         </p>
                     </div>
-
-
-                    <button
-                        onClick={() => router.push("/home")}
-                        className="inline-flex items-center gap-1 rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
-                    >
-                        ← Back to Homepage
-                    </button>
 
                 </div>
 
@@ -350,7 +342,7 @@ export default function SignUpPayment({
 
                     <button
                         onClick={prevStep}
-                    className="flex-1 min-h-[44px] h-12 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition" 
+                    className="flex-1 min-h-11 h-12 sm:h-14 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition text-sm sm:text-base" 
                     >
                         Back
                     </button>
@@ -358,7 +350,7 @@ export default function SignUpPayment({
                     <button
                         onClick={HandleSignUp}
                         disabled={loading}
-                    className="flex-1 min-h-[44px] h-12 rounded-lg bg-[var(--primary)] text-white font-semibold hover:opacity-90 active:scale-[0.98] transition shadow-md disabled:opacity-50" 
+                    className="flex-1 min-h-11 h-12 sm:h-14 rounded-lg bg-(--primary) text-white font-semibold hover:opacity-90 active:scale-[0.98] transition shadow-md disabled:opacity-50 text-sm sm:text-base" 
                     >
                         {loading ? "Processing..." : "Submit Registration"}
                     </button>

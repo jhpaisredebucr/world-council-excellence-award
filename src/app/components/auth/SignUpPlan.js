@@ -60,43 +60,35 @@ export default function SignUpPlan({
 
     return (
 
-        <div className="w-full flex justify-center py-8 px-4 sm:px-6 lg:px-8">
+        <div className="w-full flex justify-center py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-8">
 
-            {/* CARD */}
-            <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-4xl xl:max-w-6xl mx-auto bg-white shadow-xl rounded-2xl border border-gray-100 p-3 sm:p-6 lg:p-8">
+            {/* CARD - Mobile Optimized */}
+            <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-4xl mx-auto p-3 sm:p-4 md:p-6 lg:p-8">
 
-                {/* HEADER */}
-                <div className="mb-8 text-center md:text-left flex justify-between">
-                    <div>
-                        <h2 className="text-2xl font-semibold text-gray-800">
+                {/* HEADER - Mobile Optimized */}
+                <div className="mb-6 sm:mb-8 text-center md:text-left flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                    <div className="flex-1">
+                        <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
                             Choose Your Membership Plan
                         </h2>
 
-                        <p className="text-gray-500 mt-1">
+                        <p className="text-gray-500 mt-1 text-sm sm:text-base">
                             Select the plan that best fits your needs.
                         </p>
                     </div>
-                    
-
-                    <button
-                        onClick={() => router.push("/home")}
-                        className="mb-4 inline-flex items-center gap-1 rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
-                    >
-                        ← Back to Homepage
-                    </button>
                 </div>
 
 
-                {/* ERROR MESSAGE */}
+                {/* ERROR MESSAGE - Mobile Optimized */}
                 {error && (
-                    <p className="text-sm text-red-500 mb-6">
+                    <p className="text-sm text-red-500 mb-4 sm:mb-6">
                         {error}
                     </p>
                 )}
 
 
-                {/* PLAN GRID */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                {/* PLAN GRID - Mobile Optimized */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
 
 
                     <PlanCard
@@ -156,13 +148,15 @@ export default function SignUpPlan({
                         onClick={Prev}
                         className="
                         flex-1
-                        h-12
+                        h-12 sm:h-14
                         rounded-lg
                         border
                         border-gray-300
                         text-gray-700
                         hover:bg-gray-100
                         transition
+                        text-sm sm:text-base
+                        min-h-11
                         "
                     >
                         Back
@@ -174,9 +168,9 @@ export default function SignUpPlan({
                         disabled={isLoading}
                         className="
                         flex-1
-                        min-h-[44px] h-12
+                        min-h-11 h-12 sm:h-14
                         rounded-lg
-                        bg-[var(--primary)]
+                        bg-(--primary)
                         text-white
                         font-semibold
                         hover:opacity-90
@@ -184,6 +178,7 @@ export default function SignUpPlan({
                         transition
                         shadow-md
                         disabled:opacity-50 disabled:cursor-not-allowed
+                        text-sm sm:text-base
                         " 
                     >
                         {isLoading ? "Please wait..." : "Continue"}
