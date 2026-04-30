@@ -18,8 +18,9 @@ export default async function Page() {
 
   const transactions = await getTransactions({userID: userId, role: role});
   return (
-    <>
+    <div>
+      <h1 className="text-3xl font-semibold mb-6">Transactions</h1>
       <TransactionsContainer transactions={transactions.transactions}/>
-    </>
+    </div>
   )
 }

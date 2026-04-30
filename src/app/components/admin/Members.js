@@ -108,17 +108,17 @@ export default function MembersAdmin({ dashboardData, onRefresh }) {
                 <Card title="Total Members" value={dashboardData?.totalMembers} info=""/>
                 <Card title="Pending" value={dashboardData?.totalRequest} info=""/>
             </div>
-            <div className="flex gap-2 mb-4">
+            <div className="flex flex-col sm:flex-row gap-2 mb-4">
                 <input
                     type="text"
                     placeholder="Search by username..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full sm:flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <button 
                     onClick={() => setSearchTerm('')}
-                    className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                    className="w-full sm:w-auto px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 text-sm"
                 >
                     Clear
                 </button>

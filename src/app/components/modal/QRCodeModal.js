@@ -57,7 +57,7 @@ export default function QRCodeModal({ isOpen, onClose, value }) {
                 <div className="flex gap-3">
                     <button
                         onClick={handleDownloadQR}
-                        className="flex-1 px-4 py-2 rounded-lg bg-(--primary) text-white hover:bg-(--primary-hover) transition"
+                        className="flex-1 px-4 py-2 rounded-lg bg-(--primary) hover:shadow-lg hover:cursor-pointer text-white transition"
                     >
                         Download QR Code
                     </button>

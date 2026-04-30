@@ -23,10 +23,13 @@ export default async function Page() {
   const packages = await getPackages();
 
   return (
-    <PackageShop
-      packages={packages.packages}
-      userData={userData}
-      dashboardData={dashboardData}
-    />
+    <div>
+      <h1 className="text-3xl font-semibold mb-6">Packages</h1>
+      <PackageShop
+        packages={packages.packages}
+        userData={userData}
+        dashboardData={dashboardData}
+      />
+    </div>
   );
 }

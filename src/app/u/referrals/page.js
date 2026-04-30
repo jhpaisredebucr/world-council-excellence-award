@@ -21,11 +21,12 @@ export default async function Page() {
   const dashboardData = await getMemberDashboardData({userReferralCode: referral_code});
   
   return (
-    <>
+    <div>
+      <h1 className="text-3xl font-semibold mb-6">Referrals</h1>
       <ReferralsContainer
         userData={userData}
         dashboardData={dashboardData.dashboardData}
       />
-    </>
+    </div>
   )
 }

@@ -23,10 +23,13 @@ export default async function Page() {
   const products = await getProducts();
 
   return (
-    <ProductShop
-      products={products.products}
-      userData={userData}
-      dashboardData={dashboardData.dashboardData}
-    />
+    <div>
+      <h1 className="text-3xl font-semibold mb-6">Products</h1>
+      <ProductShop
+        products={products.products}
+        userData={userData}
+        dashboardData={dashboardData.dashboardData}
+      />
+    </div>
   );
 }
