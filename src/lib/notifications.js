@@ -17,19 +17,22 @@ export async function createNotification(userId, title, message, type = "info") 
   }
 }
 
-// Create notifications for multiple users
+// Create notifications for multiple users (SQL-injection safe)
 export async function createBulkNotifications(userIds, title, message, type = "info") {
+  if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
+    return [];
+  }
+
   try {
-    const notifications = userIds.map(userId => 
-      `(${userId}, '${title}', '${message}', '${type}', NOW())`
-    ).join(', ');
-    
+    // Use Postgres UNNEST with safe parameterized arrays — no string interpolation
     const result = await query(
-      `INSERT INTO notifications (user_id, title, message, type, created_at) 
-       VALUES ${notifications} 
-       RETURNING *`
+      `INSERT INTO notifications (user_id, title, message, type, created_at)
+       SELECT * FROM UNNEST($1::int[], $2::text[], $3::text[], $4::text[], NOW()::timestamptz[])
+       AS t(user_id, title, message, type, created_at)
+       RETURNING *`,
+      [userIds, userIds.map(() => title), userIds.map(() => message), userIds.map(() => type)]
     );
-    
+
     return result;
   } catch (error) {
     console.error("Error creating bulk notifications:", error);

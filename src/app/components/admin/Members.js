@@ -4,110 +4,88 @@ import Card from "../card/Card";
 import { format } from "date-fns";
 import MemberCard from "./MemberCard";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function MembersAdmin({ dashboardData, onRefresh }) {
-    const router = useRouter();
     const [searchTerm, setSearchTerm] = useState('');
 
     const referrals = [
         ...(dashboardData?.pendingRequest || []),
         ...(dashboardData?.bannedMembers || []),
         ...(dashboardData?.approvedMembers || [])
-    ].filter(user => user.username.toLowerCase().includes(searchTerm.toLowerCase()));
+    ].filter(user =>
+        user.username.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-    console.log(referrals);
+    async function Approve(userID, packagePrice, referredBy) {
+        try {
+            // ─── Step 1: Approve user (sets status=approved + finds referrerId) ──
+            const resApprove = await fetch("/api/portal/admin/members", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId: userID })
+            });
 
-    async function Approve(userID, packagePrice, referred_by) {
-        // let initialAmount = 0;
-        // if (plan === "1") initialAmount = 300;
-        // else if (plan === "2") initialAmount = 900;
-        // else if (plan === "3") initialAmount = 1500;
+            const dataApprove = await resApprove.json();
+            if (!resApprove.ok) {
+                alert(dataApprove.message || "Failed to approve user");
+                return;
+            }
 
-        // const amount = initialAmount * 0.20;
+            // ─── Step 2: Build referral tree (uses referrerId from step 1) ─────────
+            if (dataApprove.referrerId) {
+                const resReferrals = await fetch("/api/referrals", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        newUserId: userID,
+                        referrerId: dataApprove.referrerId
+                    })
+                });
+                const dataReferrals = await resReferrals.json();
+                if (!resReferrals.ok) {
+                    console.error("Referral tree build failed:", dataReferrals.message);
+                }
+            }
 
-        console.log(referred_by, userID);
+            // ─── Step 3: Credit commission to uplines ───────────────────────────────
+            if (packagePrice) {
+                const resCommission = await fetch("/api/referrals/commission", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userId: userID, amount: packagePrice })
+                });
+                const dataCommission = await resCommission.json();
+                if (!resCommission.ok) {
+                    console.error("Commission credit failed:", dataCommission.message);
+                }
+            }
 
-        // //GET MEMBERS
-        const resApprove  = await fetch("/api/portal/admin/members", {
-            method: "PATCH",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({userId: userID})
-        });
+            // ─── Refresh dashboard ────────────────────────────────────────────────
+            if (onRefresh) onRefresh();
 
-        const dataApprove  = await resApprove.json();
-        console.log(dataApprove);
-
-
-        // // //TRANSACTIONS
-        const resTransaction  = await fetch("/api/portal/admin/transactions", {
-            method: "PATCH",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ userId: userID, plan: "plan" })
-        });
-
-        const dataTransaction  = await resTransaction.json();
-        console.log(dataTransaction);
-
-        //REFERRAL REWARDS (OUTDATED)
-        // const resReferral  = await fetch("/api/portal/admin/transactions/referral-reward", {
-        //     method: "POST",
-        //     headers: {"Content-Type": "application/json"},
-        //     body: JSON.stringify({ referral_code: referred_by, referred_id: userID, reward_amount: amount })
-        // });
-
-        // const dataReferral  = await resReferral.json();
-        // console.log(dataReferral);
-
-        // console.log({referral_code: referred_by, referred_id: userID, reward_amount: amount});
-
-        // Build referral tree using /api/referrals
-        const resReferrals = await fetch("/api/referrals", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ 
-                newUserId: userID, 
-                referrerId: dataApprove.referrerId 
-            })
-        });
-        const dataReferrals = await resReferrals.json();
-        console.log(dataReferrals);
-
-        //REFERRAL REWARDS
-        const resCommission = await fetch("/api/referrals/commission", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ userId: userID, amount: packagePrice })
-        });
-
-        const dataCommission = await resCommission.json();
-        console.log(dataCommission);
-
-        console.log({userId: userID, initialAmount: packagePrice});
-
-        if (onRefresh) {
-          onRefresh();
+        } catch (err) {
+            console.error("[Approve] error:", err);
+            alert("Something went wrong during approval.");
         }
-
     }
 
     const [isActive, setIsActive] = useState(false);
     const [user, setUser] = useState(null);
 
-    function PopUpMemberCard( user ){
-        setUser(user);
+    function PopUpMemberCard(selectedUser) {
+        setUser(selectedUser);
         setIsActive(!isActive);
-        console.log(user);
-
     }
 
     return (
         <div>
             {isActive && <MemberCard user={user} onClose={PopUpMemberCard}/>}
+
             <div className="grid grid-cols-2 gap-5 mb-4">
                 <Card title="Total Members" value={dashboardData?.totalMembers} info=""/>
                 <Card title="Pending" value={dashboardData?.totalRequest} info=""/>
             </div>
+
             <div className="flex flex-col sm:flex-row gap-2 mb-4">
                 <input
                     type="text"
@@ -116,7 +94,7 @@ export default function MembersAdmin({ dashboardData, onRefresh }) {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full sm:flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
-                <button 
+                <button
                     onClick={() => setSearchTerm('')}
                     className="w-full sm:w-auto px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 text-sm"
                 >
@@ -135,10 +113,9 @@ export default function MembersAdmin({ dashboardData, onRefresh }) {
                 <div
                     key={index}
                     onClick={() => PopUpMemberCard(user)}
-                    className="grid grid-cols-1 md:grid-cols-4 border-(--primary) 
+                    className="grid grid-cols-1 md:grid-cols-4 border-(--primary)
                     shadow-sm p-5 rounded-lg bg-white mt-2
-                    hover:shadow-md hover:border cursor-pointer gap-2 md:gap-0
-                    "
+                    hover:shadow-md hover:border cursor-pointer gap-2 md:gap-0"
                 >
                     <div className="md:block">
                         <span className="md:hidden font-semibold text-gray-500">Username: </span>
@@ -165,7 +142,7 @@ export default function MembersAdmin({ dashboardData, onRefresh }) {
                                     ? "text-red-600"
                                     : ""
                                 }
-                                >
+                            >
                                 {user.status}
                             </span>
                         </div>

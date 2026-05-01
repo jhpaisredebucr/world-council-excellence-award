@@ -1,71 +1,103 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth";
 
 export async function POST(req) {
-    try {
-        const { referral_code, referred_id, reward_amount } = await req.json();
+  try {
+    // ─── Auth ────────────────────────────────────────────────────────────────
+    const decoded = await requireAdmin(req);
+    if (decoded instanceof NextResponse) return decoded;
 
-        const referrerIDResult = await query(
-            `
-                SELECT * FROM users WHERE referral_code=$1
-            `,
-            [referral_code]
-        )
+    const body = await req.json();
+    const { userId, amount } = body;
 
-        const referrerIDRes = referrerIDResult[0];
-
-        if (!referrerIDRes) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    message: "Invalid referral code - no user found",
-                    referral_code
-                },
-                { status: 400 }
-            );
-        }
-
-        await query(
-            `
-                INSERT INTO referral_rewards (referrer_id, referred_id, reward_amount)
-                VALUES ($1, $2, $3)
-            `,
-            [referrerIDRes.id, referred_id, reward_amount]
-        );
-
-        await query(
-            `
-                UPDATE users
-                SET pc_credit = pc_credit + $1
-                WHERE id = $2;
-            `, [reward_amount, referrerIDRes.id]
-        )
-
-        return NextResponse.json({ message: "referral transaction successful", reward_amount });
-    }
-    catch(error) {
-        console.error("Approval error:", error);
-
-        return NextResponse.json(
-            {
-                success: false,
-                message: error.message, // show actual error temporarily
-            },
-            { status: 500 }
-        );
+    // Validate inputs
+    if (!userId || !amount) {
+      return NextResponse.json(
+        { success: false, message: "userId and amount are required" },
+        { status: 400 }
+      );
     }
 
-    // const { referral_code, referred_id, reward_amount } = await req.json();
+    const userIdNum = Number(userId);
+    const rewardAmount = Number(amount);
 
-    // const referrerIDResult = await query(
-    //     `
-    //         SELECT * FROM users WHERE referral_code=$1
-    //     `,
-    //     [referral_code]
-    // )
+    if (!Number.isInteger(userIdNum) || userIdNum <= 0) {
+      return NextResponse.json(
+        { success: false, message: "Invalid userId" },
+        { status: 400 }
+      );
+    }
 
-    // const referrerIDRes = referrerIDResult[0];
-    // const userID = referrerIDRes.id;
+    if (isNaN(rewardAmount) || rewardAmount <= 0) {
+      return NextResponse.json(
+        { success: false, message: "Amount must be a positive number" },
+        { status: 400 }
+      );
+    }
 
-    // return NextResponse.json({userID});
+    // Get the newly approved user — find their referrer via the referred_by field
+    const userResult = await query(
+      `SELECT id, referred_by FROM users WHERE id = $1`,
+      [userIdNum]
+    );
+
+    if (!userResult.length) {
+      return NextResponse.json(
+        { success: false, message: "User not found" },
+        { status: 404 }
+      );
+    }
+
+    const user = userResult[0];
+    if (!user.referred_by) {
+      return NextResponse.json(
+        { success: false, message: "This user has no referrer" },
+        { status: 400 }
+      );
+    }
+
+    // Look up referrer by referral_code (not id, since referred_by stores the code)
+    const referrerResult = await query(
+      `SELECT id, referral_code FROM users WHERE referral_code = $1 LIMIT 1`,
+      [user.referred_by]
+    );
+
+    if (!referrerResult.length) {
+      return NextResponse.json(
+        { success: false, message: "Referrer not found" },
+        { status: 404 }
+      );
+    }
+
+    const referrerId = referrerResult[0].id;
+
+    // ─── Insert referral reward ─────────────────────────────────────────────
+    await query(
+      `INSERT INTO referral_rewards (referrer_id, referred_id, reward_amount, status, created_at)
+       VALUES ($1, $2, $3, 'approved', NOW())
+       RETURNING *`,
+      [referrerId, userIdNum, rewardAmount]
+    );
+
+    // ─── Credit referrer's PC balance ──────────────────────────────────────
+    await query(
+      `UPDATE users SET pc_credit = pc_credit + $1 WHERE id = $2`,
+      [rewardAmount, referrerId]
+    );
+
+    return NextResponse.json({
+      success: true,
+      message: "Referral reward credited successfully",
+      reward_amount: rewardAmount,
+      referrer_id: referrerId,
+    });
+
+  } catch (error) {
+    console.error("[referral-reward] error:", error);
+    return NextResponse.json(
+      { success: false, message: error.message },
+      { status: 500 }
+    );
+  }
 }
