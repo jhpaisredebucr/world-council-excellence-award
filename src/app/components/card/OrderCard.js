@@ -31,11 +31,11 @@ export default function OrderCard({orders, products}) {
                 </div>
                 <div>
                     <p className="text-sm text-gray-400">Price</p>
-                    <p className="text-blue-500">{product?.price}</p>
+                    <p className="text-(--price-color)">{product?.price}</p>
                 </div>
                 <div>
                     <p className="text-sm text-gray-400">Status</p>
-                    <p className="text-yellow-400">{orders?.status}</p>
+                    <p className="text-(--foreground)">{orders?.status}</p>
                 </div>
             </div>
         </div>

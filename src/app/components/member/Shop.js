@@ -95,7 +95,7 @@ export default function Shop({ products, packages, dashboardData, userData }) {
       )}
 
       {/* Cart Banner */}
-      <div className="mb-5 p-3 text-blue-600 border border-blue-400 rounded-2xl flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
+      <div className="mb-5 p-3 text-(--foreground) border border-(--primary) rounded-2xl flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
         <span>
           {activeTab === 'products'
             ? "Explore and shop high-quality premium products!"
@@ -104,7 +104,7 @@ export default function Shop({ products, packages, dashboardData, userData }) {
 
         {cart.length !== 0 && (
           <button
-            className="text-white text-base sm:text-lg font-bold bg-blue-500 py-1 px-4 rounded-lg w-full sm:w-auto"
+            className="text-white text-base sm:text-lg font-bold bg-(--primary) py-1 px-4 rounded-lg w-full sm:w-auto"
             onClick={() => setBuying(true)}
           >
             Cart ({totalItems}) ₱{total}

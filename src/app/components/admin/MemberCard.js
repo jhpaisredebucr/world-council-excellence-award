@@ -64,7 +64,7 @@ export default function MemberCard({ user, onClose }) {
         "px-4 py-2 bg-(--primary) text-white text-left rounded-lg hover:opacity-90 transition";
 
     const buttonClassRed =
-        "px-4 py-2 bg-red-400 text-white text-left rounded-lg hover:opacity-90 transition";
+        "px-4 py-2 bg-(--error-color) text-white text-left rounded-lg hover:opacity-90 transition";
 
     //modal size
     const modalSize =

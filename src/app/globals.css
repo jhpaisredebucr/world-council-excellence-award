@@ -6,8 +6,8 @@
   
   --background: #ffffff;
   --foreground:   #555555;
-  --primary: #5C4138;   /* example primary color */
-  --secondary: #8D5D28; /* example secondary color */
+  --primary: #5C4138;
+  --secondary: #8D5D28;
 
   --neutral-color: #83aeff;
   --success-color: #83ff83;
@@ -23,15 +23,15 @@
 .theme-dark {
   --background: #161616;
   --foreground: #e4e4e4;
-  --primary: #8D5D28;
-  --secondary: #5C4138;
-} 
+  --primary: #5C4138;
+  --secondary: #8D5D28;
+}
 
 /* ---------- Theme 3: Soft / Pastel ---------- */
 .theme-soft {
   --background: #fffdf3;
-  --foreground: #a069ff;
-  --primary: #e4aeca; 
+  --foreground: #333333;
+  --primary: #e4aeca;
   --secondary: #82d2f5;
 }
 

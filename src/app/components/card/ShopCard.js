@@ -49,7 +49,7 @@ export default function ShopCard({ item, cartQuantity, AddToCart }) {
         <div className="flex flex-col gap-2 flex-1">
           <p className="font-bold">{itemName}</p>
           <p className="text-sm text-gray-400 line-clamp-2">{item.description}</p>
-          <p className="text-2xl text-[#465a7b] font-bold">
+          <p className="text-2xl text-(--primary) font-bold">
             ₱{itemPrice.toLocaleString()}
           </p>
         </div>
