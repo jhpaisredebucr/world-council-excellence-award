@@ -47,12 +47,14 @@ export default function Page() {
           children: []
         }; 
 
-        const directChildren = (dashRes.dashboardData?.referredMembers || []).map(member => ({
+const directChildren = (dashRes.dashboardData?.referredMembers || []).map(member => ({
           id: member.referral_code,
-          name: `${(member.first_name ?? 'N/A')} ${member.last_name ?? ''} [${member.status ?? 'pending'}`,
+          name: `${(member.first_name ?? 'N/A')} ${member.last_name ?? ''} [${member.status ?? 'pending'}]`,
           data: { fullData: { ...member, profile_image: member.img_url || '' } },
-          children: []
-        })); 
+          children: [],
+          hasChildren: (member.total_count || 0) > 0,
+          childCount: member.total_count || 0
+        }));
 
         setRootTree({ ...root, children: directChildren });
 
@@ -82,12 +84,16 @@ export default function Page() {
 
         {rootTree ? (
           <>
-            <ReferralTree
+<ReferralTree
               data={rootTree}
               fetchChildren={async (refCode) => {
                 const res = await fetchJson(`/api/portal/member?referralCode=${refCode}&userId=${userData.userInfo.id}`
                 );
-                return res.data || [];
+                // Return both members and total count
+                return { 
+                  members: res.data || [], 
+                  totalCount: res.total || 0 
+                };
               }}
               maxDepth={3}
             />

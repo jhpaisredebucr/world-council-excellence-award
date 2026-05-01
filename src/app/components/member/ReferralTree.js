@@ -56,8 +56,8 @@ function getLayoutedElements(nodes, edges, direction = "TB") {
 }
 
 // Custom Node Component with Profile Image and Info Button
-function ProfileNode({ data, onInfoClick }) {
-  const { label, fullData, isRoot, id } = data;
+function ProfileNode({ data, onInfoClick, onExpandClick }) {
+  const { label, fullData, isRoot, id, hasChildren, childCount, isExpanded, isLoading, depth } = data;
   
   // Determine status for styling
   let status = isRoot ? 'approved' : 'unknown';
@@ -78,6 +78,15 @@ function ProfileNode({ data, onInfoClick }) {
     e.stopPropagation();
     onInfoClick && onInfoClick(id, fullData);
   };
+  
+  // Handle expand click from indicator
+  const handleExpandClick = (e) => {
+    e.stopPropagation();
+    onExpandClick && onExpandClick(id, depth);
+  };
+  
+  // Show indicator if node has children (hasChildren is true when children have been loaded)
+  const showIndicator = hasChildren && childCount > 0;
   
   return (
     <div
@@ -154,8 +163,38 @@ function ProfileNode({ data, onInfoClick }) {
         {label}
       </div>
       
+{/* Children Indicator - shows down arrow with count when has children */}
+      {showIndicator && (
+        <button
+          onClick={handleExpandClick}
+          style={{
+            position: 'absolute',
+            bottom: 2,
+            left: 2,
+            height: 14,
+            minWidth: 24,
+            padding: '0 4px',
+            borderRadius: 7,
+            border: `1px solid ${textColor}`,
+            background: 'rgba(255,255,255,0.7)',
+            color: textColor,
+            fontSize: '9px',
+            fontWeight: 600,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 2,
+          }}
+          title="Click to expand"
+        >
+          <span>↓</span>
+          <span>{childCount}</span>
+        </button>
+      )}
+      
       {/* Info Button - click to show tooltip */}
-      {!isRoot && (
+      {!isRoot && !showIndicator && (
         <button
           onClick={handleInfoClick}
           style={{
@@ -424,14 +463,22 @@ function convertTreeToGraph(tree) {
       }
     }
     
+// Get child info from the node itself (set by loadChildren or from initial data)
+    // hasChildren can be set from loadChildren OR from initial total_count from API
+    const hasChildren = node.hasChildren || (node.childCount > 0) || false;
+    const childCount = node.childCount || 0;
+    
     nodes.push({
       id: node.id,
       type: CUSTOM_NODE_TYPE,
+      depth: node.depth || 1,
       data: { 
         label,
         fullData,
         isRoot,
-        id: node.id
+        id: node.id,
+        hasChildren,
+        childCount
       },
       position: { x: 0, y: 0 },
     });
@@ -464,7 +511,7 @@ export default function ReferralTree({ data, fetchChildren, maxDepth = 3 }) {
   const [expandedNodes, setExpandedNodes] = useState(new Set());
   const [loadingNodes, setLoadingNodes] = useState(new Set());
 
-  const loadChildren = useCallback(async (nodeId, currentDepth = 1) => {
+const loadChildren = useCallback(async (nodeId, currentDepth = 1, totalChildCount = 0) => {
     const isExpanded = expandedNodes.has(nodeId);
     
     if (loadingNodes.has(nodeId)) return;
@@ -474,7 +521,7 @@ export default function ReferralTree({ data, fetchChildren, maxDepth = 3 }) {
       setTreeData(prev => {
         const updateNode = (node) => {
           if (node.id === nodeId) {
-            return { ...node, children: [] };
+            return { ...node, children: [], childCount: 0, hasChildren: false };
           }
           if (node.children) {
             return {
@@ -499,20 +546,32 @@ export default function ReferralTree({ data, fetchChildren, maxDepth = 3 }) {
     setLoadingNodes(prev => new Set(prev).add(nodeId));
     
     try {
-      const members = await fetchChildren(nodeId);
+      // fetchChildren now returns { members: [], totalCount: number }
+      const result = await fetchChildren(nodeId);
+      const members = result?.members || result || [];
+      const totalCount = result?.totalCount || 0;
+      
       const children = members.map(member => ({
         id: member.referral_code,
         name: `${(member.first_name ?? 'N/A')} ${member.last_name ?? ''} [${member.status ?? 'pending'}]`,
         data: { fullData: { ...member, profile_image: member.img_url || '' } },
         children: [],
         depth: currentDepth + 1,
-        canExpand: currentDepth + 1 < maxDepth
+        canExpand: currentDepth + 1 < maxDepth,
+        // For each child, we'll know if they have children once we fetch them
+        hasChildren: false,
+        childCount: member.total_count || 0
       }));
 
       setTreeData(prev => {
         const updateNode = (node) => {
           if (node.id === nodeId) {
-            return { ...node, children };
+            return { 
+              ...node, 
+              children,
+              hasChildren: children.length > 0,
+              childCount: totalCount
+            };
           }
           if (node.children) {
             return {
@@ -569,9 +628,14 @@ export default function ReferralTree({ data, fetchChildren, maxDepth = 3 }) {
     setTooltip({ show: false, position: {}, data: null, nodeId: null });
   }, []);
 
-  // Click on node expands/collapses children (without showing tooltip)
+// Click on node expands/collapses children (without showing tooltip)
   const onNodeClick = useCallback((_, node) => {
     loadChildren(node.id, node.depth || 1);
+  }, [loadChildren]);
+
+  // Handle expand click - used by indicator
+  const handleExpand = useCallback((nodeId, nodeDepth) => {
+    loadChildren(nodeId, nodeDepth);
   }, [loadChildren]);
 
   const { nodes, edges } = useMemo(() => {
@@ -579,15 +643,16 @@ export default function ReferralTree({ data, fetchChildren, maxDepth = 3 }) {
     return getLayoutedElements(graph.nodes, graph.edges);
   }, [treeData]);
 
-  // Custom node types object - pass onInfoClick handler
+// Custom node types object - pass onInfoClick and onExpandClick handlers
   const nodeTypes = useMemo(() => ({
-    [CUSTOM_NODE_TYPE]: (nodeData) => (
+    [CUSTOM_NODE_TYPE]: (nodeProps) => (
       <ProfileNode 
-        data={nodeData.data} 
+        data={{ ...nodeProps.data, depth: nodeProps.depth }} 
         onInfoClick={onInfoClick}
+        onExpandClick={handleExpand}
       />
     ),
-  }), [onInfoClick]);
+  }), [onInfoClick, handleExpand]);
 
   return (
     <div ref={containerRef} style={{ width: "100%", height: "100%", position: 'relative' }}>

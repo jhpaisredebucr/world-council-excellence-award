@@ -1,0 +1,219 @@
+{
+  "repo_name": "full-stack-0",
+  "branch": "main",
+  "total_commits": 371,
+  "total_authors": 3,
+  "total_insertions": 34500,
+  "total_deletions": 12853,
+  "net_lines": 21647,
+  "total_files_changed": 1762,
+  "first_commit": "2026-03-09T14:47:06+08:00",
+  "last_commit": "2026-05-01T01:11:48+08:00",
+  "repo_age_days": 52,
+  "avg_commits_per_day": 7.13,
+  "avg_commit_size": 127.6,
+  "merge_commit_ratio": 0.046,
+  "bus_factor": 1,
+  "health_score": 85,
+  "health_grade": "A",
+  "analysis_time_ms": 7514,
+  "contributors": [
+    {
+      "name": "Paulo",
+      "email": "pauloreeve143@gmail.com",
+      "commits": 198,
+      "insertions": 21572,
+      "deletions": 6185,
+      "active_days": 27
+    },
+    {
+      "name": "keisackyu",
+      "email": "jhoremzcruz@gmail.com",
+      "commits": 88,
+      "insertions": 8820,
+      "deletions": 3996,
+      "active_days": 15
+    },
+    {
+      "name": "jhoremzisaacsanpedrodelacruz",
+      "email": "jhoremzisaacdelacruz@gmail.com",
+      "commits": 85,
+      "insertions": 4108,
+      "deletions": 2672,
+      "active_days": 8
+    }
+  ],
+  "file_hotspots": [
+    {
+      "path": "package-lock.json",
+      "changes": 9566,
+      "commits": 25,
+      "contributors": 3,
+      "churn_score": 239150
+    },
+    {
+      "path": "src/app/u/dashboard/member/page.js",
+      "changes": 1011,
+      "commits": 23,
+      "contributors": 3,
+      "churn_score": 23253
+    },
+    {
+      "path": ".github/workflows/discord-commits.yml",
+      "changes": 552,
+      "commits": 26,
+      "contributors": 2,
+      "churn_score": 14352
+    },
+    {
+      "path": "src/app/u/profile/page.js",
+      "changes": 871,
+      "commits": 15,
+      "contributors": 3,
+      "churn_score": 13065
+    },
+    {
+      "path": "src/app/components/auth/SignUpInfo.js",
+      "changes": 657,
+      "commits": 17,
+      "contributors": 3,
+      "churn_score": 11169
+    },
+    {
+      "path": "src/app/components/auth/SignUpPayment.js",
+      "changes": 847,
+      "commits": 13,
+      "contributors": 2,
+      "churn_score": 11011
+    },
+    {
+      "path": "src/app/u/dashboard/page.js",
+      "changes": 408,
+      "commits": 21,
+      "contributors": 3,
+      "churn_score": 8568
+    },
+    {
+      "path": "src/app/u/referrals/page.js",
+      "changes": 482,
+      "commits": 14,
+      "contributors": 2,
+      "churn_score": 6748
+    },
+    {
+      "path": "src/app/u/products/page.js",
+      "changes": 384,
+      "commits": 17,
+      "contributors": 2,
+      "churn_score": 6528
+    },
+    {
+      "path": "src/app/api/portal/admin/analytics/route.js",
+      "changes": 402,
+      "commits": 16,
+      "contributors": 2,
+      "churn_score": 6432
+    },
+    {
+      "path": "src/app/api/portal/member/route.js",
+      "changes": 427,
+      "commits": 15,
+      "contributors": 2,
+      "churn_score": 6405
+    },
+    {
+      "path": "src/app/components/auth/sign_up_form.js",
+      "changes": 347,
+      "commits": 16,
+      "contributors": 2,
+      "churn_score": 5552
+    },
+    {
+      "path": "src/app/api/signup/route.js",
+      "changes": 290,
+      "commits": 19,
+      "contributors": 2,
+      "churn_score": 5510
+    },
+    {
+      "path": "src/app/u/dashboard/admin/page.js",
+      "changes": 313,
+      "commits": 14,
+      "contributors": 3,
+      "churn_score": 4382
+    },
+    {
+      "path": "src/app/u/transactions/page.js",
+      "changes": 337,
+      "commits": 13,
+      "contributors": 2,
+      "churn_score": 4381
+    },
+    {
+      "path": "src/app/u/deposit/page.js",
+      "changes": 478,
+      "commits": 9,
+      "contributors": 2,
+      "churn_score": 4302
+    },
+    {
+      "path": "src/app/u/components/layout/SideBar.js",
+      "changes": 301,
+      "commits": 14,
+      "contributors": 2,
+      "churn_score": 4214
+    },
+    {
+      "path": "src/app/home/page.js",
+      "changes": 411,
+      "commits": 10,
+      "contributors": 3,
+      "churn_score": 4110
+    },
+    {
+      "path": "src/app/u/admin/announcements/page.js",
+      "changes": 355,
+      "commits": 11,
+      "contributors": 2,
+      "churn_score": 3905
+    },
+    {
+      "path": "src/app/components/member/ReferralTree.js",
+      "changes": 776,
+      "commits": 5,
+      "contributors": 1,
+      "churn_score": 3880
+    }
+  ],
+  "monthly_commits": {
+    "2026-03": 172,
+    "2026-04": 192,
+    "2026-05": 7
+  },
+  "day_distribution": {
+    "Monday": 54,
+    "Tuesday": 29,
+    "Wednesday": 96,
+    "Thursday": 110,
+    "Friday": 57,
+    "Saturday": 18,
+    "Sunday": 7
+  },
+  "top_file_types": {
+    ".js": 35130,
+    ".json": 9627,
+    ".md": 642,
+    ".yml": 552,
+    ".txt": 368,
+    ".css": 235,
+    ".svg": 162,
+    ".html": 162,
+    ".js}": 71,
+    ".mjs": 43,
+    ".sql": 34,
+    ".yaml": 11,
+    ".png}": 0,
+    ".jpeg}": 0,
+    ".ico": 0
+  }
+}

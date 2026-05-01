@@ -6,10 +6,11 @@ import { useEffect, useState } from "react";
 export default function MemberReferredMembers({
     setIsOpen,
     isOpen,
-    dashboardData
+    dashboardData,
+    userId
 }) {
-    const [selectedDashboardData, setDashboardData] = useState(null);
-      const [loading, setLoading] = useState(true);
+    const [referrals, setReferrals] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     function back() {
         setIsOpen(false);
@@ -25,21 +26,26 @@ export default function MemberReferredMembers({
         const loadData = async () => {
             try {
                 const dashRes = await fetchJson(
-                    `/api/portal/member?userReferralCode=${dashboardData.referral_code}`
+                    `/api/portal/member?referralCode=${dashboardData.referral_code}&userId=${userId}`
                 );
 
-                setDashboardData(dashRes.dashboardData);
-                console.log(dashRes)
+                setReferrals(dashRes.data || []);
+                console.log(dashRes);
 
             } catch (err) {
                 console.error(err);
+                setReferrals([]);
             } finally {
                 setLoading(false);
             }
         };
 
-    loadData();
-    }, []);
+        if (dashboardData?.referral_code && userId) {
+            loadData();
+        } else {
+            setLoading(false);
+        }
+    }, [dashboardData?.referral_code, userId]);
 
     if (loading) {
         return (
@@ -50,19 +56,19 @@ export default function MemberReferredMembers({
                 </div>
 
             </div>
-        )
+        );
     }
 
-    if (selectedDashboardData?.totalReferredMembers === 0) {
+    if (referrals.length === 0) {
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => {setIsOpen(!isOpen)}}>
 
                 <div className="w-full max-w-sm p-5 bg-white rounded-2xl shadow-2xl overflow-hidden">
-                    <p>This user doesn&apos; have any referred members</p>
+                    <p>This user doesn&apos;t have any referred members</p>
                 </div>
 
             </div>
-        )
+        );
     }
 
     return (
@@ -74,7 +80,7 @@ export default function MemberReferredMembers({
                 <div className="flex items-center justify-between border-b px-6 py-4">
 
                     <h2 className="text-lg font-semibold text-gray-800">
-                        {dashboardData?.first_name} {dashboardData?.last_name}&apos; Referred Members
+                        {dashboardData?.first_name} {dashboardData?.last_name}&apos;s Referred Members
                     </h2>
 
                     <button
@@ -92,7 +98,7 @@ export default function MemberReferredMembers({
                 <div className="p-6 max-h-[70vh] overflow-y-auto">
 
                     <ReferralsMember
-                        dashboardData={selectedDashboardData}
+                        referrals={referrals}
                         debug="true"
                     />
 

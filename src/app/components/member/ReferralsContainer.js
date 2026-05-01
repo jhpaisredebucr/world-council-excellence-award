@@ -108,12 +108,13 @@ export default function ReferralsContainer({
         isOpen={isOpen}
       />
 
-      {/* MODAL */}
+{/* MODAL */}
       {isOpen && (
         <MemberReferredMembers
           dashboardData={selectedDashboardData}
           setIsOpen={setIsOpen}
           isOpen={isOpen}
+          userId={userData?.userInfo?.id}
         />
       )}
 
