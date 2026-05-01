@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
-import NotificationDropdown from "@/app/components/ui/NotifDropdown";
+import NotificationBell from "@/app/components/notifications/NotificationBell";
 import Profile from "@/app/components/ui/Profile";
 import { useRouter } from "next/navigation";
 import ProfileDropdown from "@/app/components/ui/ProfileDropdown";
@@ -11,20 +11,12 @@ export default function TopBar({ userData, onMenuToggle, isMobileMenuOpen = fals
 
     const router = useRouter();
 
-    const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState(false);
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
-    const notifRef = useRef(null);
     const profileRef = useRef(null);
-
-    const toggleNotifDropdown = () => {
-        setIsNotifDropdownOpen(prev => !prev);
-        setIsProfileDropdownOpen(false);
-    };
 
     const toggleProfileDropdown = () => {
         setIsProfileDropdownOpen(prev => !prev);
-        setIsNotifDropdownOpen(false);
     };
 
     function GoProfile() {
@@ -51,21 +43,12 @@ const handleSignOut = async () => {
     useEffect(() => {
 
         function handleClickOutside(event) {
-
-            if (
-                notifRef.current &&
-                !notifRef.current.contains(event.target)
-            ) {
-                setIsNotifDropdownOpen(false);
-            }
-
             if (
                 profileRef.current &&
                 !profileRef.current.contains(event.target)
             ) {
                 setIsProfileDropdownOpen(false);
             }
-
         }
 
         document.addEventListener("mousedown", handleClickOutside);
@@ -77,7 +60,7 @@ const handleSignOut = async () => {
     }, []);
 
     return (
-        <div className="relative z-20 flex h-[60px] shrink-0 items-center justify-between border-b border-gray-100 bg-white px-3 sm:px-5">
+        <div className="relative z-20 flex h-15 shrink-0 items-center justify-between border-b border-gray-100 bg-white px-3 sm:px-5">
 
             {/* LEFT SIDE */}
             <div className="flex items-center">
@@ -114,32 +97,7 @@ const handleSignOut = async () => {
             <div className="flex items-center gap-2 px-1 sm:px-4">
 
                 {/* NOTIFICATIONS */}
-                <div ref={notifRef}>
-
-                    <Image
-                        src="/images/notification-icon.png"
-                        width={25}
-                        height={25}
-                        alt="notification icon"
-                        className="mr-3 cursor-pointer"
-                        onClick={toggleNotifDropdown}
-                    />
-
-                    <div
-                        className={`transition-all z-11 duration-200 ${
-                            isNotifDropdownOpen
-                                ? "opacity-100 translate-y-4"
-                                : "opacity-0 -translate-y-2 pointer-events-none"
-                        }`}
-                    >
-                        <NotificationDropdown>
-                            <p className="text-sm text-gray-500">
-                                No new notifications
-                            </p>
-                        </NotificationDropdown>
-                    </div>
-
-                </div>
+                <NotificationBell />
 
 
                 {/* PROFILE */}
