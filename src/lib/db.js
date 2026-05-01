@@ -19,7 +19,12 @@ export const pool = new Pool({
 
 // helper function to query the database
 export async function query(text, params) {
-  const res = await pool.query(text, params);
-  return res.rows;
+  try {
+    const res = await pool.query(text, params);
+    return res.rows;
+  } catch (error) {
+    console.error("[db.js] query error:", error);
+    throw error;
+  }
 }
 
