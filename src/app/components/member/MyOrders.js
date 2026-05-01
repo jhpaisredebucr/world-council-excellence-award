@@ -54,7 +54,7 @@ export default function OrdersMember({ orders = [], products = [], userData }) {
 
                         <div className="mb-1 md:mb-0 break-all">
                             <span className="text-xs text-gray-500 md:hidden">Reference No: </span>
-                            {order.reference_no || 'N/A'}
+                            {order.reference_number || 'N/A'}
                         </div>
                     </div>
                 );
