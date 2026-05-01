@@ -265,7 +265,7 @@ export default function SignUpInfo({ formData, setFormData, nextStep, isLoading,
                             Already have an account?
                             <button
                                 onClick={HandleSignIn}
-                                className="ml-2 font-medium text-blue-600 hover:underline text-sm sm:text-base"
+                                className="ml-2 font-medium text-(--primary) hover:underline text-sm sm:text-base"
                             >
                                 Sign In Here
                             </button>

@@ -240,7 +240,7 @@ export default function SignUpBackgroundInfo({
                             shadow-md
                             disabled:opacity-50 disabled:cursor-not-allowed
                             text-sm sm:text-base
-                            " 
+                            "
                         >
                             {isLoading ? "Please wait..." : "Next Step"}
                         </button>

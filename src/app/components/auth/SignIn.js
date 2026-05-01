@@ -8,8 +8,8 @@ import SemanticCard from "../card/SemanticCard";
 export default function SignInForm() {
     const router = useRouter();
 
-const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("riveu");
+    const [password, setPassword] = useState("yeolswi");
 
     const [errors, setErrors] = useState({
         username: "",

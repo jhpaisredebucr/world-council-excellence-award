@@ -65,7 +65,7 @@ export default function DashboardMember({dashboardData, userData}) {
                     <Button 
                         bgColor="bg-transparent" 
                         textColor="text-(--primary)" 
-                        border="border-2 border-(--primary)" 
+                        border="border-1 border-(--primary)" 
                         onClick={() => router.push('/u/withdraw') }
                         className="hover:bg-(--primary) hover:text-white transition-all duration-300 focus:ring-2 focus:ring-(--primary) focus:ring-offset-2"
                     >
@@ -74,7 +74,7 @@ export default function DashboardMember({dashboardData, userData}) {
                     <Button 
                         bgColor="bg-transparent" 
                         textColor="text-(--primary)" 
-                        border="border-2 border-(--primary)" 
+                        border="border-1 border-(--primary)" 
                         onClick={() => router.push('/u/deposit')}
                         className="hover:bg-(--primary) hover:text-white transition-all duration-300 focus:ring-2 focus:ring-(--primary) focus:ring-offset-2"
                     >
@@ -152,22 +152,19 @@ export default function DashboardMember({dashboardData, userData}) {
                         </p>
                     </div>
                     
-                    <Button
+                    <button
                         onClick={handleCopy}
-                        className={`flex bg-(--primary) p-3 rounded-xl text-white
-                        ${copied? `bg-(--secondary)` : "bg-(--primary)" }`}
-                        icon="/icons/copy-white.svg" 
-                        width="px-4">
-                        
+                        className={`flex-1 sm:flex-none px-3 py-2 text-xs sm:text-sm bg-[#5C4138] text-white rounded-lg hover:opacity-90 transition ${copied ? 'opacity-70' : ''}`}
+                    >
                         {copied ? "Copied" : "Copy Link"}
-                    </Button>
-                    
-                    <Button
+                    </button>
+
+                    <button
                         onClick={() => setIsQROpen(true)}
-                        className="flex bg-(--primary) p-3 rounded-xl text-white"
-                        width="px-4">
+                        className="flex-1 sm:flex-none px-3 py-2 text-xs sm:text-sm bg-[#5C4138] text-white rounded-lg hover:opacity-90 transition"
+                    >
                         QR Code
-                    </Button>
+                    </button>
                 </div>
             </Card>
             
