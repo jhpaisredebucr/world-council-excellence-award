@@ -7,7 +7,7 @@ import SignUpPayment from "./SignUpPayment";
 import SignUpApproval from "./SignUpApproval";
 
 // 🔧 Toggle this ON/OFF for debugging
-const DEBUG_PRESET = true;
+const DEBUG_PRESET = false;
 
 const STEP_TITLES = [
   "",

@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 export function verifyUser(token) {
   if (!token) return null;
 

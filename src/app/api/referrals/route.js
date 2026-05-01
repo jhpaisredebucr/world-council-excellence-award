@@ -6,7 +6,20 @@ export async function POST(req) {
     const body = await req.json();
     const { newUserId, referrerId } = body;
 
+    // Validate referrer exists before creating referral relationship
     if (referrerId) {
+      const referrerCheck = await query(
+        `SELECT id, referral_code FROM users WHERE referral_code = $1 OR id = $1`,
+        [referrerId]
+      );
+
+      if (!referrerCheck.length) {
+        return NextResponse.json(
+          { message: "Invalid referrer code" },
+          { status: 400 }
+        );
+      }
+
       await query(`
         INSERT INTO referrals (ancestor_id, descendant_id, depth)
 

@@ -55,6 +55,19 @@ export async function POST(req) {
         break;
     }
 
+// Check user's balance before deduction
+    const userCheck = await query(
+      `SELECT ${walletColumn} AS balance FROM users WHERE id = $1`,
+      [user_id]
+    );
+
+    if (!userCheck.length || Number(userCheck[0].balance) < totalAmount) {
+      return NextResponse.json(
+        { message: `Insufficient ${walletColumn} balance` },
+        { status: 400 }
+      );
+    }
+
     // Deduct from the selected wallet
     await query(
       `
@@ -64,14 +77,15 @@ export async function POST(req) {
       `, [totalAmount, user_id]
     );
 
-    // ----------------------------
+// ----------------------------
     // INSERT TRANSACTION (linked to first order)
+    //Status changed to 'approved' since balance is deducted immediately
     // ----------------------------
     const firstOrderId = insertedOrders[0].id;
     const transactionResult = await query(
       `
       INSERT INTO transactions (user_id, order_id, type, amount, status)
-      VALUES ($1, $2, 'purchase', $3, 'pending')
+      VALUES ($1, $2, 'purchase', $3, 'approved')
       RETURNING *
       `,
       [user_id, firstOrderId, totalAmount]

@@ -55,7 +55,7 @@ export default function Commissions({commissions}) {
                 >
                     <div className="text-sm">{format(new Date(commission.created_at), "MMM dd, yyyy HH:mm")}</div>
                     <div className="text-sm">{commission.referred_first_name} {commission.referred_last_name}</div>
-                    <div className="text-sm font-semibold">{commission.reward_amount} CREDITS</div>
+                    <div className="text-sm font-semibold">{commission.reward_amount} PC CREDITS</div>
                     <span
                       className={
                         commission.status === "approved"

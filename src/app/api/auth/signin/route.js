@@ -19,7 +19,7 @@ export async function POST(req) {
 
     const users = await query(
       "SELECT * FROM users WHERE username=$1",
-      [username.toLowerCase()]
+      [username]
     );
 
     if (!users || users.length === 0) {

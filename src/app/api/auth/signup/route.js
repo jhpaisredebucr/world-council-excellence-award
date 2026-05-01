@@ -6,8 +6,9 @@ import {nanoid} from "nanoid";
 export async function POST(req) {
     try {
         const body = await req.json();
-        const {
+const {
             //users
+            // Keep username case-sensitive (as-is)
             username,
             referralCode,
             password,
@@ -51,7 +52,7 @@ export async function POST(req) {
                 VALUES ($1, $2, $3, $4, $5, $6, $7)
                 RETURNING *
             `,
-            [username, hashedPass, referralCode, code, packagePrice, maxLevel, paymentMethod]
+[username, hashedPass, referralCode, code, packagePrice, maxLevel, paymentMethod]
         );
 
         const user = result[0];

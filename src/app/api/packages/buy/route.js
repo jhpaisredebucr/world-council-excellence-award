@@ -1,8 +1,28 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
+import jwt from "jsonwebtoken";
 
 export async function POST(req) {
   try {
+    const token = req.cookies.get("token")?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      return NextResponse.json(
+        { success: false, message: "Invalid token" },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
     const { user_id, cart } = body;
 

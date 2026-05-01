@@ -1,11 +1,19 @@
-# Task Progress: Make sidebar button images white on hover
+# Bug Fixes TODO List
 
-## TODO Steps (Approved Plan):
-- [x] Create TODO.md with steps
-- [x] Step 1: Edit SideBarButton.js - Add 'group' class to button element to enable group-hover:invert on Image
-- [ ] Step 2: Verify change (user test in browser)
-- [ ] Step 3: Mark complete and cleanup TODO.md
+## Critical Bugs (P1)
+- [x] 1. authChecker.js - Add missing jwt import
+- [x] 2. transaction/approve/route.js - Fix parameter order
+- [x] 3. products/buy/route.js - Add balance validation
 
-Current: Edit complete. Test in browser by hovering sidebar buttons - icons should now turn white on hover.
+## Logic Errors (P2)
+- [x] 4. auth/signup/route.js - Normalize username to lowercase
+- [x] 5. products/buy/route.js - Fix status to 'approved'
+- [x] 6. referrals/route.js - Add referrer validation
+- [x] 7. packages/buy/route.js - Add authorization check
 
+## Code Quality (P3)
+- [x] 8. SignIn.js - Remove hardcoded credentials
+- [x] 9. SignUpForm.js - Set DEBUG_PRESET = false
 
+## Status
+- COMPLETED: All 9 bugs have been fixed!

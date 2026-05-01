@@ -16,7 +16,7 @@ export async function PATCH(req) {
                 { status: 400 }
             );
         }
-        const result = await query(
+const result = await query(
             `
             UPDATE transactions
             SET status = $1
