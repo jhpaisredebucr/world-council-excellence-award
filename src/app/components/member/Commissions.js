@@ -41,7 +41,7 @@ export default function Commissions({commissions}) {
 
     return (
         <div>
-            <div className="grid grid-cols-4 shadow-sm p-5 mt-5 rounded-lg bg-white font-semibold">
+            <div className="grid grid-cols-4 gap-4 shadow-sm p-6 mt-6 rounded-xl bg-white font-semibold text-sm text-gray-500">
                 <div>Date</div>
                 <div>Name</div>
                 <div>Commission</div>
@@ -51,20 +51,20 @@ export default function Commissions({commissions}) {
             {commissions.map((commission, index) => (
                 <div
                     key={index}
-                    className="grid grid-cols-4 shadow-sm p-5 rounded-lg bg-white mt-2"
+                    className="grid grid-cols-4 gap-4 shadow-sm p-6 rounded-xl bg-white mt-3"
                 >
-                    <div>{format(new Date(commission.created_at), "MMM dd, yyyy HH:mm")}</div>
-                    <div>{commission.referred_first_name} {commission.referred_last_name}</div>
-                    <div>{commission.reward_amount} CREDITS</div>
+                    <div className="text-sm">{format(new Date(commission.created_at), "MMM dd, yyyy HH:mm")}</div>
+                    <div className="text-sm">{commission.referred_first_name} {commission.referred_last_name}</div>
+                    <div className="text-sm font-semibold">{commission.reward_amount} CREDITS</div>
                     <span
                       className={
                         commission.status === "approved"
-                          ? "text-green-600"
+                          ? "text-green-600 font-semibold text-sm"
                           : commission.status === "pending"
-                          ? "text-orange-500"
+                          ? "text-orange-500 font-semibold text-sm"
                           : commission.status === "declined"
-                          ? "text-red-600"
-                          : ""
+                          ? "text-red-600 font-semibold text-sm"
+                          : "text-gray-400 text-sm"
                       }
                     >
                       {commission.status.charAt(0).toUpperCase() + commission.status?.slice(1)}

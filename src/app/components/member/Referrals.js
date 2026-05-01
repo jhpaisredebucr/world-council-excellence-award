@@ -16,7 +16,7 @@ export default function ReferralsMember({ setIsOpen, isOpen,  referrals, role = 
     return (
         <div>
 
-            <div className="grid grid-cols-4 shadow-sm p-5 mt-5 rounded-lg bg-white font-semibold">
+            <div className="grid grid-cols-4 gap-4 shadow-sm p-6 mt-6 rounded-xl bg-white font-semibold text-sm text-gray-500">
                 <div>Username</div>
                 <div>Full Name</div>
                 <div>Date Joined</div>
@@ -27,22 +27,22 @@ export default function ReferralsMember({ setIsOpen, isOpen,  referrals, role = 
                 <div
                     key={index}
                     onClick={() => seeReferredMember(user)}
-                    className={`grid grid-cols-4 shadow-sm p-5 rounded-lg bg-white mt-2 
-                    ${role === "member" ? "cursor-pointer hover:bg-gray-50" : ""}`}
+                    className={`grid grid-cols-4 gap-4 shadow-sm p-6 rounded-xl bg-white mt-3
+                    ${role === "member" ? "cursor-pointer hover:bg-gray-50 transition-colors" : ""}`}
                 >
-                    <div>{user.username}</div>
-                    <div>{user.first_name} {user.last_name}</div>
-                    <div>{format(new Date(user.created_at), "MMM dd, yyyy HH:mm")}</div>
+                    <div className="text-sm font-medium">{user.username}</div>
+                    <div className="text-sm">{user.first_name} {user.last_name}</div>
+                    <div className="text-sm text-gray-400">{format(new Date(user.created_at), "MMM dd, yyyy HH:mm")}</div>
 
                     <span
                         className={
                             user.status === "approved"
-                            ? "text-green-600"
+                            ? "text-green-600 font-semibold text-sm"
                             : user.status === "pending"
-                            ? "text-orange-500"
+                            ? "text-orange-500 font-semibold text-sm"
                             : user.status === "declined"
-                            ? "text-red-600"
-                            : ""
+                            ? "text-red-600 font-semibold text-sm"
+                            : "text-gray-400 text-sm"
                         }
                     >
                         {user.status}

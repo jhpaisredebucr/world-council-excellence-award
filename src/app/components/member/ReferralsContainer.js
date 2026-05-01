@@ -29,52 +29,52 @@ export default function ReferralsContainer({
   return (
     <>
       {/* HEADER */}
-      <div className="bg-white p-2 rounded-xl">
-        <div className="flex gap-4 p-2 justify-between items-center border-2 border-gray-200 border-dotted rounded-xl">
+      <div className="bg-white p-3 sm:p-4 rounded-xl">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-3 sm:p-4 justify-between items-start sm:items-center border-2 border-gray-200 border-dotted rounded-xl">
 
-          <div className="flex gap-4 items-center">
-            <div className="flex gap-2">
-              <p>Your Referral Code:</p>
-              <p className="font-bold">
-                {userData?.userInfo?.referral_code}
-              </p>
-            </div>
+          <div className="flex flex-col gap-1">
+            <p className="text-xs text-gray-400">Your Referral Code</p>
+            <p className="font-bold text-sm sm:text-base">
+              {userData?.userInfo?.referral_code}
+            </p>
           </div>
-          
-          <div className="flex gap-2">
+
+          <div className="flex gap-2 w-full sm:w-auto">
             <button
               onClick={() => setIsQROpen(true)}
-              className="p-2 bg-[#5C4138] text-white rounded-lg hover:opacity-90 transition"
+              className="flex-1 sm:flex-none px-3 py-2 text-xs sm:text-sm bg-[#5C4138] text-white rounded-lg hover:opacity-90 transition"
             >
-              Show QR Code
+              QR Code
             </button>
             <button
               onClick={() => router.push("/u/referrals/genealogy")}
-              className="p-2 bg-(--primary) text-white rounded-lg"
+              className="flex-1 sm:flex-none px-3 py-2 text-xs sm:text-sm bg-(--primary) text-white rounded-lg"
             >
-              Open Member Tree
+              Member Tree
             </button>
           </div>
-          
+
         </div>
       </div>
 
       {/* CARDS */}
-      <div className="grid grid-cols-2 gap-5 my-5">
+      <div className="grid grid-cols-2 gap-3 sm:gap-5 my-4 sm:my-5">
         <Card
           title="Total Referred"
           value={dashboardData?.totalReferredMembers}
+          valueSize="text-lg sm:text-2xl" 
           info=""
         />
         <Card
           title="Pending"
           value={dashboardData?.pendingCount}
+          valueSize="text-lg sm:text-2xl" 
           info=""
         />
       </div>
 
       {/* REFERRALS HEADER */}
-      <div className="my-6 p-3 rounded-lg shadow bg-white flex flex-col gap-4">
+      <div className="my-4 sm:my-6 p-3 sm:p-4 rounded-xl shadow bg-white flex flex-col gap-4">
 
         <Title
           title="Referrals"
@@ -87,12 +87,12 @@ export default function ReferralsContainer({
             placeholder="Search by username..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full sm:flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
 
           <button
             onClick={() => setSearchTerm('')}
-            className="w-full sm:w-auto px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 text-sm"
+            className="w-full sm:w-auto px-4 py-2.5 bg-gray-500 text-white rounded-xl hover:bg-gray-600 text-sm font-medium"
           >
             Clear
           </button>
