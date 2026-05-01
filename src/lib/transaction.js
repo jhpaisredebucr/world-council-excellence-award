@@ -12,7 +12,7 @@ export async function getTransactions({
     const safeOffset = parseInt(offset);
 
     const baseSelect =
-      "SELECT id, user_id, amount, type, status, created_at, payment_method FROM transactions";
+      "SELECT id, user_id, amount, type, status, created_at, payment_method, reference_number FROM transactions";
 
     let transactions;
 

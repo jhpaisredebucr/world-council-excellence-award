@@ -31,8 +31,8 @@ export async function GET(req) {
 
     let transactions;
 
-    // Safe explicit columns (matches UI: id, amount, type, status, created_at, payment_method)
-    const baseSelect = "SELECT id, user_id, amount, type, status, created_at, payment_method FROM transactions";
+    // Safe explicit columns (matches UI: id, amount, type, status, created_at, payment_method, reference_number)
+    const baseSelect = "SELECT id, user_id, amount, type, status, created_at, payment_method, reference_number FROM transactions";
 
     if (role === "admin") {
       transactions = await query(
