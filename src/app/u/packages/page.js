@@ -28,7 +28,7 @@ export default async function Page() {
       <PackageShop
         packages={packages.packages}
         userData={userData}
-        dashboardData={dashboardData}
+        dashboardData={dashboardData.dashboardData}
       />
     </div>
   );

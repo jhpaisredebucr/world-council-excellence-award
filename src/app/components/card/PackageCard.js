@@ -6,9 +6,8 @@ import ProductDetailModal from "../modal/ProductDetailModal";
 export default function PackageCard({ packages, userData, setBuying, setSelectedPackage, AddToCart }) {
     const data = {
         id: packages.id,
-        user_id: userData.userInfo.id,
-        package_id: packages.id,
-        package_name: packages.package_name,
+        product_id: packages.id,
+        product_name: packages.package_name,
         price: packages.price
     }
 
