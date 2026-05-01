@@ -195,8 +195,8 @@ function ProfileNode({ data, onInfoClick, onExpandClick }) {
         </button>
       )}
       
-      {/* Info Button - click to show tooltip */}
-      {!isRoot && !showIndicator && (
+{/* Info Button - click to show tooltip - always show for non-root nodes */}
+      {!isRoot && (
         <button
           onClick={handleInfoClick}
           style={{
