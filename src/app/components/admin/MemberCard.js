@@ -158,6 +158,47 @@ export default function MemberCard({ user, onClose }) {
                     </div>
                 </div>
 
+                {/* PAGE 1 - PROFILE */}
+                <div
+                    className={`transition-all duration-300 ${
+                        page === 1
+                            ? "opacity-100 translate-x-0"
+                            : "opacity-0 translate-x-4 hidden"
+                    }`}
+                >
+                    <p className="text-2xl font-semibold mb-4">Profile:</p>
+                    <div className="space-y-3">
+                        <div>
+                            <span className="font-semibold text-gray-600">Username:</span>
+                            <span className="ml-2">{user?.username}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold text-gray-600">Full Name:</span>
+                            <span className="ml-2">{user?.first_name} {user?.middle_name} {user?.last_name}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold text-gray-600">Status:</span>
+                            <span className={`ml-2 ${
+                                user?.status === "approved" ? "text-green-600" :
+                                user?.status === "pending" ? "text-orange-500" :
+                                user?.status === "banned" ? "text-red-600" : ""
+                            }`}>{user?.status}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold text-gray-600">Package:</span>
+                            <span className="ml-2">{user?.package}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold text-gray-600">Referred By:</span>
+                            <span className="ml-2">{user?.referred_by || "N/A"}</span>
+                        </div>
+                        <div>
+                            <span className="font-semibold text-gray-600">Date Joined:</span>
+                            <span className="ml-2">{user?.created_at ? new Date(user.created_at).toLocaleString() : "N/A"}</span>
+                        </div>
+                    </div>
+                </div>
+
                 {/* PAGE 3 - ORDERS (same size as others) */}
                 <div
                     className={`transition-all duration-300 ${
