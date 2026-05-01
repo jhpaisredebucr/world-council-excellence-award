@@ -53,6 +53,8 @@ export default function Page() {
     // Table with lines
     const tableHeaders = ['Date', 'Type', 'Amount', 'Method', 'Status'];
     const colX = [20, 50, 80, 110, 140];
+    const colWidths = [30, 30, 30, 30, 50];
+    const tableWidth = 170;
     
     // Header line
     doc.setFontSize(11);
@@ -61,25 +63,66 @@ export default function Page() {
       doc.text(header, colX[i], y);
     });
     doc.setFont(undefined, 'normal');
+    
+    // Draw header bottom border
     doc.setLineWidth(0.5);
-    doc.line(20, y+2, 190, y+2);
+    doc.line(20, y+2, 20 + tableWidth, y+2);
+    
+    // Draw vertical lines for columns
+    doc.setLineWidth(0.3);
+    for (let i = 0; i <= colX.length; i++) {
+      const x = i === 0 ? 20 : (i === colX.length ? 20 + tableWidth : colX[i]);
+      doc.line(x, y-5, x, y+2);
+    }
+    
     y += 8;
 
     filtered.forEach(t => {
       if (y > 280) {
         doc.addPage();
         y = 20;
+        // Redraw header on new page
+        doc.setFontSize(11);
+        doc.setFont(undefined, 'bold');
+        tableHeaders.forEach((header, i) => {
+          doc.text(header, colX[i], y);
+        });
+        doc.setFont(undefined, 'normal');
+        doc.setLineWidth(0.5);
+        doc.line(20, y+2, 20 + tableWidth, y+2);
+        doc.setLineWidth(0.3);
+        for (let i = 0; i <= colX.length; i++) {
+          const x = i === 0 ? 20 : (i === colX.length ? 20 + tableWidth : colX[i]);
+          doc.line(x, y-5, x, y+2);
+        }
+        y += 8;
       }
+      
       doc.setFontSize(9);
-      doc.text(new Date(t.created_at).toLocaleDateString(), colX[0], y);
-      doc.text(t.type || 'N/A', colX[1], y);
-      doc.text(`₱${t.amount || 0}`, colX[2], y);
-      doc.text(t.payment_method || 'N/A', colX[3], y);
-      doc.text(t.status || 'unknown', colX[4], y);
+      // Truncate text if too long
+      const date = new Date(t.created_at).toLocaleDateString();
+      const type = (t.type || 'N/A').substring(0, 8);
+      const amount = `₱${t.amount || 0}`;
+      const method = (t.payment_method || 'N/A').substring(0, 8);
+      const status = (t.status || 'unknown').substring(0, 10);
+      
+      doc.text(date, colX[0], y);
+      doc.text(type, colX[1], y);
+      doc.text(amount, colX[2], y);
+      doc.text(method, colX[3], y);
+      doc.text(status, colX[4], y);
       
       // Row lines
       doc.setLineWidth(0.2);
-      doc.line(20, y+2, 190, y+2);
+      doc.line(20, y+2, 20 + tableWidth, y+2);
+      
+      // Vertical lines for each row
+      doc.setLineWidth(0.1);
+      for (let i = 0; i <= colX.length; i++) {
+        const x = i === 0 ? 20 : (i === colX.length ? 20 + tableWidth : colX[i]);
+        doc.line(x, y-3, x, y+2);
+      }
+      
       y += 6;
     });
 

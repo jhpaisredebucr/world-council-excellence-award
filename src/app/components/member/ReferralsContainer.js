@@ -74,7 +74,7 @@ export default function ReferralsContainer({
       </div>
 
       {/* REFERRALS HEADER */}
-      <div className="my-6 p-3 rounded-lg shadow bg-white flex justify-between items-center">
+      <div className="my-6 p-3 rounded-lg shadow bg-white flex flex-col gap-4">
 
         <Title
           title="Referrals"
