@@ -9,6 +9,7 @@ export default function BuyModal({
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [selectedWallet, setSelectedWallet] = useState("balance");
 
   function Close() {
     setBuying(false);
@@ -29,7 +30,7 @@ export default function BuyModal({
   // ----------------------------
   // BUY CART
   // ----------------------------
-  async function Buy() {
+async function Buy() {
     setError(null);
 
     if (!cart || cart.length === 0) {
@@ -37,13 +38,20 @@ export default function BuyModal({
       return;
     }
 
-    if (!dashboardData?.userBalance || dashboardData?.userBalance <= 0) {
-      setError("Your wallet balance is empty.");
+    // Get the available balance based on selected wallet
+    const walletBalance = selectedWallet === "balance" 
+      ? dashboardData?.balance 
+      : selectedWallet === "pc_credit" 
+        ? dashboardData?.pc_credit 
+        : dashboardData?.ppv_credit;
+
+    if (!walletBalance || walletBalance <= 0) {
+      setError("Your selected wallet balance is empty.");
       return;
     }
 
-    if (dashboardData.userBalance < total) {
-      setError("Not enough balance to complete this purchase.");
+    if (walletBalance < total) {
+      setError(`Not enough ${selectedWallet === "balance" ? "balance" : selectedWallet === "pc_credit" ? "PC credits" : "PPV credits"} to complete this purchase.`);
       return;
     }
 
@@ -55,8 +63,9 @@ export default function BuyModal({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           user_id: userData?.userInfo?.id,
-          cart: cart, //  send whole cart
-          total: total
+          cart: cart,
+          total: total,
+          walletType: selectedWallet
         })
       });
 
@@ -108,12 +117,70 @@ export default function BuyModal({
           <p>₱{total}</p>
         </div>
 
-{/* WALLET */}
+{/* WALLET SELECTION */}
         <div className="mt-5">
-          <p className="text-sm">Wallet Balance</p>
-          <p className="border p-2 mt-1 rounded-lg">
-            ₱{dashboardData?.dashboardData?.userBalance ?? dashboardData?.userBalance ?? 0}
-          </p>
+          <p className="text-sm font-semibold">Select Payment Method</p>
+          <div className="mt-2 space-y-2">
+            {/* Balance (Main Wallet) */}
+            <label 
+              className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
+                selectedWallet === "balance" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-50"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="wallet"
+                  value="balance"
+                  checked={selectedWallet === "balance"}
+                  onChange={(e) => setSelectedWallet(e.target.value)}
+                  className="w-4 h-4 text-blue-500"
+                />
+                <span className="font-medium">Main Wallet</span>
+              </div>
+              <span className="font-bold">₱{dashboardData?.balance ?? 0}</span>
+            </label>
+
+            {/* PC Credits */}
+            <label 
+              className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
+                selectedWallet === "pc_credit" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-50"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="wallet"
+                  value="pc_credit"
+                  checked={selectedWallet === "pc_credit"}
+                  onChange={(e) => setSelectedWallet(e.target.value)}
+                  className="w-4 h-4 text-blue-500"
+                />
+                <span className="font-medium">PC Credits</span>
+              </div>
+              <span className="font-bold">{dashboardData?.pc_credit ?? 0}</span>
+            </label>
+
+            {/* PPV Credits */}
+            <label 
+              className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
+                selectedWallet === "ppv_credit" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-50"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="wallet"
+                  value="ppv_credit"
+                  checked={selectedWallet === "ppv_credit"}
+                  onChange={(e) => setSelectedWallet(e.target.value)}
+                  className="w-4 h-4 text-blue-500"
+                />
+                <span className="font-medium">PPV Credits</span>
+              </div>
+              <span className="font-bold">{dashboardData?.ppv_credit ?? 0}</span>
+            </label>
+          </div>
         </div>
 
         {/* ERROR */}

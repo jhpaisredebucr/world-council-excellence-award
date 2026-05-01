@@ -4,7 +4,7 @@ import { query } from "@/lib/db";
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { user_id, cart } = body;
+    const { user_id, cart, walletType = "balance" } = body;
 
     if (!user_id || !cart || cart.length === 0) {
       return NextResponse.json(
@@ -37,6 +37,32 @@ export async function POST(req) {
 
       insertedOrders.push(result[0]);
     }
+
+    // ----------------------------
+    // DEDUCT FROM SELECTED WALLET
+    // ----------------------------
+    let walletColumn;
+    switch (walletType) {
+      case "pc_credit":
+        walletColumn = "pc_credit";
+        break;
+      case "ppv_credit":
+        walletColumn = "ppv_credit";
+        break;
+      case "balance":
+      default:
+        walletColumn = "balance";
+        break;
+    }
+
+    // Deduct from the selected wallet
+    await query(
+      `
+        UPDATE users
+        SET ${walletColumn} = ${walletColumn} - $1
+        WHERE id = $2;
+      `, [totalAmount, user_id]
+    );
 
     // ----------------------------
     // INSERT TRANSACTION (linked to first order)
