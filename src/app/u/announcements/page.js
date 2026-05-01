@@ -1,7 +1,7 @@
 import AnnouncementMember from "@/app/components/member/Announcement";
 import { getAnnouncements } from "@/lib/announcement";
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 async function timedGetAnnouncements() {
   const start = performance.now();
