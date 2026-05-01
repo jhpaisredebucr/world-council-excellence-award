@@ -1,6 +1,7 @@
 import { CldImage } from "next-cloudinary";
 import Image from "next/image";
 import { useState } from "react";
+import ProductDetailModal from "../modal/ProductDetailModal";
 
 export default function PackageCard({ packages, userData, setBuying, setSelectedPackage, AddToCart }) {
     const data = {
@@ -14,14 +15,16 @@ export default function PackageCard({ packages, userData, setBuying, setSelected
     const isBuyingButtonClassName = "cursor-pointer w-full px-3 py-2 rounded-full bg-(--primary) text-white text-2xl font-bold"
 
     const [quantity, setQuantity] = useState(0);
+    const [showModal, setShowModal] = useState(false);
 
 
     return (
-        <div className="
-            p-4 rounded-xl bg-white border-0 border-(--primary)
-            flex flex-col gap-4 shadow-[0_0_4px_rgba(0,0,0,0.10)]
-            transition duration-300 hover:-translate-y-2 hover:border hover:shadow-lg
-        ">
+        <>
+            <div className="
+                p-4 rounded-xl bg-white border-0 border-(--primary)
+                flex flex-col gap-4 shadow-[0_0_4px_rgba(0,0,0,0.10)]
+                transition duration-300 hover:-translate-y-2 hover:border hover:shadow-lg cursor-pointer
+            " onClick={() => setShowModal(true)}>
             {/* Image — full width */}
             <div className="overflow-hidden rounded-lg w-full h-40">
                 <CldImage 
@@ -42,7 +45,8 @@ export default function PackageCard({ packages, userData, setBuying, setSelected
             </div>
 
             {quantity === 0 && <button 
-                onClick={() => {
+                onClick={(e) => {
+                    e.stopPropagation();
                     AddToCart(data);
                     setQuantity(quantity + 1)
                 }} 
@@ -54,7 +58,8 @@ export default function PackageCard({ packages, userData, setBuying, setSelected
             {quantity > 0 && 
             <div className="flex items-center justify-between gap-2">
                 <Image src="/icons/minus-circle-filled.svg" alt="icon" width={32} height={32}
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.stopPropagation();
                         AddToCart(data, "del");
                         setQuantity(quantity - 1)
                     }} 
@@ -63,12 +68,21 @@ export default function PackageCard({ packages, userData, setBuying, setSelected
                 <p className="text-lg font-bold min-w-5 text-center">{quantity}</p>
 
                 <Image src="/icons/plus-circle-filled.svg" alt="icon" width={32} height={32}
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.stopPropagation();
                         AddToCart(data);
                         setQuantity(quantity + 1)
                     }} 
                 />
             </div>}
-        </div>
+            </div>
+            
+            <ProductDetailModal 
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                item={packages}
+                type="package"
+            />
+        </>
     )
 }
