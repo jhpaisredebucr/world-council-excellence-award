@@ -122,7 +122,7 @@ export default function AnnouncementMember({ announcements, userData }) {
               Facebook API Now Available
             </p>
             <p className="text-gray-700">
-              We're excited to announce that Facebook API integration is now live! Connect your Facebook account to enable social sharing, profile synchronization, and enhanced networking features. Check your settings to get started.
+              We're excited to announce that Facebook API integration is now live! Connect your Facebook account to enable social sharing, profile synchronization, and enhanced networking features. 
             </p>
           </div>
         </div>

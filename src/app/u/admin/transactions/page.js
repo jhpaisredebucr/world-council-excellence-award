@@ -32,6 +32,62 @@ export default function Page() {
     }
   };
 
+  const downloadCSV = async (from, to) => {
+    try {
+      // Fetch all transactions from the new API endpoint
+      const res = await fetch("/api/transaction/all");
+      const data = await res.json();
+      
+      if (!data.success) {
+        console.error('Failed to fetch transactions:', data.message);
+        return;
+      }
+
+      const allTransactions = data.transactions || [];
+      
+      // Filter by date range
+      const filtered = allTransactions.filter(t => {
+        const date = new Date(t.created_at);
+        const f = from ? new Date(from) : new Date(0);
+        const tt = to ? new Date(to) : new Date();
+        return date >= f && date <= tt;
+      });
+
+      // CSV headers
+      const headers = ['ID', 'User ID', 'Date', 'Type', 'Amount', 'Payment Method', 'Reference Number', 'Status'];
+      
+      // Convert transactions to CSV rows
+      const csvRows = [
+        headers.join(','),
+        ...filtered.map(t => [
+          t.id || '',
+          t.user_id || '',
+          new Date(t.created_at).toLocaleDateString(),
+          t.type || 'N/A',
+          t.amount || 0,
+          t.payment_method || 'N/A',
+          t.reference_number || 'N/A',
+          t.status || 'unknown'
+        ].map(field => `"${field}"`).join(','))
+      ];
+
+      const csvContent = csvRows.join('\n');
+      
+      // Create blob and download
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `admin-transactions-${from || 'all'}-to-${to || 'all'}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('Error downloading CSV:', err);
+    }
+  };
+
   const downloadPDF = (txns, from, to) => {
     const { jsPDF } = require('jspdf');
     const doc = new jsPDF();
@@ -160,6 +216,12 @@ if (loading) {
 
                   <input type="date" className="px-2 py-1 border rounded" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
                   <input type="date" className="px-2 py-1 border rounded" value={toDate} onChange={(e) => setToDate(e.target.value)} />
+                  <button 
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    onClick={() => downloadCSV(fromDate, toDate)}
+                  >
+                    Download CSV
+                  </button>
                   <button 
                     className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                     onClick={() => downloadPDF(transactions, fromDate, toDate)}
