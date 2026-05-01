@@ -33,6 +33,14 @@ export async function POST(req) {
             [referrerIDRes.id, referred_id, reward_amount]
         );
 
+        await query(
+            `
+                UPDATE users
+                SET pc_credit = pc_credit + $1
+                WHERE id = $2;
+            `, [reward_amount, referrerIDRes.id]
+        )
+
         return NextResponse.json({ message: "referral transaction successful", reward_amount });
     }
     catch(error) {

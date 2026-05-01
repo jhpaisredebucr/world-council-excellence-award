@@ -144,7 +144,7 @@ export default function NotificationsList() {
         <div className="text-center py-12">
           <div className="text-gray-500">No notifications yet</div>
           <p className="text-sm text-gray-400 mt-2">
-            We'll notify you when there's something important
+            We&apos;ll notify you when there&apos;s something important
           </p>
         </div>
       ) : (

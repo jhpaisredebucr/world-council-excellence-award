@@ -45,18 +45,19 @@ export async function getMemberDashboardData({
       (member) => member.status === "pending"
     ).length;
 
-    // Total commission
-    const totalCommissionRes = await query(
+    // User Wallet
+    const userWallet = await query(
       `
-      SELECT COALESCE(SUM(rr.reward_amount), 0) AS total_commission
-      FROM referral_rewards rr
-      JOIN users u ON u.id = rr.referrer_id
-      WHERE u.referral_code = $1
+        SELECT balance, pc_credit, ppv_credit
+        FROM users
+        WHERE referral_code = $1;
       `,
       [userReferralCode]
     );
 
-    // Total spent
+    const { balance, pc_credit, ppv_credit } = userWallet[0];
+
+    // Total Order Spent
     const totalOrderRes = await query(
       `
       SELECT COALESCE(SUM(p.price), 0) AS total_spent
@@ -68,15 +69,10 @@ export async function getMemberDashboardData({
       [userReferralCode]
     );
 
-    const totalCommissionValue = Number(
-      totalCommissionRes[0]?.total_commission || 0
-    );
 
     const totalSpent = Number(
       totalOrderRes[0]?.total_spent || 0
     );
-
-    const userBalance = totalCommissionValue - totalSpent;
 
     const activeMembers = totalReferredMembers - pendingCount;
 
@@ -85,10 +81,11 @@ export async function getMemberDashboardData({
         totalReferredMembers,
         pendingCount,
         activeMembers,
-        totalCommissionValue,
         totalSpent,
-        userBalance,
         referredMembers,
+        balance, 
+        pc_credit, 
+        ppv_credit
       },
       pagination: {
         limit: safeLimit,

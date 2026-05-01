@@ -56,7 +56,7 @@ export default function DashboardMember({dashboardData, userData}) {
             src="/icons/wallet.svg" 
             bold="font-bold"
             color="bg-blue-200" 
-            value={`₱${dashboardData?.userBalance}`} 
+            value={`₱${dashboardData?.balance}`} 
             valueSize="text-lg sm:text-4xl" 
             info=" " 
             rowSpan="lg:row-span-2" 
@@ -84,19 +84,19 @@ export default function DashboardMember({dashboardData, userData}) {
                 
             </Card>
 
-<Card title="Total PC"
+<Card title="PC Balance"
             src="/icons/money.svg" 
             color="bg-orange-200" 
-            value={`${dashboardData?.totalCommissionValue} CREDITS`} 
+            value={`${dashboardData?.pc_credit} CREDITS`} 
             valueSize="text-lg sm:text-xl"
             info="" 
             bold="font-semibold"
             colSpan="sm:col-span-2"/>
             
-            <Card title="Total PPV"
+            <Card title="PPV Balance"
             src="/icons/money.svg" 
             color="bg-orange-200" 
-            value={`${dashboardData?.totalCommissionValue} CREDITS`} 
+            value={`${dashboardData?.ppv_credit} CREDITS`} 
             valueSize="text-lg sm:text-xl"
             info="" 
             bold="font-semibold"

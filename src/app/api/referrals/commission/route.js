@@ -56,6 +56,14 @@ export async function POST(req) {
           commission
         ]
       );
+
+      await query(
+        `
+          UPDATE users
+          SET pc_credit = pc_credit + $1
+          WHERE id = $2;
+        `, [commission, row.ancestor_id]
+      );
     }
 
     return NextResponse.json({
