@@ -81,11 +81,11 @@ return (
         alignItems: 'center'
       }}>
         <p style={{
-          fontSize: '18px',
+          fontSize: '12px',
           color: '#888'
         }}>FROM</p>
         <p style={{
-          fontSize: '24px',
+          fontSize: '20px',
           fontWeight: 'bold',
           color: '#333'
         }}>WCEA</p>
