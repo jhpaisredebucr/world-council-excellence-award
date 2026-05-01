@@ -7,20 +7,37 @@ export default function AdminPage() {
 
   const [dashboardData, setDashboardData] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
 
-    // DASHBOARD DATA
-    fetch("/api/portal/admin/analytics")
-      .then(res => res.json())
-      .then(data => setDashboardData(data.dashboardData));
-
-    // USER DATA
-    fetch("/api/users")
-      .then(res => res.json())
-      .then(data => setUserData(data.success ? data : null));
-
+    Promise.all([
+      fetch("/api/portal/admin/analytics").then(res => res.json()),
+      fetch("/api/users").then(res => res.json())
+    ])
+    .then(([analyticsData, usersData]) => {
+      setDashboardData(analyticsData.dashboardData);
+      setUserData(usersData.success ? usersData : null);
+    })
+    .catch(err => {
+      console.error("Failed to fetch admin data:", err);
+      setError("Failed to load dashboard data");
+    })
+    .finally(() => {
+      setLoading(false);
+    });
   }, []);
+
+  if (loading) {
+    return <div className="p-8">Loading dashboard...</div>;
+  }
+
+  if (error) {
+    return <div className="p-8 text-red-500">{error}</div>;
+  }
 
   return (
     <DashboardAdmin
