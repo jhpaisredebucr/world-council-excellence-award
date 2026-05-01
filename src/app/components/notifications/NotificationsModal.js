@@ -72,6 +72,7 @@ export default function NotificationsModal({ isOpen, onClose }) {
   }, [isOpen, filterUnreadOnly]);
 
   const handleMarkAsRead = async (notificationId) => {
+    console.log(`Marking notification ${notificationId} as read`);
     try {
       const response = await fetch(`/api/notifications/${notificationId}`, {
         method: "PUT",
@@ -80,6 +81,11 @@ export default function NotificationsModal({ isOpen, onClose }) {
         },
         body: JSON.stringify({ read: true }),
       });
+
+      console.log(`Response status: ${response.status}`);
+      
+      const data = await response.json();
+      console.log("Response data:", data);
 
       if (response.ok) {
         setNotifications(prev =>
@@ -93,6 +99,9 @@ export default function NotificationsModal({ isOpen, onClose }) {
           ...prev,
           unread: Math.max(0, prev.unread - 1)
         }));
+        console.log("Successfully marked as read and updated state");
+      } else {
+        console.error("API returned error:", data.message);
       }
     } catch (err) {
       console.error("Failed to mark notification as read:", err);

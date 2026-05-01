@@ -25,15 +25,40 @@ export async function PUT(req, { params }) {
 
     const userID = decoded.id;
     const notificationId = params.id;
-    const { title, message, type, read } = await req.json();
+    
+    let body;
+    try {
+      body = await req.json();
+    } catch (err) {
+      console.error("Error parsing request body:", err);
+      return NextResponse.json(
+        { success: false, message: "Invalid request body" },
+        { status: 400 }
+      );
+    }
+    
+    const { title, message, type, read } = body;
+    
+    console.log(`Mark as read request - UserID: ${userID}, NotificationID: ${notificationId}, Read: ${read}`);
 
     // Check if notification belongs to user
-    const checkRes = await query(
-      "SELECT id FROM notifications WHERE id = $1 AND user_id = $2",
-      [notificationId, userID]
-    );
+    let checkRes;
+    try {
+      checkRes = await query(
+        "SELECT id FROM notifications WHERE id = $1 AND user_id = $2",
+        [notificationId, userID]
+      );
+      console.log(`Notification check result: ${checkRes.length} records found`);
+    } catch (err) {
+      console.error("Error checking notification ownership:", err);
+      return NextResponse.json(
+        { success: false, message: "Database error checking notification" },
+        { status: 500 }
+      );
+    }
 
     if (!checkRes.length) {
+      console.log(`Notification not found for user ${userID}, notification ${notificationId}`);
       return NextResponse.json(
         { success: false, message: "Notification not found" },
         { status: 404 }
@@ -72,13 +97,25 @@ export async function PUT(req, { params }) {
     updateFields.push(`updated_at = NOW()`);
     updateValues.push(notificationId, userID);
 
-    const result = await query(
-      `UPDATE notifications 
-       SET ${updateFields.join(", ")} 
-       WHERE id = $${paramIndex++} AND user_id = $${paramIndex++} 
-       RETURNING *`,
-      updateValues
-    );
+    const updateQuery = `UPDATE notifications 
+                       SET ${updateFields.join(", ")} 
+                       WHERE id = $${paramIndex++} AND user_id = $${paramIndex++} 
+                       RETURNING *`;
+    
+    console.log(`Update query: ${updateQuery}`);
+    console.log(`Update values: ${JSON.stringify(updateValues)}`);
+
+    let result;
+    try {
+      result = await query(updateQuery, updateValues);
+      console.log(`Update result: ${result.length} records updated`);
+    } catch (err) {
+      console.error("Error updating notification:", err);
+      return NextResponse.json(
+        { success: false, message: "Database error updating notification" },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
