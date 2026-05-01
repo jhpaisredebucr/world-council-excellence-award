@@ -10,9 +10,9 @@ export default function Navbar() {
         { label: "Home", href: "/home" },
         { label: "Login", href: "/home/signin" },
         { label: "Register", href: "/home/signup" },
-        { label: "Contacts", href: "/home/contacts" },
+        { label: "Memberships", href: "/home/memberships" },
         { label: "About", href: "/home/about" },
-        { label: "Memberships", href: "/home/memberships" }
+        { label: "Contacts", href: "/home/contacts" },
     ];
 
     
