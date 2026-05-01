@@ -51,13 +51,13 @@ export default function DashboardMember({dashboardData, userData}) {
 
     return (
         <div className="grid w-full grid-cols-1 gap-4 auto-rows-auto sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[130px]">
-            <Card 
+<Card 
             title="Available Balance" 
             src="/icons/wallet.svg" 
             bold="font-bold"
             color="bg-blue-200" 
             value={`₱${dashboardData?.userBalance}`} 
-            valueSize="text-4xl" 
+            valueSize="text-lg sm:text-4xl" 
             info=" " 
             rowSpan="lg:row-span-2" 
             colSpan="sm:col-span-2">
@@ -84,10 +84,11 @@ export default function DashboardMember({dashboardData, userData}) {
                 
             </Card>
 
-            <Card title="Total PC"
+<Card title="Total PC"
             src="/icons/money.svg" 
             color="bg-orange-200" 
             value={`${dashboardData?.totalCommissionValue} CREDITS`} 
+            valueSize="text-lg sm:text-xl"
             info="" 
             bold="font-semibold"
             colSpan="sm:col-span-2"/>
@@ -96,6 +97,7 @@ export default function DashboardMember({dashboardData, userData}) {
             src="/icons/money.svg" 
             color="bg-orange-200" 
             value={`${dashboardData?.totalCommissionValue} CREDITS`} 
+            valueSize="text-lg sm:text-xl"
             info="" 
             bold="font-semibold"
             colSpan="sm:col-span-2"/>
@@ -104,6 +106,7 @@ export default function DashboardMember({dashboardData, userData}) {
             src="/icons/money-thin.svg" 
             color="bg-purple-200" 
             value={`₱${dashboardData?.totalSpent}`} 
+            valueSize="text-lg sm:text-xl"
             info="" 
             bold="font-semibold"
             colSpan="sm:col-span-1"/>
@@ -113,6 +116,7 @@ export default function DashboardMember({dashboardData, userData}) {
             color="bg-red-300" 
             bold="font-semibold"
             value={dashboardData?.totalReferredMembers} 
+            valueSize="text-lg sm:text-xl"
             info="" 
             colSpan="sm:col-span-1"/>
 
@@ -121,6 +125,7 @@ export default function DashboardMember({dashboardData, userData}) {
             color="bg-green-200" 
             bold="font-semibold"
             value={dashboardData?.activeMembers} 
+            valueSize="text-lg sm:text-xl"
             info="" 
             colSpan="sm:col-span-1"/>
 
@@ -129,16 +134,17 @@ export default function DashboardMember({dashboardData, userData}) {
             color="bg-yellow-200" 
             bold="font-semibold"
             value={dashboardData?.pendingCount}
+            valueSize="text-lg sm:text-xl"
             info="" 
             colSpan="sm:col-span-1"/>
             
             <Card 
             title="Referral Link"
             value="" 
-            valueSize="lg" 
+            valueSize="text-base sm:text-lg" 
             bold="" 
             info=" " 
-            colSpan="sm:col-span-2 lg:col-span-4">                
+            colSpan="sm:col-span-2 lg:col-span-4">
                 <div className="flex flex-col gap-3 border-2 border-dotted border-gray-200 p-3 rounded-xl md:flex-row md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
                         <p className="break-words font-bold text-sm sm:text-base truncate block w-full">

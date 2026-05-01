@@ -8,7 +8,7 @@ export default function Card({ className, textColor, title, color, value, valueS
                 <p className="text-gray-400 text-xs sm:text-sm">{title}</p>
 
             </div>
-            <p className={`${valueSize} ${textColor} font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl truncate`}>{value}</p>
+            <p className={`${valueSize || "text-xl sm:text-2xl md:text-3xl lg:text-4xl"} ${textColor} font-bold truncate`}>{value}</p>
             {info && <p className="text-green-500 text-xs sm:text-sm mt-1 sm:mt-2">{info}</p>}
             {children}
         </div>
