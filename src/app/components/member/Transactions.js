@@ -74,7 +74,7 @@ export default function Transactions({ transactions = [], userData, onRefresh, l
 
           <div className="mb-1 md:mb-0 break-all">
             <span className="text-xs text-gray-500 md:hidden">Reference No: </span>
-            {t.reference_no || 'N/A'}
+            {t.reference_number || 'N/A'}
           </div>
 
           <div className="mt-2 flex items-center justify-between md:mt-0">

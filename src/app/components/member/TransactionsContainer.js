@@ -66,7 +66,7 @@ export default function TransactionsContainer({
       doc.text(`₱${t.amount || 0}`, colX[2], y);
       doc.text(t.payment_method || 'N/A', colX[3], y);
       doc.text((t.transaction_id || `TXN-${t.id || "-"}`).toString().slice(0, 12), colX[4], y);
-      doc.text((t.reference_no || 'N/A').toString().slice(0, 10), colX[5], y);
+      doc.text((t.reference_number || 'N/A').toString().slice(0, 10), colX[5], y);
       doc.text(t.status || 'unknown', colX[6], y);
 
       doc.line(20, y + 2, 190, y + 2);

@@ -190,7 +190,7 @@ export default function Deposits() {
             proof: cloudinaryData.url,
             payment_method: method,
             transaction_id: transactionId || null,
-            reference_no: referenceNo || null
+            reference_number: referenceNo || null
 
           })
         }
