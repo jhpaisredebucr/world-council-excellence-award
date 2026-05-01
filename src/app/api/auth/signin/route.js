@@ -1,10 +1,8 @@
-import { SignJWT } from "jose";
+import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { query } from "@/lib/db";
 import { nanoid } from "nanoid";
-
-const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
 export async function POST(req) {
   try {
@@ -55,20 +53,20 @@ export async function POST(req) {
       );
     }
 
-    // ─── Create JWT with unique jti to prevent session fixation ─────────────
+    // ─── Create JWT — use jsonwebtoken (same library as requireAuth) ─────────
     const jti = nanoid(16);
 
-    const token = await new SignJWT({
-      id: user.id,
-      username: user.username,
-      role: user.role,
-      referral_code: user.referral_code,
-    })
-      .setProtectedHeader({ alg: "HS256" })
-      .setJti(jti)          // unique ID for this session — helps with token revocation
-      .setIssuedAt()
-      .setExpirationTime("2d")
-      .sign(secret);
+    const token = jwt.sign(
+      {
+        id: user.id,
+        username: user.username,
+        role: user.role,
+        referral_code: user.referral_code,
+        jti,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "2d" }
+    );
 
     const res = NextResponse.json({
       success: true,
@@ -84,7 +82,7 @@ export async function POST(req) {
     res.cookies.set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",  // CSRF protection
+      sameSite: "strict",
       path: "/",
       maxAge: 60 * 60 * 24 * 2,
     });

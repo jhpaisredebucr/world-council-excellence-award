@@ -1,9 +1,6 @@
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
-// Shared secret encoder
-const getSecret = () => new TextEncoder().encode(process.env.JWT_SECRET);
-
 // ─── Middleware: require authenticated user ───────────────────────────────────
 export async function requireAuth(req) {
   const token = req.cookies.get("token")?.value;
@@ -15,35 +12,34 @@ export async function requireAuth(req) {
     );
   }
 
-  let decoded;
   try {
-    decoded = jwt.verify(token, process.env.JWT_SECRET);
-  } catch {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return decoded;
+  } catch (err) {
+    console.error("[requireAuth] JWT verify error:", err.message);
     return NextResponse.json(
       { success: false, message: "Invalid or expired token" },
       { status: 401 }
     );
   }
-
-  return decoded; // null if failed, decoded object if ok
 }
 
 // ─── Middleware: require admin role ──────────────────────────────────────────
 export async function requireAdmin(req) {
-  const authResult = await requireAuth(req);
-  if (authResult instanceof NextResponse) return authResult; // already a response
+  const result = await requireAuth(req);
+  if (result instanceof NextResponse) return result;
 
-  if (authResult.role !== "admin") {
+  if (result.role !== "admin") {
     return NextResponse.json(
       { success: false, message: "Forbidden (admin required)" },
       { status: 403 }
     );
   }
 
-  return authResult;
+  return result;
 }
 
-// ─── Standalone: verify a token string (no req needed) ───────────────────────
+// ─── Standalone: verify a token string ───────────────────────────────────────
 export function verifyToken(token) {
   if (!token) return null;
   try {
@@ -53,14 +49,7 @@ export function verifyToken(token) {
   }
 }
 
-// ─── Standalone: create a signed JWT ─────────────────────────────────────────
+// ─── Standalone: create a signed JWT (uses jsonwebtoken, not jose) ─────────────
 export function signToken(payload, expiresIn = "2d") {
-  return new SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime(expiresIn)
-    .sign(getSecret());
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });
 }
-
-// ─── Re-export SignJWT for signin route ───────────────────────────────────────
-export { SignJWT } from "jose";

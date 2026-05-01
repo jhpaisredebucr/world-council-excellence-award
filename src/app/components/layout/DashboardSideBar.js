@@ -15,8 +15,7 @@ export default function SideBar({
     const memberMenu = [
         { id: "announcement", label: "Announcement", path: "/u/announcements", icon: "/icons/announcement.svg" },
         { id: "dashboard", label: "Dashboard", path: "/u/dashboard", icon: "/icons/dashboard.svg" },
-        { id: "products", label: "Product Shop", path: "/u/products", icon: "/icons/product-shop.svg" },
-        { id: "packages", label: "Package Shop", path: "/u/packages", icon: "/icons/product-shop.svg" },
+        { id: "shop", label: "Shop", path: "/u/products", icon: "/icons/product-shop.svg" },
         { id: "orders", label: "My Orders", path: "/u/orders", icon: "/icons/my-orders.svg" },
         { id: "referrals", label: "Referrals", path: "/u/referrals", icon: "/icons/referrals.svg" },
         { id: "transactions", label: "Transactions", path: "/u/transactions", icon: "/icons/page-flip.svg" },
