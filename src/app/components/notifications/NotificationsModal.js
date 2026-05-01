@@ -73,6 +73,14 @@ export default function NotificationsModal({ isOpen, onClose }) {
 
   const handleMarkAsRead = async (notificationId) => {
     console.log(`Marking notification ${notificationId} as read`);
+    console.log(`Type of notificationId: ${typeof notificationId}`);
+    console.log(`Is notificationId valid: ${!notificationId || isNaN(parseInt(notificationId))}`);
+    
+    if (!notificationId || isNaN(parseInt(notificationId))) {
+        console.error(`Invalid notificationId passed to handleMarkAsRead: ${notificationId}`);
+        return;
+    }
+    
     try {
       const response = await fetch(`/api/notifications/${notificationId}`, {
         method: "PUT",
@@ -109,6 +117,14 @@ export default function NotificationsModal({ isOpen, onClose }) {
   };
 
   const handleDelete = async (notificationId) => {
+    console.log(`Deleting notification ${notificationId}`);
+    console.log(`Type of notificationId: ${typeof notificationId}`);
+    
+    if (!notificationId || isNaN(parseInt(notificationId))) {
+        console.error(`Invalid notificationId passed to handleDelete: ${notificationId}`);
+        return;
+    }
+    
     try {
       const response = await fetch(`/api/notifications/${notificationId}`, {
         method: "DELETE",
@@ -140,7 +156,17 @@ export default function NotificationsModal({ isOpen, onClose }) {
   const handleMarkAllAsRead = async () => {
     const unreadNotifications = notifications.filter(n => !n.read);
     
+    console.log(`Marking ${unreadNotifications.length} notifications as read`);
+    
     for (const notification of unreadNotifications) {
+      console.log(`Processing notification:`, notification);
+      console.log(`Notification ID: ${notification.id}, Type: ${typeof notification.id}`);
+      
+      if (!notification.id || isNaN(parseInt(notification.id))) {
+        console.error(`Skipping notification with invalid ID: ${notification.id}`);
+        continue;
+      }
+      
       await handleMarkAsRead(notification.id);
     }
   };

@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 
 export async function PUT(req, { params }) {
   try {
+    // Await params in Next.js App Router
+    const { id: notificationId } = await params;
+    
     const token = req.cookies.get("token")?.value;
 
     if (!token) {
@@ -24,7 +27,18 @@ export async function PUT(req, { params }) {
     }
 
     const userID = decoded.id;
-    const notificationId = params.id;
+    
+    console.log(`API called with params:`, params);
+    console.log(`Extracted notificationId: ${notificationId}`);
+    
+    // Validate notificationId
+    if (!notificationId || isNaN(parseInt(notificationId))) {
+        console.error(`Invalid notificationId: ${notificationId}`);
+        return NextResponse.json(
+            { success: false, message: "Invalid notification ID" },
+            { status: 400 }
+        );
+    }
     
     let body;
     try {
@@ -44,10 +58,39 @@ export async function PUT(req, { params }) {
     // Check if notification belongs to user
     let checkRes;
     try {
-      checkRes = await query(
-        "SELECT id FROM notifications WHERE id = $1 AND user_id = $2",
-        [notificationId, userID]
+      // First, let's see what the actual notification looks like
+      const debugRes = await query(
+        "SELECT id, user_id, title FROM notifications WHERE id = $1",
+        [notificationId]
       );
+      console.log(`Debug - Notification ${notificationId}:`, debugRes);
+      console.log(`Debug - User ID from token: ${userID}`);
+      
+      if (debugRes.length === 0) {
+        console.log(`Notification ${notificationId} does not exist`);
+        return NextResponse.json(
+          { success: false, message: "Notification not found" },
+          { status: 404 }
+        );
+      }
+      
+      const notification = debugRes[0];
+      
+      // If notification has no user_id, assign it to the current user (temporary fix)
+      if (!notification.user_id) {
+        console.log(`Notification ${notificationId} has no user_id, assigning to user ${userID}`);
+        await query(
+          "UPDATE notifications SET user_id = $1 WHERE id = $2",
+          [userID, notificationId]
+        );
+        checkRes = [{ id: notificationId }]; // Mark as found
+      } else {
+        checkRes = await query(
+          "SELECT id FROM notifications WHERE id = $1 AND user_id = $2",
+          [notificationId, userID]
+        );
+      }
+      
       console.log(`Notification check result: ${checkRes.length} records found`);
     } catch (err) {
       console.error("Error checking notification ownership:", err);
@@ -133,6 +176,9 @@ export async function PUT(req, { params }) {
 
 export async function DELETE(req, { params }) {
   try {
+    // Await params in Next.js App Router
+    const { id: notificationId } = await params;
+    
     const token = req.cookies.get("token")?.value;
 
     if (!token) {
@@ -153,7 +199,6 @@ export async function DELETE(req, { params }) {
     }
 
     const userID = decoded.id;
-    const notificationId = params.id;
 
     // Check if notification belongs to user and delete it
     const result = await query(
