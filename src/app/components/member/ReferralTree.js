@@ -654,7 +654,7 @@ const loadChildren = useCallback(async (nodeId, currentDepth = 1, totalChildCoun
     ),
   }), [onInfoClick, handleExpand]);
 
-  return (
+return (
     <div ref={containerRef} style={{ width: "100%", height: "100%", position: 'relative' }}>
       <ReactFlow 
         nodes={nodes} 
@@ -663,6 +663,12 @@ const loadChildren = useCallback(async (nodeId, currentDepth = 1, totalChildCoun
         onNodeClick={onNodeClick}
         fitView
       >
+        {/* MiniMap hidden on mobile, visible on md+ screens via inline style */}
+        <style>{`
+          @media (max-width: 767px) {
+            .react-flow__minimap { display: none !important; }
+          }
+        `}</style>
         <MiniMap />
         <Controls />
         <Background variant="dots" gap={12} size={1} />

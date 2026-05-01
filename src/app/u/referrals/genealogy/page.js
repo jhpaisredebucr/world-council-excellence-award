@@ -10,6 +10,7 @@ export default function Page() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [rootTree, setRootTree] = useState(null);
+  const [headerExpanded, setHeaderExpanded] = useState(true);
   const router = useRouter();
 
   const fetchJson = async (url) => {
@@ -97,17 +98,6 @@ const directChildren = (dashRes.dashboardData?.referredMembers || []).map(member
               }}
               maxDepth={3}
             />
-            {userData?.referredBy && (
-              <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-4 rounded-lg shadow border max-w-md mx-auto z-20">
-                <h3 className="font-bold text-sm mb-1">↑ Referred by:</h3>
-                <p className="text-sm">
-                  <span className="font-mono bg-secondary/20 px-2 py-1 rounded text-xs mr-2 text-primary">
-                    {userData.referredBy.referral_code}
-                  </span>
-                  {userData.referredBy.username}
-                </p>
-              </div>
-            )}
           </>
         ) : (
           <div className="h-full flex items-center justify-center text-gray-500">
@@ -117,18 +107,45 @@ const directChildren = (dashRes.dashboardData?.referredMembers || []).map(member
 
       </div>
 
-      {/* FLOATING HEADER */}
+{/* FLOATING HEADER */}
       <div className="absolute top-4 left-4 right-4 z-30 flex flex-col md:flex-row md:justify-between md:items-center gap-3 pointer-events-none">
 
-        <div className="bg-white/90 backdrop-blur-md px-4 py-3 rounded-lg shadow border pointer-events-auto">
-          <h1 className="text-lg font-bold">Genealogy Tree</h1>
-
-          <p className="text-sm text-gray-600 mt-1">
-            Referral Code: {" "}
-            <span className="font-mono bg-secondary/20 px-2 py-1 rounded text-primary">
-              {userData?.userInfo?.referral_code}
+        <div className="bg-white/90 backdrop-blur-md rounded-lg shadow border pointer-events-auto overflow-hidden">
+          {/* Header - always visible, clickable to collapse/expand */}
+          <button
+            onClick={() => setHeaderExpanded(!headerExpanded)}
+            className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+          >
+            <h1 className="text-lg font-bold">Genealogy Tree</h1>
+            {/* Collapse indicator - visible on mobile */}
+            <span className="md:hidden text-gray-400 text-sm">
+              {headerExpanded ? '▼' : '▶'}
             </span>
-          </p>
+          </button>
+
+          {/* Collapsible content */}
+          <div className={`${headerExpanded ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'} md:max-h-none md:opacity-100 transition-all duration-200 overflow-hidden`}>
+            <div className="px-4 pb-3">
+              <p className="text-sm text-gray-600">
+                Referral Code: {" "}
+                <span className="font-mono bg-secondary/20 px-2 py-1 rounded text-primary">
+                  {userData?.userInfo?.referral_code}
+                </span>
+              </p>
+
+              {userData?.referredBy && (
+                <div className="mt-2 pt-2 border-t border-gray-200">
+                  <p className="text-xs text-gray-500">
+                    <span className="font-semibold">↑ Referred by:</span>{" "}
+                    <span className="font-mono bg-secondary/10 px-1.5 py-0.5 rounded text-xs mr-1">
+                      {userData.referredBy.referral_code}
+                    </span>
+                    {userData.referredBy.username}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         <button
