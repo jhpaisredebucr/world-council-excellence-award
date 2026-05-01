@@ -57,9 +57,39 @@ export default function Home() {
     // router.push("/dashboard/admin")
   });
 
-  return (
-    <div>
-      <p>Loading WCEA Networking Website...</p>
+return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      backgroundColor: '#f5f5f5'
+    }}>
+      <img 
+        src="/images/logos/wcea.png" 
+        alt="WCEA Logo" 
+        width={100} 
+        height={100}
+        style={{ objectFit: 'contain' }}
+      />
+      <div style={{
+        position: 'absolute',
+        bottom: '30px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }}>
+        <p style={{
+          fontSize: '18px',
+          color: '#888'
+        }}>FROM</p>
+        <p style={{
+          fontSize: '24px',
+          fontWeight: 'bold',
+          color: '#333'
+        }}>WCEA</p>
+      </div>
     </div>
   );
 }
