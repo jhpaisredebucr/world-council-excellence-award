@@ -347,7 +347,7 @@ export default function Deposits() {
               <span className="text-sm">Use PayMongo Secure Checkout</span>
             </label>
             <p className="text-xs text-gray-500 mt-1">
-              Pay directly using PayMongo's secure payment gateway
+              Pay directly using PayMongo&apos;s secure payment gateway
             </p>
           </div>
         )}

@@ -84,7 +84,15 @@ export default function DashboardMember({dashboardData, userData}) {
                 
             </Card>
 
-            <Card title="Total Commissions"
+            <Card title="Total PC"
+            src="/icons/money.svg" 
+            color="bg-orange-200" 
+            value={`${dashboardData?.totalCommissionValue} CREDITS`} 
+            info="" 
+            bold="font-semibold"
+            colSpan="sm:col-span-2"/>
+            
+            <Card title="Total PPV"
             src="/icons/money.svg" 
             color="bg-orange-200" 
             value={`${dashboardData?.totalCommissionValue} CREDITS`} 
@@ -114,7 +122,7 @@ export default function DashboardMember({dashboardData, userData}) {
             bold="font-semibold"
             value={dashboardData?.activeMembers} 
             info="" 
-            colSpan="sm:col-span-2"/>
+            colSpan="sm:col-span-1"/>
 
             <Card title="Pending Members"
             src="/icons/announcement.svg" 
@@ -122,7 +130,7 @@ export default function DashboardMember({dashboardData, userData}) {
             bold="font-semibold"
             value={dashboardData?.pendingCount}
             info="" 
-            colSpan="sm:col-span-2"/>
+            colSpan="sm:col-span-1"/>
             
             <Card 
             title="Referral Link"
