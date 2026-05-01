@@ -9,6 +9,8 @@ import ReactFlow, {
   MiniMap,
   Handle,
   Position,
+  useReactFlow,
+  ReactFlowProvider,
 } from "reactflow";
 import { CldImage } from "next-cloudinary";
 import "reactflow/dist/style.css";
@@ -23,7 +25,7 @@ const CUSTOM_NODE_TYPE = 'profileNode';
 const tooltipOffsetX = 10;
 const tooltipOffsetY = -5;
 
-// dagre layout function
+// dagre layout function - always use dagre for consistent layout
 function getLayoutedElements(nodes, edges, direction = "TB") {
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -504,12 +506,36 @@ function convertTreeToGraph(tree) {
   return { nodes, edges };
 }
 
-export default function ReferralTree({ data, fetchChildren, maxDepth = 3 }) {
+// Inner component that uses useReactFlow hook
+function ReferralTreeInner({ data, fetchChildren, maxDepth = 3 }) {
   const [treeData, setTreeData] = React.useState(data);
   const [tooltip, setTooltip] = useState({ show: false, position: {}, data: null });
   const containerRef = useRef(null);
   const [expandedNodes, setExpandedNodes] = useState(new Set());
   const [loadingNodes, setLoadingNodes] = useState(new Set());
+  const reactFlow = useReactFlow();
+  const initialViewport = useRef(null);
+  const isFirstRender = useRef(true);
+
+  // Store initial viewport on first render
+  useEffect(() => {
+    if (isFirstRender.current && reactFlow) {
+      const viewport = reactFlow.getViewport();
+      initialViewport.current = viewport;
+      isFirstRender.current = false;
+    }
+  }, [reactFlow]);
+
+  // Restore viewport after tree data changes (when children are loaded)
+  useEffect(() => {
+    if (!isFirstRender.current && initialViewport.current && reactFlow) {
+      // Slight delay to ensure the tree has been re-rendered
+      const timer = setTimeout(() => {
+        reactFlow.setViewport(initialViewport.current, { duration: 0 });
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [treeData, reactFlow]);
 
 const loadChildren = useCallback(async (nodeId, currentDepth = 1, totalChildCount = 0) => {
     const isExpanded = expandedNodes.has(nodeId);
@@ -661,7 +687,9 @@ return (
         edges={edges} 
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
-        fitView
+        fitView={false}
+        minZoom={0.1}
+        maxZoom={2}
       >
         {/* MiniMap hidden on mobile, visible on md+ screens via inline style */}
         <style>{`
@@ -680,5 +708,14 @@ return (
         />
       )}
     </div>
+  );
+}
+
+// Wrapper component with ReactFlowProvider
+export default function ReferralTree({ data, fetchChildren, maxDepth = 3 }) {
+  return (
+    <ReactFlowProvider>
+      <ReferralTreeInner data={data} fetchChildren={fetchChildren} maxDepth={maxDepth} />
+    </ReactFlowProvider>
   );
 }
