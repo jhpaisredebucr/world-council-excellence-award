@@ -90,7 +90,7 @@ export default function DashboardMember({dashboardData, userData}) {
             value={`${dashboardData?.totalCommissionValue} CREDITS`} 
             info="" 
             bold="font-semibold"
-            colSpan="sm:col-span-1"/>
+            colSpan="sm:col-span-2"/>
 
             <Card title="Total Spent"
             src="/icons/money-thin.svg" 
@@ -114,17 +114,18 @@ export default function DashboardMember({dashboardData, userData}) {
             bold="font-semibold"
             value={dashboardData?.activeMembers} 
             info="" 
-            colSpan="sm:col-span-1"/>
+            colSpan="sm:col-span-2"/>
 
-            <Card title="Pending Members" 
+            <Card title="Pending Members"
             src="/icons/announcement.svg" 
             color="bg-yellow-200" 
             bold="font-semibold"
-            value={dashboardData?.pendingCount} 
+            value={dashboardData?.pendingCount}
             info="" 
             colSpan="sm:col-span-2"/>
             
-            <Card title="Referral Link" 
+            <Card 
+            title="Referral Link"
             value="" 
             valueSize="lg" 
             bold="" 
@@ -132,7 +133,7 @@ export default function DashboardMember({dashboardData, userData}) {
             colSpan="sm:col-span-2 lg:col-span-4">                
                 <div className="flex flex-col gap-3 border-2 border-dotted border-gray-200 p-3 rounded-xl md:flex-row md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
-                        <p className="break-all font-bold">
+                        <p className="break-words font-bold text-sm sm:text-base truncate block w-full">
                             {referralLink}
                         </p>
                     </div>
