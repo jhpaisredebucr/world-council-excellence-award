@@ -145,8 +145,10 @@ export async function POST(req) {
         }
 
         const roleUsersRes = await query(
-          "SELECT id FROM users WHERE role = $1 AND id != $2",
-          [role, adminUserId]
+          role === 'admin' 
+            ? "SELECT id FROM users WHERE role = $1"
+            : "SELECT id FROM users WHERE role = $1 AND id != $2",
+          role === 'admin' ? [role] : [role, adminUserId]
         );
 
         if (roleUsersRes.length === 0) {
