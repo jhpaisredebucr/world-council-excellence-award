@@ -101,19 +101,66 @@ export default function MembershipFormPage() {
     setPdfLoading(true);
     try {
       const canvas  = await html2canvas(previewRef.current, {
-        scale: 3,
+        scale: 2,
         useCORS: true,
         allowTaint: true,
         logging: false,
+        backgroundColor: "#ffffff",
       });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf     = new jsPDF({
+      const imgData = canvas.toDataURL("image/png", 0.95);
+      
+      // Calculate proper PDF dimensions (A4 ratio)
+      const pdfWidth = 210; // mm (A4 width)
+      const pdfHeight = (canvas.height / canvas.width) * pdfWidth;
+      
+      const pdf = new jsPDF({
         orientation: "portrait",
-        unit:        "px",
-        format:      [canvas.width / 3, canvas.height / 3],
+        unit: "mm",
+        format: "a4",
       });
-      pdf.addImage(imgData, "PNG", 0, 0, canvas.width / 3, canvas.height / 3);
-      pdf.save(`MND-Membership-${form.name || "Form"}.pdf`);
+      
+      // Legal document header
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 15;
+      
+      // Header with formal styling
+      pdf.setFontSize(16);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('WCEA', pageWidth / 2, 20, { align: 'center' });
+      
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text('Individual Membership Application Form', pageWidth / 2, 28, { align: 'center' });
+      
+      // Document control number and date
+      pdf.setFontSize(10);
+      pdf.text(`Document No: WCEA-MEM-${Date.now().toString().slice(-6)}`, margin, 40);
+      pdf.text(`Date Generated: ${new Date().toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      })}`, pageWidth - margin, 40, { align: 'right' });
+      
+      // Formal line separator
+      pdf.setLineWidth(0.5);
+      pdf.line(margin, 45, pageWidth - margin, 45);
+      
+      // Add image with proper scaling and centering
+      const imgWidth = pageWidth - (margin * 2);
+      const imgHeight = (canvas.height / canvas.width) * imgWidth;
+      const xOffset = margin;
+      const yOffset = 55; // Start after header
+      
+      pdf.addImage(imgData, "PNG", xOffset, yOffset, imgWidth, imgHeight);
+      
+      // Footer
+      const footerY = pageHeight - 15;
+      pdf.setFontSize(8);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`Page 1 of 1`, pageWidth / 2, footerY, { align: 'center' });
+      
+      pdf.save(`WCEA-Membership-${form.name || "Form"}-${Date.now()}.pdf`);
       showToast("success", "PDF downloaded successfully!");
     } catch (err) {
       console.error(err);
@@ -322,13 +369,17 @@ className="flex-1 py-3 rounded-2xl font-bold text-sm text-white bg-gradient-to-b
                     left:     pos.left,
                     width:    pos.width,
                     fontSize: "1.35%",        // scales with container width
-                    lineHeight: "1.2",
-color:    "var(--foreground)",
+                    lineHeight: "1.1",
+color:    "#000000",           // Ensure black text for PDF
                     fontFamily: "'Arial', sans-serif",
                     fontWeight: "600",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    border: "none",           // Remove any borders
+                    padding: "0",
+                    margin: "0",
+                    boxSizing: "border-box",
                   }}
                 >
                   {display}

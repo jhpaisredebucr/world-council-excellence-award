@@ -26,11 +26,15 @@ const tooltipOffsetX = 10;
 const tooltipOffsetY = -5;
 
 // dagre layout function - always use dagre for consistent layout
-function getLayoutedElements(nodes, edges, direction = "TB") {
+function getLayoutedElements(nodes, edges, direction = "TB", preservedPositions = new Map()) {
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-  dagreGraph.setGraph({ rankdir: direction });
+  dagreGraph.setGraph({ 
+    rankdir: direction,
+    marginx: 50,
+    marginy: 50
+  });
 
   nodes.forEach((node) => {
     dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
@@ -43,13 +47,23 @@ function getLayoutedElements(nodes, edges, direction = "TB") {
   dagre.layout(dagreGraph);
 
   const layoutedNodes = nodes.map((node) => {
+    // If we have a preserved position for this node, use it
+    if (preservedPositions.has(node.id)) {
+      return {
+        ...node,
+        position: preservedPositions.get(node.id),
+      };
+    }
+    
+    // Otherwise, calculate new position using dagre with padding from top-left
     const nodeWithPosition = dagreGraph.node(node.id);
+    const padding = 50; // Add padding from edges
 
     return {
       ...node,
       position: {
-        x: nodeWithPosition.x - nodeWidth / 2,
-        y: nodeWithPosition.y - nodeHeight / 2,
+        x: nodeWithPosition.x - nodeWidth / 2 + padding,
+        y: nodeWithPosition.y - nodeHeight / 2 + padding,
       },
     };
   });
@@ -514,28 +528,27 @@ function ReferralTreeInner({ data, fetchChildren, maxDepth = 3 }) {
   const [expandedNodes, setExpandedNodes] = useState(new Set());
   const [loadingNodes, setLoadingNodes] = useState(new Set());
   const reactFlow = useReactFlow();
-  const initialViewport = useRef(null);
   const isFirstRender = useRef(true);
+  const nodePositions = useRef(new Map()); // Store original node positions
 
-  // Store initial viewport on first render
+  // Initialize positions on first render
   useEffect(() => {
-    if (isFirstRender.current && reactFlow) {
-      const viewport = reactFlow.getViewport();
-      initialViewport.current = viewport;
+    if (isFirstRender.current) {
+      // Initialize positions for initial tree layout
+      const graph = convertTreeToGraph(treeData);
+      const { nodes: layoutedNodes } = getLayoutedElements(graph.nodes, graph.edges);
+      layoutedNodes.forEach(node => {
+        if (node.position) {
+          nodePositions.current.set(node.id, node.position);
+        }
+      });
+      
       isFirstRender.current = false;
     }
-  }, [reactFlow]);
+  }, [treeData]);
 
-  // Restore viewport after tree data changes (when children are loaded)
-  useEffect(() => {
-    if (!isFirstRender.current && initialViewport.current && reactFlow) {
-      // Slight delay to ensure the tree has been re-rendered
-      const timer = setTimeout(() => {
-        reactFlow.setViewport(initialViewport.current, { duration: 0 });
-      }, 50);
-      return () => clearTimeout(timer);
-    }
-  }, [treeData, reactFlow]);
+  // Disable automatic viewport restoration to prevent camera movement
+  // ReactFlow will maintain the viewport naturally when positions are preserved
 
 const loadChildren = useCallback(async (nodeId, currentDepth = 1, totalChildCount = 0) => {
     const isExpanded = expandedNodes.has(nodeId);
@@ -543,7 +556,7 @@ const loadChildren = useCallback(async (nodeId, currentDepth = 1, totalChildCoun
     if (loadingNodes.has(nodeId)) return;
     
     if (isExpanded && currentDepth < maxDepth) {
-      // Collapse - remove children
+      // Collapse - remove children, but preserve positions
       setTreeData(prev => {
         const updateNode = (node) => {
           if (node.id === nodeId) {
@@ -666,7 +679,16 @@ const loadChildren = useCallback(async (nodeId, currentDepth = 1, totalChildCoun
 
   const { nodes, edges } = useMemo(() => {
     const graph = convertTreeToGraph(treeData);
-    return getLayoutedElements(graph.nodes, graph.edges);
+    
+    // Store current positions before layout
+    const currentNodes = graph.nodes;
+    currentNodes.forEach(node => {
+      if (node.position && (node.position.x !== 0 || node.position.y !== 0)) {
+        nodePositions.current.set(node.id, node.position);
+      }
+    });
+    
+    return getLayoutedElements(graph.nodes, graph.edges, "TB", nodePositions.current);
   }, [treeData]);
 
 // Custom node types object - pass onInfoClick and onExpandClick handlers
@@ -690,6 +712,7 @@ return (
         fitView={false}
         minZoom={0.1}
         maxZoom={2}
+        defaultViewport={{ x: 0, y: 0, zoom: 1 }}
       >
         {/* MiniMap hidden on mobile, visible on md+ screens via inline style */}
         <style>{`
