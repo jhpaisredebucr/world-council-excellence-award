@@ -4,14 +4,21 @@ import { requireAdmin } from "@/lib/auth";
 
 export async function POST(req) {
   try {
-    // ─── Auth ────────────────────────────────────────────────────────────────
-    const decoded = await requireAdmin(req);
+    // ─── Auth ─────────────────────────────────────────────
+    let decoded;
+    try {
+      decoded = await requireAdmin(req);
+    } catch {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
     if (decoded instanceof NextResponse) return decoded;
 
-    const body = await req.json();
-    const { newUserId, referrerId } = body;
+    // ─── Body ─────────────────────────────────────────────
+    const { newUserId, referrerId } = await req.json();
 
-    // Validate both IDs are provided
     if (!newUserId || !referrerId) {
       return NextResponse.json(
         { success: false, message: "newUserId and referrerId are required" },
@@ -19,59 +26,89 @@ export async function POST(req) {
       );
     }
 
-    // Verify the new user exists
-    const newUserCheck = await query(
+    const newUserIdNum = Number(newUserId);
+    if (isNaN(newUserIdNum)) {
+      return NextResponse.json(
+        { success: false, message: "Invalid newUserId" },
+        { status: 400 }
+      );
+    }
+
+    // ─── Check new user exists ────────────────────────────
+    const newUser = await query(
       "SELECT id FROM users WHERE id = $1",
-      [Number(newUserId)]
+      [newUserIdNum]
     );
-    if (!newUserCheck.length) {
+
+    if (!newUser.length) {
       return NextResponse.json(
         { success: false, message: "User not found" },
         { status: 404 }
       );
     }
 
-    // Validate referrer exists
-    const referrerCheck = await query(
-      "SELECT id, referral_code FROM users WHERE referral_code = $1 OR id = $1",
-      [referrerId]
+    // ─── Resolve referrer (ID or referral_code) ───────────
+    const referrer = await query(
+      `SELECT id FROM users 
+       WHERE id::text = $1 OR referral_code = $1
+       LIMIT 1`,
+      [String(referrerId)]
     );
-    if (!referrerCheck.length) {
+
+    if (!referrer.length) {
       return NextResponse.json(
-        { success: false, message: "Invalid referrer code" },
+        { success: false, message: "Invalid referrer" },
         { status: 400 }
       );
     }
 
-    const referrerIdNum = Number(referrerId);
+    const referrerIdNum = referrer[0].id;
 
-    // Check if referral relationship already exists
-    const existingRef = await query(
-      "SELECT 1 FROM referrals WHERE descendant_id = $1 AND ancestor_id = $2 LIMIT 1",
-      [Number(newUserId), referrerIdNum]
-    );
-    if (existingRef.length) {
+    // Prevent self-referral
+    if (referrerIdNum === newUserIdNum) {
       return NextResponse.json(
-        { success: false, message: "Referral relationship already exists" },
+        { success: false, message: "User cannot refer themselves" },
+        { status: 400 }
+      );
+    }
+
+    // ─── Prevent duplicates ───────────────────────────────
+    const existing = await query(
+      `SELECT 1 FROM referrals 
+       WHERE ancestor_id = $1 AND descendant_id = $2
+       LIMIT 1`,
+      [referrerIdNum, newUserIdNum]
+    );
+
+    if (existing.length) {
+      return NextResponse.json(
+        { success: false, message: "Referral already exists" },
         { status: 409 }
       );
     }
 
-    // Build referral tree: insert all ancestors of referrer + the direct link
+    // ─── Insert referral tree ─────────────────────────────
     await query(
       `INSERT INTO referrals (ancestor_id, descendant_id, depth)
+       
        SELECT ancestor_id, $1::int, depth + 1
        FROM referrals
        WHERE descendant_id = $2::int
+
        UNION ALL
+
        SELECT $2::int, $1::int, 1`,
-      [Number(newUserId), referrerIdNum]
+      [newUserIdNum, referrerIdNum]
     );
 
-    return NextResponse.json({ success: true, message: "Referral link created" });
+    return NextResponse.json({
+      success: true,
+      message: "Referral link created",
+    });
 
   } catch (error) {
-    console.error("[referrals/route.js] error:", error);
+    console.error("[referrals POST] error:", error);
+
     return NextResponse.json(
       { success: false, message: "Server error" },
       { status: 500 }
@@ -95,8 +132,13 @@ export async function GET(req) {
     );
 
     return NextResponse.json({ success: true, referrals });
+
   } catch (error) {
-    console.error("[referrals/route.js] GET error:", error);
-    return NextResponse.json({ success: false, message: "Server error" }, { status: 500 });
+    console.error("[referrals GET] error:", error);
+
+    return NextResponse.json(
+      { success: false, message: "Server error" },
+      { status: 500 }
+    );
   }
 }

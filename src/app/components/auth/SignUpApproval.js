@@ -12,7 +12,7 @@ export default function SignUpApproval() {
                     <br />
                     <span className="text-lg sm:text-xl lg:text-2xl mt-4 block">WAITING FOR APPROVAL</span>
                 </Card>
-                <Link href="/" className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                <Link href="/" className="mt-6 px-6 py-3 bg-(--primary) text-white rounded-lg hover:bg-(--secondary) transition-colors font-medium">
                     Return Home
                 </Link>
             </div>

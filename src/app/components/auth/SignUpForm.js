@@ -39,9 +39,9 @@ export default function SignUpForm({ refCode }) {
       username: `user${randomNumber}`,
       email: `user${randomNumber}@test.com`,
       contactNumber: randomPhone,
-      referralCode: refCode || `MEM-RBFJMG`,
-      password: "yeolswi",
-      confirmPassword: "yeolswi",
+      referralCode: refCode || `MEM-8WJOE4`,
+      password: "12345678",
+      confirmPassword: "12345678",
 
       firstName: "Paulo Reeve",
       middleName: "Castillano",

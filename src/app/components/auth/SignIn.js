@@ -9,7 +9,7 @@ export default function SignInForm() {
     const router = useRouter();
 
     const [username, setUsername] = useState("riveu");
-    const [password, setPassword] = useState("yeolswi");
+    const [password, setPassword] = useState("12345678");
 
     const [errors, setErrors] = useState({
         username: "",
