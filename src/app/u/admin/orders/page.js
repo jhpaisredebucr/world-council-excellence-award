@@ -68,10 +68,10 @@ export default function Page() {
     fetchData();
   }, []);
 
-  // Helper functions
+// Helper functions
   const getProductName = (productId) => {
     const product = products.find((p) => p.id === productId);
-    return product?.name || `Product #${productId}`;
+    return product?.product_name || product?.name || `Product #${productId}`;
   };
 
   const getProductPrice = (productId) => {

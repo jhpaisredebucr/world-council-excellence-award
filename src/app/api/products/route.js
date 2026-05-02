@@ -4,18 +4,43 @@ import jwt from "jsonwebtoken";
 
 export async function GET(req) {
     try {
-        const products = await query("SELECT * FROM products");
+        let products = [];
+        let packages = [];
+        
+        try {
+            const productsResult = await query("SELECT * FROM products");
+            products = productsResult.map(product => ({
+                ...product,
+                price: Number(product.price)
+            }));
+        } catch (productError) {
+            console.error("[GET /api/products] products query error:", productError);
+        }
+        
+        try {
+            const packagesResult = await query("SELECT * FROM packages");
+            packages = packagesResult.map(packageItem => ({
+                ...packageItem,
+                price: Number(packageItem.price)
+            }));
+        } catch (packageError) {
+            console.error("[GET /api/products] packages query error:", packageError);
+        }
 
-        const formattedProducts = products.map(product => ({
-            ...product,
-            price: Number(product.price)
-        }));
-
-        return NextResponse.json({ products: formattedProducts });
+        return NextResponse.json({ 
+            products: products,
+            packages: packages
+        });
     } catch (err) {
-        return NextResponse.json({status: 400})
+        console.error("[GET /api/products] outer error:", err);
+        return NextResponse.json({ 
+            success: false, 
+            message: err.message,
+            products: [],
+            packages: []
+        }, { status: 500 })
     }
-} 
+}
 
 export async function POST(req) {
   try {
@@ -50,33 +75,62 @@ export async function POST(req) {
       );
     }
 
-    const body = await req.json();
+const body = await req.json();
+    const bodyType = body.type; // 'product' or 'package'
     const product_name = body.product_name?.trim();
+    const package_name = body.package_name?.trim();
     const description = body.description?.trim() || "";
     const price = Number(body.price);
     const img_url = body.img_url?.trim();
 
-    if (!product_name || !img_url || Number.isNaN(price) || price <= 0) {
-      return NextResponse.json(
-        { success: false, message: "Invalid product payload" },
-        { status: 400 }
-      );
-    }
-
-    const createdProduct = await query(
-      `INSERT INTO products (user_id, product_name, description, price, img_url)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING *`,
-      [userResult[0].id, product_name, description, price, img_url]
-    );
-
-    return NextResponse.json({
-      success: true,
-      product: {
-        ...createdProduct[0],
-        price: Number(createdProduct[0].price)
+    // Check if it's a package or product
+    if (bodyType === 'package' || package_name) {
+      // Create package
+      if (!package_name || !img_url || Number.isNaN(price) || price <= 0) {
+        return NextResponse.json(
+          { success: false, message: "Invalid package payload" },
+          { status: 400 }
+        );
       }
-    });
+
+      const createdPackage = await query(
+        `INSERT INTO packages (package_name, description, price, img_url)
+         VALUES ($1, $2, $3, $4)
+         RETURNING *`,
+        [package_name, description, price, img_url]
+      );
+
+      return NextResponse.json({
+        success: true,
+        package: {
+          ...createdPackage[0],
+          price: Number(createdPackage[0].price)
+        }
+      });
+    } else {
+      // Create product
+      if (!product_name || !img_url || Number.isNaN(price) || price <= 0) {
+        return NextResponse.json(
+          { success: false, message: "Invalid product payload" },
+          { status: 400 }
+        );
+      }
+
+      const createdProduct = await query(
+        `INSERT INTO products (user_id, product_name, description, price, img_url)
+         VALUES ($1, $2, $3, $4, $5)
+         RETURNING *`,
+        [userResult[0].id, product_name, description, price, img_url]
+      );
+
+      return NextResponse.json({
+        success: true,
+        product: {
+          ...createdProduct[0],
+          price: Number(createdProduct[0].price)
+        }
+      });
+    }
   } catch (err) {
     console.error("[POST /api/products] error:", err);
     return NextResponse.json(
@@ -119,32 +173,55 @@ export async function DELETE(req) {
       );
     }
 
-    const body = await req.json();
-    const productId = Number(body?.id);
+const body = await req.json();
+    const deleteType = body.type; // 'product' or 'package'
+    const deleteId = Number(body?.id);
 
-    if (!Number.isInteger(productId) || productId <= 0) {
+    if (!Number.isInteger(deleteId) || deleteId <= 0) {
       return NextResponse.json(
-        { success: false, message: "Invalid product id" },
+        { success: false, message: "Invalid id" },
         { status: 400 }
       );
     }
 
-    const deletedProducts = await query(
-      "DELETE FROM products WHERE id = $1 RETURNING id",
-      [productId]
-    );
-
-    if (!deletedProducts.length) {
-      return NextResponse.json(
-        { success: false, message: "Product not found" },
-        { status: 404 }
+    // Check if it's a package or product
+    if (deleteType === 'package') {
+      // Delete package
+      const deletedPackages = await query(
+        "DELETE FROM packages WHERE id = $1 RETURNING id",
+        [deleteId]
       );
-    }
 
-    return NextResponse.json({
-      success: true,
-      deletedId: deletedProducts[0].id
-    });
+      if (!deletedPackages.length) {
+        return NextResponse.json(
+          { success: false, message: "Package not found" },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        deletedId: deletedPackages[0].id
+      });
+    } else {
+      // Delete product
+      const deletedProducts = await query(
+        "DELETE FROM products WHERE id = $1 RETURNING id",
+        [deleteId]
+      );
+
+      if (!deletedProducts.length) {
+        return NextResponse.json(
+          { success: false, message: "Product not found" },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        deletedId: deletedProducts[0].id
+      });
+    }
   } catch (err) {
     console.error("[DELETE /api/products] error:", err);
     return NextResponse.json(

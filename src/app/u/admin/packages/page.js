@@ -35,10 +35,10 @@ export default function AdminPackagesPage() {
     };
   }, [previewUrl]);
 
-  async function fetchPackages() {
+async function fetchPackages() {
     try {
       setIsLoading(true);
-      const res = await fetch("/api/packages", { credentials: "include" });
+      const res = await fetch("/api/products", { credentials: "include" });
       const data = await res.json();
       setPackages(data.packages || []);
     } catch (fetchError) {
@@ -97,11 +97,12 @@ export default function AdminPackagesPage() {
       setIsSubmitting(true);
       const imagePublicId = await uploadPackageImage(imageFile);
 
-      const createRes = await fetch("/api/packages", {
+const createRes = await fetch("/api/products", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          type: 'package',
           package_name: form.package_name,
           description: form.description,
           price: Number(form.price),
@@ -135,11 +136,11 @@ export default function AdminPackagesPage() {
 
     try {
       setDeletingId(packageItem.id);
-      const deleteRes = await fetch("/api/packages", {
+const deleteRes = await fetch("/api/products", {
         method: "DELETE",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: packageItem.id })
+        body: JSON.stringify({ type: 'package', id: packageItem.id })
       });
 
       const deleteJson = await deleteRes.json();
