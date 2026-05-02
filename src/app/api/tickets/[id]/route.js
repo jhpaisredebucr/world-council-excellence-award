@@ -26,24 +26,29 @@ export async function PUT(request, { params }) {
       console.error("Auth error:", authError);
     }
     
-    // Build update query dynamically
+// Build update query dynamically
     const updates = [];
     const values = [];
     let paramIndex = 1;
     
+    console.log("[ticket PUT] id:", id, "status:", status, "admin_response:", admin_response);
+    
     if (status !== undefined) {
-      updates.push(`status = $${paramIndex++}`);
+      updates.push(`status = $${paramIndex}`);
       values.push(status);
+      paramIndex++;
     }
     
-    if (admin_response !== undefined) {
-      updates.push(`admin_response = $${paramIndex++}`);
+    if (admin_response !== undefined && admin_response !== null && admin_response.trim() !== '') {
+      updates.push(`admin_response = $${paramIndex}`);
       values.push(admin_response);
-      
-      if (adminId) {
-        updates.push(`admin_id = $${paramIndex++}`);
-        values.push(adminId);
-      }
+      paramIndex++;
+    }
+    
+    if (adminId) {
+      updates.push(`admin_id = $${paramIndex}`);
+      values.push(adminId);
+      paramIndex++;
     }
     
     if (updates.length === 0) {
@@ -61,6 +66,9 @@ export async function PUT(request, { params }) {
       WHERE id = $${paramIndex}
       RETURNING *
     `;
+    
+    console.log("[ticket PUT] query:", query);
+    console.log("[ticket PUT] values:", values);
     
     const result = await pool.query(query, values);
     

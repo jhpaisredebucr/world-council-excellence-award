@@ -24,9 +24,10 @@ export default function SideBar({
         { id: "deposit", label: "Deposit", path: "/u/deposit", icon: "/icons/building-bank.svg" },
     ];
 
-    const adminMenu = [
+const adminMenu = [
         { id: "dashboard", label: "Dashboard", path: "/u/admin/dashboard", icon: "/icons/dashboard.svg" },
         { id: "members", label: "Members", path: "/u/admin/members", icon: "/icons/referrals.svg" },
+        { id: "orders", label: "Orders", path: "/u/admin/orders", icon: "/icons/my-orders.svg" },
         { id: "products", label: "Products", path: "/u/admin/products", icon: "/icons/product-shop.svg" },
         { id: "packages", label: "Packages", path: "/u/admin/packages", icon: "/icons/product-shop.svg" },
         { id: "transactions", label: "Transactions", path: "/u/admin/transactions", icon: "/icons/money-thin.svg" },

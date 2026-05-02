@@ -26,7 +26,7 @@ export async function getPackages() {
 
 export async function getPackageOrders(userId) {
   try {
-    const res = await query("SELECT * FROM orders WHERE user_id = $1 AND package_id IS NOT NULL", [userId]);
+const res = await query("SELECT * FROM orders WHERE user_id = $1 AND package_id IS NOT NULL ORDER BY created_at DESC", [userId]);
 
     if (!res || res.length === 0) {
       return {

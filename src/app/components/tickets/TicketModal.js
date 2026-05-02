@@ -97,9 +97,9 @@ export default function TicketModal({ isOpen, onClose }) {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
-              <option value="general">General</option>
-              <option value="bug">Bug Report</option>
-              <option value="feature">Feature Request</option>
+<option value="general">General</option>
+              <option value="bug_report">Bug Report</option>
+              <option value="feature_request">Feature Request</option>
               <option value="complaint">Complaint</option>
               <option value="suggestion">Suggestion</option>
               <option value="other">Other</option>

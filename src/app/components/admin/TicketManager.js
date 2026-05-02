@@ -6,14 +6,18 @@ export default function TicketManager({ tickets, onTicketsUpdate }) {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [responseText, setResponseText] = useState("");
   const [isResponding, setIsResponding] = useState(false);
-  const [filter, setFilter] = useState("all");
+const [filter, setFilter] = useState("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [priorityFilter, setPriorityFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredTickets = tickets.filter(ticket => {
     const matchesFilter = filter === "all" || ticket.status === filter;
+    const matchesCategory = categoryFilter === "all" || ticket.category === categoryFilter;
+    const matchesPriority = priorityFilter === "all" || ticket.priority === priorityFilter;
     const matchesSearch = ticket.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          ticket.message.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesFilter && matchesSearch;
+    return matchesFilter && matchesCategory && matchesPriority && matchesSearch;
   });
 
   const handleStatusChange = async (ticketId, newStatus) => {
@@ -34,8 +38,11 @@ export default function TicketManager({ tickets, onTicketsUpdate }) {
     }
   };
 
-  const handleResponse = async (ticketId) => {
-    if (!responseText.trim()) return;
+const handleResponse = async (ticketId) => {
+    if (!responseText.trim()) {
+      alert("Please enter a response message");
+      return;
+    }
 
     try {
       setIsResponding(true);
@@ -50,13 +57,19 @@ export default function TicketManager({ tickets, onTicketsUpdate }) {
         }),
       });
 
-      if (response.ok) {
+      const data = await response.json();
+      
+      if (data.success) {
         setResponseText("");
         setSelectedTicket(null);
         onTicketsUpdate();
+        alert("Response sent successfully!");
+      } else {
+        alert(data.message || "Failed to send response");
       }
     } catch (error) {
       console.error("Failed to submit response:", error);
+      alert("Error sending response. Please try again.");
     } finally {
       setIsResponding(false);
     }
@@ -91,26 +104,52 @@ export default function TicketManager({ tickets, onTicketsUpdate }) {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-4">Ticket Management</h1>
         
-        {/* Filters */}
+{/* Filters */}
         <div className="flex flex-col sm:flex-row gap-4 mb-4">
           <input
             type="text"
             placeholder="Search tickets..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           />
           
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
           >
             <option value="all">All Status</option>
             <option value="open">Open</option>
             <option value="in_progress">In Progress</option>
             <option value="resolved">Resolved</option>
             <option value="closed">Closed</option>
+          </select>
+          
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+<option value="all">All Categories</option>
+            <option value="general">General</option>
+            <option value="bug_report">Bug Report</option>
+            <option value="feature_request">Feature Request</option>
+            <option value="complaint">Complaint</option>
+            <option value="suggestion">Suggestion</option>
+            <option value="other">Other</option>
+          </select>
+          
+          <select
+            value={priorityFilter}
+            onChange={(e) => setPriorityFilter(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="all">All Priority</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
           </select>
         </div>
       </div>
@@ -160,9 +199,9 @@ export default function TicketManager({ tickets, onTicketsUpdate }) {
 
                 {/* Actions */}
                 <div className="flex gap-2 mt-4">
-                  <button
+<button
                     onClick={() => setSelectedTicket(ticket)}
-                    className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                    className="px-3 py-1 text-sm bg-(--primary) text-white rounded hover:opacity-80 transition"
                   >
                     {ticket.admin_response ? "View Details" : "Respond"}
                   </button>
@@ -266,10 +305,10 @@ export default function TicketManager({ tickets, onTicketsUpdate }) {
                   </button>
                   
                   {!selectedTicket.admin_response && (
-                    <button
+<button
                       onClick={() => handleResponse(selectedTicket.id)}
                       disabled={isResponding || !responseText.trim()}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-50"
+                      className="px-4 py-2 bg-(--primary) text-white rounded-md hover:opacity-80 transition disabled:opacity-50"
                     >
                       {isResponding ? "Sending..." : "Send Response"}
                     </button>

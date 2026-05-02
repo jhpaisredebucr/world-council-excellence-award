@@ -1,6 +1,10 @@
 -- Database Schema Updates for PayMongo Integration and Enhanced Transaction Management
 -- Run these SQL commands to update your database schema
 
+-- Add status column to orders table if it doesn't exist
+ALTER TABLE orders 
+ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'pending';
+
 -- Add new columns to transactions table
 ALTER TABLE transactions 
 ADD COLUMN IF NOT EXISTS fee DECIMAL(10,2) DEFAULT 0,
@@ -32,12 +36,16 @@ WHERE fee IS NULL OR net_amount IS NULL;
 -- Add transaction types constraint if needed
 ALTER TABLE transactions 
 ADD CONSTRAINT IF NOT EXISTS check_transaction_type 
-CHECK (type IN ('deposit', 'withdrawal', 'plan', 'commission', 'bonus'));
+CHECK (type IN ('deposit', 'withdrawal', 'plan', 'commission', 'bonus', 'purchase'));
 
--- Add transaction status constraint
+-- Add transaction status constraint (include approved/rejected for order purchases)
 ALTER TABLE transactions 
 ADD CONSTRAINT IF NOT EXISTS check_transaction_status 
-CHECK (status IN ('pending', 'awaiting_payment', 'processing', 'completed', 'failed', 'cancelled'));
+CHECK (status IN ('pending', 'awaiting_payment', 'processing', 'completed', 'failed', 'cancelled', 'approved', 'rejected'));
+
+-- Add wallet_type column for tracking which wallet was used for purchase
+ALTER TABLE transactions 
+ADD COLUMN IF NOT EXISTS wallet_type VARCHAR(50) DEFAULT 'balance';
 
 -- Create a transaction history view for easier querying
 CREATE OR REPLACE VIEW transaction_summary AS

@@ -12,22 +12,24 @@ export default function OrdersMember({ orders = [], products = [], userData }) {
 
     const hasOrder = orders.length > 0;
 
-    return (
+return (
         <div>
-            <div className="hidden md:grid md:grid-cols-6 p-5 mt-5 bg-white font-semibold rounded-lg shadow-sm">
+            <div className="hidden md:grid md:grid-cols-7 p-5 mt-5 bg-white font-semibold rounded-lg shadow-sm">
                 <div>Date</div>
                 <div>Product</div>
                 <div>Quantity</div>
                 <div>Amount</div>
                 <div>Order ID</div>
+                <div>Status</div>
                 <div>Reference No.</div>
             </div>
 
             {/* ROWS */}
             {Array.isArray(orders) && orders.map((order, i) => {
                 const product = products.find(p => p.id === order?.product_id);
+                const status = order.status || 'pending';
                 return (
-                    <div key={order.id || i} className="mt-2 rounded-lg bg-white p-4 shadow-sm md:grid md:grid-cols-6 md:p-5">
+                    <div key={order.id || i} className="mt-2 rounded-lg bg-white p-4 shadow-sm md:grid md:grid-cols-7 md:p-5">
                         <div className="mb-2 text-sm text-gray-600 md:mb-0 md:text-base md:text-black">
                             {format(new Date(order.created_at), "MMM dd, yyyy HH:mm")}
                         </div>
@@ -50,6 +52,17 @@ export default function OrdersMember({ orders = [], products = [], userData }) {
                         <div className="mb-1 md:mb-0 break-all">
                             <span className="text-xs text-gray-500 md:hidden">Order ID: </span>
                             {order.id || `ORD-${order.id || "-"}`}
+                        </div>
+
+                        <div className="mb-1 md:mb-0">
+                            <span className="text-xs text-gray-500 md:hidden">Status: </span>
+                            <span className={
+                                status === 'approved' ? 'text-green-600' :
+                                status === 'rejected' ? 'text-red-600' :
+                                'text-yellow-500'
+                            }>
+                                {status}
+                            </span>
                         </div>
 
                         <div className="mb-1 md:mb-0 break-all">

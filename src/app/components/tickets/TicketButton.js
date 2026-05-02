@@ -8,9 +8,9 @@ export default function TicketButton() {
 
   return (
     <>
-      <button
+<button
         onClick={() => setIsModalOpen(true)}
-        className="relative p-2 text-gray-600 hover:text-gray-900 transition"
+        className="relative p-2 text-(--primary) hover:opacity-80 transition"
         title="Send Feedback / Ticket"
       >
         <svg

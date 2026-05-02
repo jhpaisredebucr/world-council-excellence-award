@@ -48,59 +48,22 @@ export async function POST(req) {
       insertedOrders.push(result[0]);
     }
 
-    // ─── Determine wallet column ──────────────────────────────────────────
-    let walletColumn;
-    switch (walletType) {
-      case "pc_credit":   walletColumn = "pc_credit";   break;
-      case "ppv_credit":  walletColumn = "ppv_credit";  break;
-      case "balance":
-      default:            walletColumn = "balance";     break;
-    }
+    // ─── Create transaction record for admin approval (status = pending) ────
+    // Balance will be deducted only when admin approves the order
+    const firstOrderId = insertedOrders[0].id;
+    const transactionResult = await query(
+      `INSERT INTO transactions (user_id, order_id, type, amount, status)
+       VALUES ($1, $2, 'purchase', $3, 'pending')
+       RETURNING *`,
+      [userID, firstOrderId, totalAmount]
+    );
 
-    // ─── Balance check + deduction (atomic via transaction) ───────────────
-    await query("BEGIN");
-
-    try {
-      const userCheck = await query(
-        `SELECT ${walletColumn} AS balance FROM users WHERE id = $1 FOR UPDATE`,
-        [userID]
-      );
-
-      if (!userCheck.length || Number(userCheck[0].balance) < totalAmount) {
-        await query("ROLLBACK");
-        return NextResponse.json(
-          { success: false, message: `Insufficient ${walletColumn} balance` },
-          { status: 400 }
-        );
-      }
-
-      await query(
-        `UPDATE users SET ${walletColumn} = ${walletColumn} - $1 WHERE id = $2`,
-        [totalAmount, userID]
-      );
-
-      // ─── Insert transaction ──────────────────────────────────────────────
-      const firstOrderId = insertedOrders[0].id;
-      const transactionResult = await query(
-        `INSERT INTO transactions (user_id, order_id, type, amount, status)
-         VALUES ($1, $2, 'purchase', $3, 'approved')
-         RETURNING *`,
-        [userID, firstOrderId, totalAmount]
-      );
-
-      await query("COMMIT");
-
-      return NextResponse.json({
-        success: true,
-        orders: insertedOrders,
-        transaction: transactionResult[0],
-        total: totalAmount,
-      });
-
-    } catch (innerError) {
-      await query("ROLLBACK");
-      throw innerError;
-    }
+    return NextResponse.json({
+      success: true,
+      orders: insertedOrders,
+      transaction: transactionResult[0],
+      total: totalAmount,
+    });
 
   } catch (err) {
     console.error("[products/buy] error:", err);

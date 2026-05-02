@@ -8,6 +8,7 @@ export default function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [recentNotifications, setRecentNotifications] = useState([]);
+  const [expandedId, setExpandedId] = useState(null);
 
   const fetchUnreadCount = async () => {
     try {
@@ -26,7 +27,6 @@ export default function NotificationBell() {
   useEffect(() => {
     fetchUnreadCount();
     
-    // Poll for new notifications every 30 seconds
     const interval = setInterval(fetchUnreadCount, 30000);
     
     return () => clearInterval(interval);
@@ -57,6 +57,11 @@ export default function NotificationBell() {
     }
   };
 
+  const handleToggleExpand = (notificationId, e) => {
+    e.stopPropagation();
+    setExpandedId(prev => prev === notificationId ? null : notificationId);
+  };
+
   const formatDate = (dateString) => {
     try {
       const date = new Date(dateString);
@@ -75,7 +80,6 @@ export default function NotificationBell() {
 
   return (
     <div className="relative">
-      {/* Bell Icon */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 text-gray-600 hover:text-gray-900 transition"
@@ -94,7 +98,6 @@ export default function NotificationBell() {
           />
         </svg>
         
-        {/* Unread count badge */}
         {unreadCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
             {unreadCount > 99 ? "99+" : unreadCount}
@@ -102,16 +105,13 @@ export default function NotificationBell() {
         )}
       </button>
 
-      {/* Dropdown */}
       {isOpen && (
         <>
-          {/* Overlay */}
           <div
             className="fixed inset-0 z-10"
             onClick={() => setIsOpen(false)}
           />
           
-          {/* Dropdown Content */}
           <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-20">
             <div className="p-4 border-b border-gray-200">
               <div className="flex items-center justify-between">
@@ -131,37 +131,50 @@ export default function NotificationBell() {
                 </div>
               ) : (
                 <div className="divide-y divide-gray-100">
-                  {recentNotifications.map((notification) => (
-                    <div
-                      key={notification.id}
-                      className={`p-4 hover:bg-gray-50 cursor-pointer transition ${
-                        !notification.read ? "bg-blue-50" : ""
-                      }`}
-                      onClick={() => handleMarkAsRead(notification.id)}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1 min-w-0">
-                          <h4 className={`text-sm font-medium truncate ${
-                            !notification.read ? "text-gray-900" : "text-gray-600"
-                          }`}>
-                            {notification.title}
-                          </h4>
-                          <p className="text-sm text-gray-500 mt-1 line-clamp-2">
-                            {notification.message}
-                          </p>
-                          <p className="text-xs text-gray-400 mt-2">
-                            {formatDate(notification.created_at)}
-                          </p>
-                        </div>
-                        
-                        {!notification.read && (
-                          <div className="ml-2 mt-1">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  {recentNotifications.map((notification) => {
+                    const isExpanded = expandedId === notification.id;
+                    return (
+                      <div
+                        key={notification.id}
+                        className={`p-4 hover:bg-gray-50 cursor-pointer transition ${
+                          !notification.read ? "bg-blue-50" : ""
+                        }`}
+                        onClick={() => handleMarkAsRead(notification.id)}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 min-w-0">
+                            <h4 className={`text-sm font-medium truncate ${
+                              !notification.read ? "text-gray-900" : "text-gray-600"
+                            }`}>
+                              {notification.title}
+                            </h4>
+                            <p className={`text-sm text-gray-500 mt-1 ${
+                              isExpanded ? "whitespace-pre-wrap" : "line-clamp-2"
+                            }`}>
+                              {notification.message}
+                            </p>
+                            <div className="flex items-center justify-between mt-2">
+                              <p className="text-xs text-gray-400">
+                                {formatDate(notification.created_at)}
+                              </p>
+<button
+                                onClick={(e) => handleToggleExpand(notification.id, e)}
+                                className="text-xs text-gray-400 hover:text-gray-500 font-medium"
+                              >
+                                {isExpanded ? "Show less" : "Read more"}
+                              </button>
+                            </div>
                           </div>
-                        )}
+                          
+                          {!notification.read && (
+                            <div className="ml-2 mt-1">
+                              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -183,7 +196,6 @@ export default function NotificationBell() {
         </>
       )}
       
-      {/* Notifications Modal */}
       <NotificationsModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
