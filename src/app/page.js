@@ -88,7 +88,7 @@ return (
           fontSize: '20px',
           fontWeight: 'bold',
           color: '#333'
-        }}>WCEA</p>
+        }}>World Council Excellence Award</p>
       </div>
     </div>
   );

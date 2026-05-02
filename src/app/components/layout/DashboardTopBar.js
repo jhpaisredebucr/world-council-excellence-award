@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import NotificationBell from "@/app/components/notifications/NotificationBell";
+import TicketButton from "@/app/components/tickets/TicketButton";
 import Profile from "@/app/components/ui/Profile";
 import { useRouter } from "next/navigation";
 import ProfileDropdown from "@/app/components/ui/ProfileDropdown";
@@ -98,6 +99,9 @@ const handleSignOut = async () => {
 
                 {/* NOTIFICATIONS */}
                 <NotificationBell />
+
+                {/* TICKETS/FEEDBACK */}
+                <TicketButton />
 
 
                 {/* PROFILE */}
