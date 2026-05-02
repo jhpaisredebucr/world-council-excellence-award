@@ -291,9 +291,19 @@ export default function NotificationsModal({ isOpen, onClose }) {
           {/* Content */}
           <div className="overflow-y-auto" style={{ maxHeight: 'calc(90vh - 200px)' }}>
             {loading && notifications.length === 0 ? (
-              <div className="p-12 text-center text-gray-500">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                Loading notifications...
+              <div className="p-12">
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '300px',
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: '8px'
+                }}>
+                  <div className="w-12 h-12 border-4 border-primary border-dashed rounded-full animate-spin mb-4"></div>
+                  <p className="text-xl text-gray-700">Loading notifications...</p>
+                </div>
               </div>
             ) : notifications.length === 0 ? (
               <div className="p-12 text-center text-gray-500">

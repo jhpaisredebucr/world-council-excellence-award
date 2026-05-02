@@ -49,7 +49,8 @@ export async function POST(req) {
       );
     }
 
-    const { title, message, type = "info", target, userIds } = await req.json();
+    const body = await req.json();
+    const { title, message, type = "info", target, userIds, role } = body;
 
     if (!title || !message) {
       return NextResponse.json(
@@ -135,7 +136,6 @@ export async function POST(req) {
 
       case "role":
         // Create notification for users with specific role
-        const { role } = await req.json();
         
         if (!role) {
           return NextResponse.json(
@@ -145,8 +145,10 @@ export async function POST(req) {
         }
 
         const roleUsersRes = await query(
-          "SELECT id FROM users WHERE role = $1 AND id != $2",
-          [role, adminUserId]
+          role === 'admin' 
+            ? "SELECT id FROM users WHERE role = $1"
+            : "SELECT id FROM users WHERE role = $1 AND id != $2",
+          role === 'admin' ? [role] : [role, adminUserId]
         );
 
         if (roleUsersRes.length === 0) {
