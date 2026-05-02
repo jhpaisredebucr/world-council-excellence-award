@@ -183,7 +183,7 @@ export default function TransactionsContainer({
           {/* Refresh Button */}
           <button
             onClick={handleRefresh}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-4 py-2 bg-(--primary) text-white rounded hover:bg-(--secondary)"
           >
             Refresh
           </button>

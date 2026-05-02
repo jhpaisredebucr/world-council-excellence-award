@@ -217,7 +217,7 @@ if (loading) {
                   <input type="date" className="px-2 py-1 border rounded" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
                   <input type="date" className="px-2 py-1 border rounded" value={toDate} onChange={(e) => setToDate(e.target.value)} />
                   <button 
-                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="px-4 py-2 bg-(--primary) text-white rounded hover:bg-(--secondary)"
                     onClick={() => downloadCSV(fromDate, toDate)}
                   >
                     Download CSV
