@@ -15,19 +15,24 @@ export default function Page() {
   const [filterStatus, setFilterStatus] = useState("pending");
   const [actionLoading, setActionLoading] = useState(false);
 
-  const fetchData = async () => {
+const fetchData = async () => {
     try {
       // Fetch orders
       const resOrders = await fetch("/api/products/orders");
       const ordersData = await resOrders.json();
       setOrders(ordersData.orders || []);
 
-      // Fetch products for display
+      // Fetch products and packages for display
       const resProducts = await fetch("/api/products");
       const productsData = await resProducts.json();
-      setProducts(productsData.products || []);
+      // Combine products and packages into one array for name/price lookup
+      const allProducts = [
+        ...(productsData.products || []),
+        ...(productsData.packages || [])
+      ];
+      setProducts(allProducts);
 
-// Fetch users
+      // Fetch users
       const resUsers = await fetch("/api/users?list=true");
       const usersData = await resUsers.json();
       setUsers(usersData.users || []);
@@ -71,7 +76,7 @@ export default function Page() {
 // Helper functions
   const getProductName = (productId) => {
     const product = products.find((p) => p.id === productId);
-    return product?.product_name || product?.name || `Product #${productId}`;
+    return product?.package_name || product?.product_name || product?.name || `Product #${productId}`;
   };
 
   const getProductPrice = (productId) => {
