@@ -152,14 +152,13 @@ return (
       </div>
 
 {/* Table Header */}
-      <div className="hidden md:grid md:grid-cols-7 gap-4 p-4 bg-white font-semibold rounded-xl shadow-sm text-sm text-gray-500">
+      <div className="hidden md:grid md:grid-cols-6 gap-4 p-4 bg-white font-semibold rounded-xl shadow-sm text-sm text-gray-500">
         <div>Date</div>
         <div>Order ID</div>
         <div>Customer</div>
         <div>Product</div>
         <div>Total</div>
         <div>Status</div>
-        <div>Actions</div>
       </div>
 
       {/* Order Rows */}
@@ -175,7 +174,7 @@ return (
 return (
             <div
               key={order.id || i}
-              className="mt-3 rounded-xl bg-white p-5 shadow-sm md:grid md:grid-cols-7 md:gap-4"
+              className="mt-3 rounded-xl bg-white p-5 shadow-sm md:grid md:grid-cols-6 md:gap-4"
             >
               <div className="text-sm">
                 <span className="text-xs text-gray-400 md:hidden">Date: </span>
@@ -221,7 +220,7 @@ return (
                 </span>
               </div>
 
-              <div className="mt-2 flex flex-wrap items-center gap-2 md:mt-0">
+<div className="mt-2 flex flex-wrap items-center gap-2 md:flex-nowrap md:mt-0">
                 <button
                   onClick={() => setSelectedUserId(order.user_id)}
                   className="rounded-lg border-2 border-blue-500 bg-white px-3 py-1.5 text-xs font-semibold text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200"
