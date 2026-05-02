@@ -91,7 +91,9 @@ export default function DashboardMember({dashboardData, userData}) {
             valueSize="text-lg sm:text-xl"
             info="" 
             bold="font-semibold"
-            colSpan="sm:col-span-2"/>
+            colSpan="sm:col-span-2"
+            helpTitle="PC (Package Credit)"
+            helpContent="Package Credit earned through referral members buying packages. These are commissions you receive when people you referred purchase packages from the system."/>
             
             <Card title="PPV Balance"
             src="/icons/money.svg" 
@@ -100,7 +102,9 @@ export default function DashboardMember({dashboardData, userData}) {
             valueSize="text-lg sm:text-xl"
             info="" 
             bold="font-semibold"
-            colSpan="sm:col-span-2"/>
+            colSpan="sm:col-span-2"
+            helpTitle="PPV (Personal Purchase Value)"
+            helpContent="Personal Purchase Value earned when you buy products for personal use. This credit accumulates from your own purchases and can be used for future transactions."/>
 
             <Card title="Total Spent"
             src="/icons/money-thin.svg" 
