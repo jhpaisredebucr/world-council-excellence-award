@@ -1,6 +1,11 @@
 'use client';
 
+import { useState } from "react";
+import ProfileModal from "@/app/components/admin/ProfileModal";
+
 export default function OrderApproveModal({ isOpen, order, loading, onClose, onConfirm, productName = "", userName = "" }) {
+  const [showAddress, setShowAddress] = useState(false);
+
   if (!isOpen || !order) return null;
 
   const isApprove = order.action === "approve";
@@ -44,7 +49,16 @@ export default function OrderApproveModal({ isOpen, order, loading, onClose, onC
           </div>
         </div>
 
-        <div className="mt-6 flex gap-3">
+        <div className="mt-4 flex gap-3">
+          <button
+            onClick={() => setShowAddress(true)}
+            className="flex-1 rounded-xl border-2 border-blue-500 px-4 py-2 font-semibold text-blue-500 hover:bg-blue-50 transition"
+          >
+            View Delivery Address
+          </button>
+        </div>
+
+        <div className="mt-3 flex gap-3">
           <button
             onClick={onClose}
             disabled={loading}
@@ -65,6 +79,13 @@ export default function OrderApproveModal({ isOpen, order, loading, onClose, onC
           </button>
         </div>
       </div>
+
+      {/* Delivery Address Modal */}
+      <ProfileModal
+        isOpen={showAddress}
+        onClose={() => setShowAddress(false)}
+        userId={order.user_id}
+      />
     </div>
   );
 }

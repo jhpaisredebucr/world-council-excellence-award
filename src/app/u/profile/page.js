@@ -216,7 +216,7 @@ export default function ProfilePage() {
         </ProfileCard>
       </div>
 
-      <div className="mt-2 grid w-full grid-cols-1 gap-2 md:grid-cols-2">
+<div className="mt-2 grid w-full grid-cols-1 gap-2 md:grid-cols-2">
         <ProfileCard label="Referred By">
           <input
             className={inputStyle}
@@ -225,10 +225,10 @@ export default function ProfilePage() {
           />
         </ProfileCard>
 
-        <ProfileCard label="Plan">
+        <ProfileCard label="Package">
           <input
             className={inputStyle}
-            value={userInfo?.plan || ""}
+            value={userInfo?.package || ""}
             disabled
           />
         </ProfileCard>

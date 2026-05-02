@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import OrderApproveModal from "./OrderApproveModal";
+import ProfileModal from "@/app/components/admin/ProfileModal";
 
 export default function Page() {
   const [orders, setOrders] = useState([]);
@@ -10,6 +11,7 @@ export default function Page() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
   const [filterStatus, setFilterStatus] = useState("pending");
   const [actionLoading, setActionLoading] = useState(false);
 
@@ -25,8 +27,8 @@ export default function Page() {
       const productsData = await resProducts.json();
       setProducts(productsData.products || []);
 
-      // Fetch users
-      const resUsers = await fetch("/api/users");
+// Fetch users
+      const resUsers = await fetch("/api/users?list=true");
       const usersData = await resUsers.json();
       setUsers(usersData.users || []);
     } catch (err) {
@@ -150,13 +152,14 @@ return (
       </div>
 
 {/* Table Header */}
-      <div className="hidden md:grid md:grid-cols-6 gap-4 p-4 bg-white font-semibold rounded-xl shadow-sm text-sm text-gray-500">
+      <div className="hidden md:grid md:grid-cols-7 gap-4 p-4 bg-white font-semibold rounded-xl shadow-sm text-sm text-gray-500">
         <div>Date</div>
         <div>Order ID</div>
         <div>Customer</div>
         <div>Product</div>
         <div>Total</div>
         <div>Status</div>
+        <div>Actions</div>
       </div>
 
       {/* Order Rows */}
@@ -172,7 +175,7 @@ return (
 return (
             <div
               key={order.id || i}
-              className="mt-3 rounded-xl bg-white p-5 shadow-sm md:grid md:grid-cols-6 md:gap-4"
+              className="mt-3 rounded-xl bg-white p-5 shadow-sm md:grid md:grid-cols-7 md:gap-4"
             >
               <div className="text-sm">
                 <span className="text-xs text-gray-400 md:hidden">Date: </span>
@@ -191,9 +194,6 @@ return (
               <div className="text-sm md:mt-0 mt-1">
                 <span className="text-xs text-gray-400 md:hidden">Customer: </span>
                 <div className="font-medium">{getUserName(order.user_id)}</div>
-                <div className="text-xs text-gray-400">
-                  {getUserEmail(order.user_id)}
-                </div>
               </div>
 
 <div className="text-sm md:mt-0 mt-1">
@@ -206,7 +206,8 @@ return (
                 ₱{total.toLocaleString()}
               </div>
 
-              <div className="mt-3 flex items-center gap-2 md:mt-0">
+              <div className="text-sm md:mt-0 mt-1">
+                <span className="text-xs text-gray-400 md:hidden">Status: </span>
                 <span
                   className={
                     order.status === "approved"
@@ -218,6 +219,15 @@ return (
                 >
                   {order.status || "pending"}
                 </span>
+              </div>
+
+              <div className="mt-2 flex flex-wrap items-center gap-2 md:mt-0">
+                <button
+                  onClick={() => setSelectedUserId(order.user_id)}
+                  className="rounded-lg border-2 border-blue-500 bg-white px-3 py-1.5 text-xs font-semibold text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200"
+                >
+                  Details
+                </button>
 
                 {order.status === "pending" && (
                   <>
@@ -241,7 +251,7 @@ return (
         })
       )}
 
-      {/* Modal */}
+{/* Modal */}
       <OrderApproveModal
         isOpen={!!selectedOrder}
         order={selectedOrder}
@@ -250,6 +260,13 @@ return (
         onConfirm={handleApprove}
         productName={selectedOrder ? getProductName(selectedOrder.product_id) : ""}
         userName={selectedOrder ? getUserName(selectedOrder.user_id) : ""}
+      />
+
+      {/* User Details Modal */}
+      <ProfileModal
+        isOpen={!!selectedUserId}
+        onClose={() => setSelectedUserId(null)}
+        userId={selectedUserId}
       />
     </div>
   );

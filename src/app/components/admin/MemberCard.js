@@ -18,9 +18,10 @@ export default function MemberCard({ user, onClose }) {
         return res.json();
     };
 
-    const fetchData = async () => {
+const fetchData = async () => {
             try {
-                const userRes = await fetchJson("/api/users");
+                // Pass the selected user's ID to fetch their data instead of the admin's data
+                const userRes = await fetchJson(`/api/users?userId=${user?.id}`);
                 setUserData(userRes);
 
                 const prodRes = await fetch("/api/products");
@@ -40,12 +41,12 @@ export default function MemberCard({ user, onClose }) {
             }
         };
 
-    useEffect(() => {
-        
-        
-        fetchData();
+useEffect(() => {
+        if (user?.id) {
+            fetchData();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [user?.id]);
 
     async function BanAccount(statusToAdd) {
         await fetch("/api/users/ban", {
@@ -158,76 +159,142 @@ export default function MemberCard({ user, onClose }) {
                     </div>
                 </div>
 
-                {/* PAGE 1 - PROFILE */}
+{/* PAGE 1 - PROFILE */}
                 <div
-                    className={`transition-all duration-300 ${
+                    className={`transition-all duration-300 overflow-y-auto max-h-[calc(75vh-180px)] ${
                         page === 1
                             ? "opacity-100 translate-x-0"
                             : "opacity-0 translate-x-4 hidden"
                     }`}
                 >
-                    <p className="text-2xl font-semibold mb-4">Profile:</p>
-                    <div className="space-y-3">
-                        <div>
-                            <span className="font-semibold text-gray-600">Username:</span>
-                            <span className="ml-2">{user?.username}</span>
+                    <p className="text-2xl font-semibold mb-4">Profile</p>
+                    
+                    {/* Personal Information */}
+                    <div className="mb-6">
+                        <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Personal Information</h3>
+                        <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Full Name:</span>
+                                <span className="text-gray-800">{user?.first_name} {user?.middle_name} {user?.last_name}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Date of Birth:</span>
+                                <span className="text-gray-800">{userData?.profile?.dob || "N/A"}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Date Joined:</span>
+                                <span className="text-gray-800">{user?.created_at ? new Date(user.created_at).toLocaleString() : "N/A"}</span>
+                            </div>
                         </div>
-                        <div>
-                            <span className="font-semibold text-gray-600">Full Name:</span>
-                            <span className="ml-2">{user?.first_name} {user?.middle_name} {user?.last_name}</span>
+                    </div>
+
+                    {/* Account Information */}
+                    <div className="mb-6">
+                        <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Account Information</h3>
+                        <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Username:</span>
+                                <span className="text-gray-800">{user?.username}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Referral Code:</span>
+                                <span className="text-gray-800 font-mono text-sm">{userData?.userInfo?.referral_code || "N/A"}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Referred By:</span>
+                                <span className="text-gray-800">{user?.referred_by || "N/A"}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Status:</span>
+                                <span className={`font-semibold ${
+                                    user?.status === "approved" ? "text-green-600" :
+                                    user?.status === "pending" ? "text-orange-500" :
+                                    user?.status === "banned" ? "text-red-600" : "text-gray-800"
+                                }`}>{user?.status}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Role:</span>
+                                <span className="text-gray-800">{userData?.userInfo?.role || "member"}</span>
+                            </div>
+<div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Package:</span>
+                                <span className="text-gray-800">{user?.package || "N/A"}</span>
+                            </div>
                         </div>
-                        <div>
-                            <span className="font-semibold text-gray-600">Status:</span>
-                            <span className={`ml-2 ${
-                                user?.status === "approved" ? "text-green-600" :
-                                user?.status === "pending" ? "text-orange-500" :
-                                user?.status === "banned" ? "text-red-600" : ""
-                            }`}>{user?.status}</span>
+                    </div>
+
+                    {/* Contact Information */}
+                    <div className="mb-6">
+                        <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Contact Information</h3>
+                        <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Email:</span>
+                                <span className="text-gray-800">{userData?.contacts?.email || "N/A"}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Contact No:</span>
+                                <span className="text-gray-800">{userData?.contacts?.contact_no || "N/A"}</span>
+                            </div>
                         </div>
-                        <div>
-                            <span className="font-semibold text-gray-600">Package:</span>
-                            <span className="ml-2">{user?.package}</span>
-                        </div>
-                        <div>
-                            <span className="font-semibold text-gray-600">Referred By:</span>
-                            <span className="ml-2">{user?.referred_by || "N/A"}</span>
-                        </div>
-                        <div>
-                            <span className="font-semibold text-gray-600">Date Joined:</span>
-                            <span className="ml-2">{user?.created_at ? new Date(user.created_at).toLocaleString() : "N/A"}</span>
+                    </div>
+
+                    {/* Address Information */}
+                    <div className="mb-4">
+                        <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Address Information</h3>
+                        <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Street Address:</span>
+                                <span className="text-gray-800 text-right">{userData?.address?.street_address || "N/A"}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Barangay:</span>
+                                <span className="text-gray-800">{userData?.address?.barangay || "N/A"}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">City:</span>
+                                <span className="text-gray-800">{userData?.address?.city || "N/A"}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-600">Postal Code:</span>
+                                <span className="text-gray-800">{userData?.address?.postal_code || "N/A"}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* PAGE 3 - ORDERS (same size as others) */}
+{/* PAGE 3 - ORDERS (same size as others) */}
                 <div
-                    className={`transition-all duration-300 ${
+                    className={`transition-all duration-300 overflow-hidden ${
                         page === 3
                             ? "opacity-100 translate-x-0"
                             : "opacity-0 translate-x-4 hidden"
                     }`}
                 >
                     <p className="text-2xl font-semibold">Orders:</p>
-                    <OrdersMember
-                        orders={orders}
-                        products={products}
-                        userData={user}
-                    />
+                    <div className="overflow-y-auto max-h-[calc(75vh-180px)]">
+                        <OrdersMember
+                            orders={orders}
+                            products={products}
+                            userData={user}
+                        />
+                    </div>
                 </div>
                 
                 {/* TRANSACTION */}
                 <div
-                    className={`transition-all duration-300 ${
+                    className={`transition-all duration-300 overflow-hidden ${
                         page === 2
                             ? "opacity-100 translate-x-0"
                             : "opacity-0 translate-x-4 hidden"
                     }`}
                 >
-                    <p className="text-2xl font-semibold">Orders:</p>
-                    <Transactions
-                        transactions={userTransactions}
-                        onRefresh={fetchData}
-                    />
+                    <p className="text-2xl font-semibold">Transactions:</p>
+                    <div className="overflow-y-auto max-h-[calc(75vh-180px)]">
+                        <Transactions
+                            transactions={userTransactions}
+                            onRefresh={fetchData}
+                        />
+                    </div>
                 </div>
 
             </div>
