@@ -36,8 +36,8 @@ export async function GET(req) {
 
     if (role === "admin") {
       transactions = await query(
-        `${baseSelect} WHERE type != $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`,
-        ["plan", limit, offset]
+        `${baseSelect} ORDER BY created_at DESC LIMIT $1 OFFSET $2`,
+        [limit, offset]
       );
     } else {
       transactions = await query(
@@ -49,16 +49,14 @@ export async function GET(req) {
     // Count total
     let totalCountQuery, totalCountParams;
     if (role === "admin") {
-      totalCountQuery = "SELECT COUNT(*) FROM transactions WHERE type != $1";
-      totalCountParams = ["plan"];
+      totalCountQuery = "SELECT COUNT(*) FROM transactions";
+      totalCountParams = [];
     } else {
       totalCountQuery = "SELECT COUNT(*) FROM transactions WHERE user_id = $1";
       totalCountParams = [userID];
     }
     const totalResult = await query(totalCountQuery, totalCountParams);
     const total = Number(totalResult[0].count);
-
-    console.log("[transaction API] role:", role, "total:", total, "transactions:", transactions.length);
 
     return NextResponse.json({
       success: true,

@@ -35,11 +35,9 @@ export async function GET(req) {
 
     // Fetch all transactions without pagination for CSV download
     const transactions = await query(
-      `SELECT id, user_id, amount, type, status, created_at, payment_method, reference_number 
-       FROM transactions 
-       WHERE type != $1 
-       ORDER BY created_at DESC`,
-      ["plan"]
+      `SELECT id, user_id, amount, type, status, created_at, payment_method, reference_number
+       FROM transactions
+       ORDER BY created_at DESC`
     );
 
     return NextResponse.json({

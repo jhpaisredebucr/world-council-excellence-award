@@ -24,7 +24,7 @@ export default function Transactions({ transactions = [], userData, onRefresh, l
       case "commission": return "Commission";
       case "order":      return "Order Purchase";
       case "refund":     return "Refund";
-      case "plan":       return "Plan Subscription";
+      case "plan":       return "Plan";
       default:           return type ? type.charAt(0).toUpperCase() + type.slice(1) : "N/A";
     }
   }
