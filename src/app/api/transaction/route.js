@@ -31,7 +31,7 @@ export async function GET(req) {
 
     let transactions;
 
-    // Safe explicit columns (matches UI: id, amount, type, status, created_at, payment_method, reference_number)
+    // Safe explicit columns
     const baseSelect = "SELECT id, user_id, amount, type, status, created_at, payment_method, reference_number FROM transactions";
 
     if (role === "admin") {
@@ -46,7 +46,7 @@ export async function GET(req) {
       );
     }
 
-    // Get total count for pagination
+    // Count total
     let totalCountQuery, totalCountParams;
     if (role === "admin") {
       totalCountQuery = "SELECT COUNT(*) FROM transactions WHERE type != $1";
@@ -57,6 +57,8 @@ export async function GET(req) {
     }
     const totalResult = await query(totalCountQuery, totalCountParams);
     const total = Number(totalResult[0].count);
+
+    console.log("[transaction API] role:", role, "total:", total, "transactions:", transactions.length);
 
     return NextResponse.json({
       success: true,
