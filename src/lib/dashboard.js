@@ -65,6 +65,7 @@ export async function getMemberDashboardData({
       JOIN products p ON o.product_id = p.id
       JOIN users u ON u.id = o.user_id
       WHERE u.referral_code = $1
+        AND o.status = 'approved'
       `,
       [userReferralCode]
     );

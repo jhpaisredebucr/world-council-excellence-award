@@ -102,7 +102,7 @@ const adminMenu = [
                         className={`block px-5 py-3 transition ${
                             pathname.startsWith(item.path)
                                 ? "border-r-4 border-(--primary) scale-105 font-bold"
-                                : ""
+                                : "text-gray-500"
                         }`}
                     >
                         {item.label}
@@ -165,6 +165,7 @@ const adminMenu = [
                                 : () => router.push(item.path)
                         }
                         icon={item.icon}
+                        className="text-gray-500"
                     >
 
                         {item.label}
