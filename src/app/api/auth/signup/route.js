@@ -23,8 +23,34 @@ export async function POST(req) {
       packagePrice,
       maxLevel,
       paymentMethod,
+      captchaToken,
       status: signupStatus,
     } = body;
+
+    // ─── Verify reCAPTCHA token ──────────────────────────────────────────
+    if (!captchaToken) {
+      return NextResponse.json({ 
+        success: false, 
+        message: "Captcha verification required" 
+      }, { status: 400 });
+    }
+
+    const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `secret=${process.env.RECAPTHA_SECRET_KEY || "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"}&response=${captchaToken}`,
+    });
+
+    const recaptchaResult = await recaptchaResponse.json();
+
+    if (!recaptchaResult.success) {
+      return NextResponse.json({ 
+        success: false, 
+        message: "Captcha verification failed" 
+      }, { status: 400 });
+    }
 
     // ─── Validate required fields ──────────────────────────────────────────
     if (!username || !password || !firstName || !lastName) {
