@@ -94,8 +94,7 @@ export default function Membership() {
     const [showAllPlans, setShowAllPlans] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-50 mt-16">
-
+        <div className="min-h-screen bg-[#fafaf8] mt-16">
 
             {/* Hero Section */}
             <div className="py-16 px-4 bg-gradient-to-br from-[#5C4138] to-[#8D5D28] text-white">
@@ -132,15 +131,9 @@ export default function Membership() {
 
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {membershipPlans.slice(0, showAllPlans ? membershipPlans.length : 3).map((plan, index) => (
-                        <div 
+                        <div
                             key={index}
-                            className="
-                                bg-white border border-gray-200
-                                rounded-2xl border-2 p-6
-                                flex flex-col
-                                transition duration-300 
-                                hover:-translate-y-2 hover:shadow-xl
-                            "
+                            className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                         >
                             {/* Plan Header */}
                             <div className="text-[#5C4138] mb-4">
@@ -169,14 +162,9 @@ export default function Membership() {
                             </div>
 
                             {/* CTA Button */}
-                            <button 
+                            <button
                                 onClick={() => router.push(`/home/signup?plan=${plan.name.toLowerCase()}`)}
-                                className="
-                                    w-full py-3 rounded-xl font-bold
-                                    bg-[#5C4138] text-white
-                                    hover:bg-[#4a352d] hover:shadow-lg
-                                    transition duration-300 active:scale-95
-                                "
+                                className="w-full py-3 rounded-xl font-bold bg-[#5C4138] text-white hover:bg-[#4a352d] hover:shadow-lg transition-all duration-300 active:scale-95"
                             >
                                 Get Started
                             </button>
@@ -249,37 +237,34 @@ export default function Membership() {
             </div>
 
 {/* Footer */}
-            <footer className="bg-zinc-100 border-t border-zinc-200/20">
-                <div className="flex flex-col md:flex-row justify-between items-center px-8 py-12 max-w-7xl mx-auto text-sm tracking-wide">
-                    <div className="mb-8 md:mb-0">
-                        <div className="text-xl font-serif text-primary mb-2">
-                            World Council Executive Alliances
+            <footer className="bg-zinc-100 border-t border-zinc-200">
+                <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12">
+                    <div className="flex flex-col md:flex-row justify-between items-center text-sm gap-6">
+                        <div className="text-center md:text-left">
+                            <div className="text-lg font-serif text-primary mb-1">
+                                World Council Executive Alliances
+                            </div>
+                            <p className="text-zinc-600">
+                                © World Council Executive Alliances. Built for the community.
+                            </p>
                         </div>
-                        <p className="text-zinc-600">
-                            © World Council Executive Alliances. Built for the community.
-                        </p>
+                        <div className="flex flex-wrap justify-center gap-6">
+                            {["Privacy Policy", "Terms of Service", "Contact Us"].map((link) => (
+                                <a
+                                    key={link}
+                                    href={link === "Privacy Policy" ? "/privacy-policy.html" : link === "Terms of Service" ? "/terms-of-service.html" : "#"}
+                                    className="text-zinc-600 hover:text-primary transition-colors"
+                                >
+                                    {link}
+                                </a>
+                            ))}
+                        </div>
                     </div>
-                    <div className="flex flex-wrap justify-center gap-8">
-                        {["Privacy Policy", "Terms of Service", "Contact Us", "Careers"].map((link) => (
-                            <a
-                                key={link}
-                                href={link === "Privacy Policy" ? "/privacy-policy.html" : link === "Terms of Service" ? "/terms-of-service.html" : "#"}
-                                className="text-zinc-600 hover:text-emerald-600 transition-colors"
-                            >
-                                {link}
-                            </a>
-                        ))}
-                    </div>
-                </div>
-                {/* TECH TEAM FOOTER STRIP */}
-                <div className="bg-zinc-200/50 border-t border-zinc-300">
-                    <div className="max-w-7xl mx-auto px-8 py-2 flex flex-col md:flex-row items-center justify-between text-sm">
-                        <span>
-                            Website designed & developed by
-                            <span className="font-semibold text-(--primary) ml-1">
-                                <a href='https://www.facebook.com/profile.php?id=100063680607062' target="_blank" className='underline'>Bok Tech</a>
-                            </span>
-                        </span>
+                    <div className="border-t border-zinc-200 mt-6 pt-4 text-center text-xs text-zinc-500">
+                        Website designed & developed by{" "}
+                        <a href="https://www.facebook.com/profile.php?id=100063680607062" target="_blank" className="font-semibold text-primary underline">
+                            Bok Tech
+                        </a>
                     </div>
                 </div>
             </footer>

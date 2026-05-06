@@ -9,7 +9,7 @@ export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="bg-background text-foreground font-sans selection:bg-[--success-color] selection:text-background">
+    <div className="bg-[#fafaf8] text-foreground font-sans selection:bg-[--success-color] selection:text-background">
 
 <main className="relative min-h-screen mt-16">
         {/* ── HERO ── */}
@@ -58,14 +58,14 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={() => router.push('/u/products')}
-                  className="bg-linear-to-br from-(--primary) to-(--primary)/80 text-white px-8 py-4 rounded-lg font-bold text-lg hover:opacity-90 active:scale-95 transition-all duration-300"
+                  className="bg-[#5C4138] text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#4a352d] active:scale-[0.98] transition-all duration-300"
                 >
                   Explore Programs
                 </button>
 
                 <button
                   onClick={() => router.push('/home/signup')}
-                  className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/20 active:scale-95 transition-all duration-300"
+                  className="bg-white text-[#5C4138] px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#f4f4f0] active:scale-[0.98] transition-all duration-300 border-1 border-[#5C4138]"
                 >
                   Join Now
                 </button>
@@ -90,9 +90,9 @@ export default function HomePage() {
         </section>
 
         {/* ── PARTNERS ── */}
-        <section className="bg-[var(--primary)/10] py-20 px-6">
+        <section className="bg-white py-20 px-6">
           <div className="max-w-7xl mx-auto flex flex-col items-center">
-              <h2 className="font-sans text-sm font-bold text-(--primary) mb-12 tracking-[0.2em] uppercase">
+              <h2 className="font-sans text-sm font-bold text-[#5C4138] mb-12 tracking-[0.2em] uppercase">
               Our Partners
             </h2>
             <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 md:grayscale opacity-90 hover:grayscale-0 transition-all duration-500">
@@ -141,7 +141,7 @@ export default function HomePage() {
         </section>
 
         {/* ── FEATURE HIGHLIGHT ── */}
-        <section className="bg-(--primary)/10 py-24 px-6 overflow-hidden">
+        <section className="bg-[#f4f4f0] py-24 px-6 overflow-hidden">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
             {/* Image column */}
             <div className="w-full md:w-1/2 relative aspect-4/5 overflow-hidden rounded-xl">
@@ -158,12 +158,12 @@ export default function HomePage() {
 
             {/* Text column */}
             <div className="w-full  md:w-1/2">
-              <span className="text-[var(--primary)/80] font-bold tracking-widest uppercase text-xs mb-4 block">
+              <span className="text-[#5C4138] font-bold tracking-widest uppercase text-xs mb-4 block">
                 Civic Vision
               </span>
               <h2 className="font-serif text-4xl md:text-5xl font-bold text-[#191c1b] leading-tight mb-8">
                 A New Standard for{" "}
-                <span className="text-(--primary) italic">Shared Growth</span>
+                <span className="text-[#5C4138] italic">Shared Growth</span>
               </h2>
               <div className="space-y-6 text-[#3f4941] text-lg">
                 <p>
@@ -208,7 +208,7 @@ export default function HomePage() {
         </section>
 
         {/* ── MEMBERSHIP ── */}
-        <section className="bg-var(--primary)/20 py-24 px-6">
+        <section className="bg-[#fafaf8] py-24 px-6">
           <div className="max-w-7xl mx-auto">
             {/* Header */}
             <div className="text-center mb-20">
@@ -224,7 +224,7 @@ export default function HomePage() {
             {/* Pricing cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* ── Basic ── */}
-              <div className="bg-white p-8 rounded-xl flex flex-col hover:border border-(--secondary)/90 hover:-translate-y-2 transition-transform duration-300 group">
+              <div className="bg-white p-8 rounded-2xl flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
                 <div className="mb-8">
                   <h3 className="text-xl font-bold text-[#191c1b] mb-2">
                     Community Basic
@@ -248,14 +248,14 @@ export default function HomePage() {
                 </ul>
                 <button 
                   onClick={() => router.push('/home/memberships')} 
-                  className="w-full py-4 rounded-lg font-bold border border-[#bec9bf]/40 group-hover:bg-[#e1e3e1] transition-colors">
+                  className="w-full py-4 rounded-xl font-bold border-2 border-[#5C4138] text-[#5C4138] hover:bg-[#5C4138] hover:text-white transition-all duration-300 active:scale-[0.98]">
                   Select Plan
                 </button>
               </div>
 
               {/* ── Elite (featured) ── */}
-              <div className="bg-white p-8 rounded-xl flex flex-col ring-2 ring-primary relative shadow-2xl shadow-[#064f13]/10 hover:-translate-y-2 transition-transform duration-300">
-                <div className="absolute top-0 right-8 -translate-y-1/2 bg-[#ffddaf] text-[#281800] px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+              <div className="bg-white p-8 rounded-2xl flex flex-col ring-2 ring-[#5C4138] relative shadow-xl shadow-[#5C4138]/10 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                <div className="absolute top-0 right-8 -translate-y-1/2 bg-[#8D5D28] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                   Most Popular
                 </div>
                 <div className="mb-8">
@@ -284,13 +284,13 @@ export default function HomePage() {
                 </ul>
                 <button 
                   onClick={() => router.push('/home/signup')} 
-                  className="w-full py-4 rounded-lg font-bold bg-primary text-white shadow-lg shadow-[#064f13]/20 hover:opacity-90 active:scale-95 transition-all">
+                  className="w-full py-4 rounded-xl font-bold bg-[#5C4138] text-white shadow-lg hover:shadow-xl hover:bg-[#4a352d] active:scale-[0.98] transition-all duration-300">
                   Get Started
                 </button>
               </div>
 
               {/* ── Premium ── */}
-              <div className="bg-white p-8 rounded-xl flex flex-col   hover:border border-(--secondary)/90 hover:-translate-y-2 transition-transform duration-300 group">
+              <div className="bg-white p-8 rounded-2xl flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
                 <div className="mb-8">
                   <h3 className="text-xl font-bold text-[#191c1b] mb-2">
                     Community Premium
@@ -317,7 +317,7 @@ export default function HomePage() {
                 </ul>
                 <button 
                   onClick={() => router.push('/home/memberships')} 
-                  className="w-full py-4 rounded-lg font-bold border border-[#bec9bf]/40 group-hover:bg-[#e1e3e1] transition-colors">
+                  className="w-full py-4 rounded-xl font-bold border-2 border-[#5C4138] text-[#5C4138] hover:bg-[#5C4138] hover:text-white transition-all duration-300 active:scale-[0.98]">
                   Select Plan
                 </button>
               </div>
@@ -327,50 +327,38 @@ export default function HomePage() {
         {/* <AdsSidebar /> */}
       </main>
 
-      {/* ── FOOTER ── */}
-      <footer className="bg-zinc-100 border-t border-zinc-200/20">
-
-  <div className="flex flex-col md:flex-row justify-between items-center px-8 py-12 max-w-7xl mx-auto text-sm tracking-wide">
-
-    <div className="mb-8 md:mb-0">
-      <div className="text-xl font-serif text-primary mb-2">
-        World Council Executive Alliances
-      </div>
-
-      <p className="text-zinc-600">
-        © World Council Executive Alliances. Built for the community.
-      </p>
-    </div>
-
-    <div className="flex flex-wrap justify-center gap-8">
-      {["Privacy Policy", "Terms of Service", "Contact Us", "Careers"].map((link) => (
-        <a
-            key={link}
-            href={link === "Privacy Policy" ? "/privacy-policy.html" : link === "Terms of Service" ? "/terms-of-service.html" : "#"}
-            className="text-zinc-600 hover:text-emerald-600 transition-colors"
-          >
-            {link}
-          </a>
-        ))}
-    </div>
-
-  </div>
-
-
-  {/* TECH TEAM FOOTER STRIP */}
-  <div className="bg-zinc-200/50 border-t border-zinc-300">
-    <div className="max-w-7xl mx-auto px-8 py-2 flex flex-col md:flex-row items-center justify-between text-sm">
-
-      <span>
-        Website designed & developed by
-        <span className="font-semibold text-(--primary) ml-1">
-          <a href='https://www.facebook.com/profile.php?id=100063680607062' target="_blank" className='underline'>Bok Tech</a>
-        </span>
-      </span>
-    </div>
-  </div>
-
-</footer>
+{/* Footer */}
+            <footer className="bg-zinc-100 border-t border-zinc-200">
+                <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12">
+                    <div className="flex flex-col md:flex-row justify-between items-center text-sm gap-6">
+                        <div className="text-center md:text-left">
+                            <div className="text-lg font-serif text-primary mb-1">
+                                World Council Executive Alliances
+                            </div>
+                            <p className="text-zinc-600">
+                                © World Council Executive Alliances. Built for the community.
+                            </p>
+                        </div>
+                        <div className="flex flex-wrap justify-center gap-6">
+                            {["Privacy Policy", "Terms of Service", "Contact Us"].map((link) => (
+                                <a
+                                    key={link}
+                                    href={link === "Privacy Policy" ? "/privacy-policy.html" : link === "Terms of Service" ? "/terms-of-service.html" : "#"}
+                                    className="text-zinc-600 hover:text-primary transition-colors"
+                                >
+                                    {link}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="border-t border-zinc-200 mt-6 pt-4 text-center text-xs text-zinc-500">
+                        Website designed & developed by{" "}
+                        <a href="https://www.facebook.com/profile.php?id=100063680607062" target="_blank" className="font-semibold text-primary underline">
+                            Bok Tech
+                        </a>
+                    </div>
+                </div>
+            </footer>
     </div>
   );
 }
