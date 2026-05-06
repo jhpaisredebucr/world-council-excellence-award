@@ -57,7 +57,7 @@ export async function POST(req) {
     const hashedPass = await bcrypt.hash(password, 10);
 
     // ─── Generate unique referral code ─────────────────────────────────────
-    const code = `MEM-${nanoid(6).toUpperCase()}`;
+    const code = `WCEA-${nanoid(7).toUpperCase()}`;
 
     // ─── Insert into users ─────────────────────────────────────────────────
     const result = await query(
