@@ -56,7 +56,7 @@ export async function PATCH(req) {
 // Handle approve action
     if (action === "approve") {
       const amount = Number(order.tx_amount) || 0;
-      const walletColumn = "balance";
+      const walletColumn = order.wallet_type;
 
       // Start transaction
       await query("BEGIN");
@@ -68,7 +68,7 @@ export async function PATCH(req) {
           [order.user_id]
         );
 
-if (!userCheck.length || Number(userCheck[0].balance) < amount) {
+      if (!userCheck.length || Number(userCheck[0].balance) < amount) {
           await query("ROLLBACK");
           return NextResponse.json(
             { success: false, message: "Insufficient balance" },
@@ -81,6 +81,15 @@ if (!userCheck.length || Number(userCheck[0].balance) < amount) {
           `UPDATE users SET ${walletColumn} = ${walletColumn} - $1 WHERE id = $2`,
           [amount, order.user_id]
         );
+        
+        // PPV BALANCE
+        if (walletColumn !== "ppv_credit") {
+          const ppvBenefits = amount * 0.01;
+          await query(
+            `UPDATE users SET ppv_credit = ppv_credit + $1 WHERE id = $2`,
+            [ppvBenefits, order.user_id]
+          );
+        }
 
         // Update order status
         await query(

@@ -8,7 +8,7 @@ export default function About() {
   const router = useRouter();
 
   return (
-    <div className="bg-background text-foreground font-sans selection:bg-[--success-color] selection:text-background mt-16">
+    <div className="bg-[#fafaf8] text-foreground font-sans selection:bg-[--success-color] selection:text-background mt-16">
 <main className="relative min-h-screen">
 
 {/* ── HERO ── */}
@@ -83,7 +83,7 @@ export default function About() {
         </section>
 
         {/* ── PARTNERS ── */}
-        <section className="py-16 md:py-20 px-4 sm:px-6 bg-gray-50">
+        <section className="py-16 md:py-20 px-4 sm:px-6 bg-white">
             <div className="max-w-7xl mx-auto flex flex-col items-center">
                 <h2 className="text-xs font-bold text-[#5C4138] mb-10 tracking-[0.2em] uppercase">
                     Trusted Partners
@@ -121,38 +121,32 @@ export default function About() {
       </main>
 
       {/* ── FOOTER ── */}
-      <footer className="bg-zinc-100 border-t border-zinc-200/20">
-        <div className="flex flex-col md:flex-row justify-between items-center px-6 sm:px-8 py-10 max-w-7xl mx-auto text-sm">
-          <div className="mb-6 md:mb-0 text-center md:text-left">
-            <div className="text-lg font-serif text-primary mb-1">
-              World Council Executive Alliances
+      <footer className="bg-zinc-100 border-t border-zinc-200">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12">
+          <div className="flex flex-col md:flex-row justify-between items-center text-sm gap-6">
+            <div className="text-center md:text-left">
+              <div className="text-lg font-serif text-primary mb-1">
+                World Council Executive Alliances
+              </div>
+              <p className="text-zinc-600">
+                © World Council Executive Alliances. Built for the community.
+              </p>
             </div>
-            <p className="text-zinc-600 text-xs sm:text-sm">
-              © World Council Executive Alliances. Built for the community.
-            </p>
+            <div className="flex flex-wrap justify-center gap-6">
+              {["Privacy Policy", "Terms of Service", "Contact Us"].map((link) => (
+                <a
+                  key={link}
+                  href={link === "Privacy Policy" ? "/privacy-policy.html" : link === "Terms of Service" ? "/terms-of-service.html" : "#"}
+                  className="text-zinc-600 hover:text-primary transition-colors"
+                >
+                  {link}
+                </a>
+              ))}
+            </div>
           </div>
-
-          <div className="flex flex-wrap justify-center gap-6 text-xs sm:text-sm">
-            {["Privacy Policy", "Terms of Service", "Contact Us", "Careers"].map((link) => (
-              <a
-                key={link}
-                href={link === "Privacy Policy" ? "/privacy-policy.html" : link === "Terms of Service" ? "/terms-of-service.html" : "#"}
-                className="text-zinc-600 hover:text-primary transition-colors"
-              >
-                {link}
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <div className="bg-zinc-200/50 border-t border-zinc-300">
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 py-2 text-xs sm:text-sm text-center md:text-left">
+          <div className="border-t border-zinc-200 mt-6 pt-4 text-center text-xs text-zinc-500">
             Website designed & developed by{" "}
-            <a
-              href="https://www.facebook.com/profile.php?id=100063680607062"
-              target="_blank"
-              className="font-semibold text-[--primary] underline"
-            >
+            <a href="https://www.facebook.com/profile.php?id=100063680607062" target="_blank" className="font-semibold text-primary underline">
               Bok Tech
             </a>
           </div>

@@ -51,7 +51,7 @@ export default function ContactsPage() {
   };
 
   return (
-    <div className="bg-background text-foreground">
+    <div className="min-h-screen bg-[#fafaf8]">
       <main className="min-h-screen pt-20 pb-16 px-4 sm:px-6 md:px-8">
         <div className="max-w-4xl mx-auto">
           <header className="text-center mb-10">
@@ -59,12 +59,12 @@ export default function ContactsPage() {
               Contact Us
             </h1>
             <p className="mt-4 text-[#3f4941] text-lg">
-              Have a question or need support? Send us a message and we’ll respond as soon as possible.
+              Have a question or need support? Send us a message and we&apos;ll respond as soon as possible.
             </p>
           </header>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            <section className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm">
+            <section className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
               <form onSubmit={onSubmit} className="space-y-5">
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-gray-700" htmlFor="name">
@@ -75,7 +75,7 @@ export default function ContactsPage() {
                     name="name"
                     value={form.name}
                     onChange={onChange}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-[#5C4138]/30"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-[#5C4138]/30 focus:border-[#5C4138] transition-all duration-200"
                     placeholder="Your name"
                     autoComplete="name"
                   />
@@ -90,7 +90,7 @@ export default function ContactsPage() {
                     name="email"
                     value={form.email}
                     onChange={onChange}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-[#5C4138]/30"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-[#5C4138]/30 focus:border-[#5C4138] transition-all duration-200"
                     placeholder="you@example.com"
                     autoComplete="email"
                   />
@@ -106,7 +106,7 @@ export default function ContactsPage() {
                     value={form.message}
                     onChange={onChange}
                     rows={6}
-                    className="w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-[#5C4138]/30"
+                    className="w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-[#5C4138]/30 focus:border-[#5C4138] transition-all duration-200"
                     placeholder="How can we help?"
                   />
                 </div>
@@ -128,7 +128,7 @@ export default function ContactsPage() {
                 <button
                   type="submit"
                   disabled={!canSubmit || status.type === "idle" && status.message === "Sending..."}
-                  className="w-full py-4 rounded-xl font-bold bg-[#5C4138] text-white hover:bg-[#4a352d] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 rounded-xl font-bold bg-[#5C4138] text-white hover:bg-[#4a352d] hover:shadow-lg transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Send Message
                 </button>
@@ -140,7 +140,7 @@ export default function ContactsPage() {
             </section>
 
             <aside className="space-y-4">
-              <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+              <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
                 <h2 className="text-lg font-bold text-[#191c1b]">Quick Details</h2>
                 <div className="mt-4 space-y-3 text-[#3f4941]">
                   <p>
@@ -155,14 +155,14 @@ export default function ContactsPage() {
                 </div>
               </div>
 
-              <div className="bg-[var(--primary)/10] border border-[var(--primary)/20] rounded-2xl p-6">
+              <div className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-md transition-shadow duration-300">
                 <h3 className="text-lg font-bold text-[#191c1b]">Prefer email?</h3>
                 <p className="mt-2 text-[#3f4941]">
                   You can also reach us directly:
                 </p>
                 <a
                   href="mailto:support@example.com"
-                  className="mt-4 inline-flex items-center justify-center w-full py-3 rounded-xl font-bold bg-white border border-gray-200 hover:bg-gray-50"
+                  className="mt-4 inline-flex items-center justify-center w-full py-3 rounded-xl font-bold bg-[#5C4138] text-white hover:bg-[#4a352d] hover:shadow-lg transition-all duration-300 active:scale-[0.98]"
                 >
                   support@example.com
                 </a>

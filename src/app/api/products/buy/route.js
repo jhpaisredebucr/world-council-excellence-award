@@ -39,10 +39,10 @@ export async function POST(req) {
       totalAmount += price * quantity;
 
       const result = await query(
-        `INSERT INTO orders (user_id, product_id, quantity, status)
-         VALUES ($1, $2, $3, 'pending')
+        `INSERT INTO orders (user_id, product_id, quantity, status, wallet_type)
+         VALUES ($1, $2, $3, 'pending', $4)
          RETURNING *`,
-        [userID, product_id, quantity]
+        [userID, product_id, quantity, walletType]
       );
 
       insertedOrders.push(result[0]);
