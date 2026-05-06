@@ -61,13 +61,21 @@ export default function Withdraw() {
     );
   }
 
-  if (error && !success) {
+  // Only show full page error for serious errors, not validation messages
+  const isValidationError = error && (
+    error.includes("Select withdrawal method") ||
+    error.includes("Enter valid amount") ||
+    error.includes("Enter account details") ||
+    error.includes("Insufficient balance")
+  );
+
+  if (error && !success && !isValidationError) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
         <div className="flex max-w-md flex-col items-center gap-4 text-center text-xl text-red-500">
           <p>{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
+          <button
+            onClick={() => window.location.reload()}
             className="mt-4 rounded bg-primary px-4 py-2 text-white hover:bg-secondary"
           >
             Retry
@@ -222,13 +230,6 @@ export default function Withdraw() {
           />
         </div>
 
-        {/* ERROR */}
-        {error && (
-          <p className="mt-4 text-red-500 text-sm bg-red-50 p-2 rounded">
-            {error}
-          </p>
-        )}
-
         {/* SUCCESS */}
         {success && (
           <div className="mt-4 text-green-600 text-sm bg-green-50 p-3 rounded">
@@ -237,6 +238,13 @@ export default function Withdraw() {
             <p>Amount: ₱{parseFloat(amount).toFixed(2)}</p>
             <p className="text-xs mt-2">Your withdrawal will be processed within 1-3 business days.</p>
           </div>
+        )}
+
+        {/* INLINE ERROR */}
+        {error && (
+          <p className="mt-4 text-sm text-red-600 bg-red-50 p-2 rounded">
+            {error}
+          </p>
         )}
 
         {/* BUTTON */}

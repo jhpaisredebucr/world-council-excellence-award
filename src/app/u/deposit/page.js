@@ -19,6 +19,7 @@ export default function Deposits() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
 
 
   const fetchJson = async (url) => {
@@ -53,6 +54,7 @@ export default function Deposits() {
   useEffect(() => {
     const loadData = async () => {
       try {
+        setInitialLoading(true);
         //GET USER DATA
         const userRes = await fetchJson("/api/users");
 
@@ -64,8 +66,9 @@ export default function Deposits() {
 
       } catch (err) {
         console.error(err);
+        setError("Failed to load user data");
       } finally {
-        setLoading(false);
+        setInitialLoading(false);
       }
     };
 
