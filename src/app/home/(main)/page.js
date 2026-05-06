@@ -13,7 +13,7 @@ export default function HomePage() {
 
 <main className="relative min-h-screen">
         {/* ── HERO ── */}
-        <section className="relative min-h-100 flex items-center overflow-hidden">
+        <section className="relative min-h-100 flex items-center overflow-hidden py-10">
 
           {/* Background image */}
           <div className="absolute inset-0 z-0">
@@ -45,7 +45,7 @@ export default function HomePage() {
             <div className="max-w-2xl">
               <h1 className="font-serif text-5xl md:text-6xl font-bold text-white leading-tight mb-6 tracking-tight">
                 Cultivating{" "}
-                <span className="text-primary italic">Community</span> and
+                <span className="text-[#dc8b70] italic">Community</span> and
                 Wellness for All.
               </h1>
 
@@ -95,7 +95,7 @@ export default function HomePage() {
               <h2 className="font-sans text-sm font-bold text-(--primary) mb-12 tracking-[0.2em] uppercase">
               Our Partners
             </h2>
-            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 grayscale opacity-90 hover:grayscale-0 transition-all duration-500">
+            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 md:grayscale opacity-90 hover:grayscale-0 transition-all duration-500">
               <Image
                 src="/images/logos/acsr.png"
                 alt="Partner 1"
