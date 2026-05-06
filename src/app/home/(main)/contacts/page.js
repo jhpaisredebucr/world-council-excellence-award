@@ -51,20 +51,77 @@ export default function ContactsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafaf8]">
-      <main className="min-h-screen pt-20 pb-16 px-4 sm:px-6 md:px-8">
-        <div className="max-w-4xl mx-auto">
-          <header className="text-center mb-10">
-            <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#191c1b]">
-              Contact Us
-            </h1>
-            <p className="mt-4 text-[#3f4941] text-lg">
-              Have a question or need support? Send us a message and we&apos;ll respond as soon as possible.
-            </p>
-          </header>
+    <div className="min-h-screen bg-[#fafaf8] mt-16">
+      <style>{`
+          @keyframes fadeUp {
+              from { opacity: 0; transform: translateY(28px); }
+              to   { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes fadeIn {
+              from { opacity: 0; }
+              to   { opacity: 1; }
+          }
+          .hero-title {
+              opacity: 0;
+              animation: fadeUp 0.7s ease forwards;
+              animation-delay: 0.1s;
+          }
+          .hero-sub {
+              opacity: 0;
+              animation: fadeUp 0.7s ease forwards;
+              animation-delay: 0.25s;
+          }
+          .hero-badges {
+              opacity: 0;
+              animation: fadeUp 0.7s ease forwards;
+              animation-delay: 0.4s;
+          }
+          .contact-form {
+              opacity: 0;
+              animation: fadeUp 0.6s ease forwards;
+              animation-delay: 0.3s;
+          }
+          .quick-details {
+              opacity: 0;
+              animation: fadeUp 0.6s ease forwards;
+              animation-delay: 0.45s;
+          }
+          .prefer-email {
+              opacity: 0;
+              animation: fadeUp 0.6s ease forwards;
+              animation-delay: 0.6s;
+          }
+      `}</style>
+      <main className="min-h-screen pb-16">
+        <div className="mx-auto">
+          {/* Hero Section */}
+          <section className="py-16 bg-gradient-to-br from-[#5C4138] to-[#8D5D28] text-white md:min-h-90">
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            <section className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div className="max-w-3xl mx-auto text-center">
+              <h1 className="hero-title text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
+              <p className="hero-sub text-lg md:text-xl text-white/90 mb-8">
+                Have a question or need support? Send us a message and we&apos;ll respond as soon as possible.
+              </p>
+              <div className="hero-badges flex flex-wrap justify-center gap-4 text-sm">
+                  <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
+                      <span className="font-bold">&lt;24hrs</span>
+                      <span className="ml-2 text-white/80">Response Time</span>
+                  </div>
+                  <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
+                      <span className="font-bold">Mon–Sat</span>
+                      <span className="ml-2 text-white/80">Days Open</span>
+                  </div>
+                  <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
+                      <span className="font-bold">9AM – 5PM</span>
+                      <span className="ml-2 text-white/80">Hours Open</span>
+                  </div>
+              </div>
+            </div>
+          </section>
+
+
+          <div className="px-5 md:px-40 py-5 md:py-15 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <section className="contact-form bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow duration-300">
               <form onSubmit={onSubmit} className="space-y-5">
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-gray-700" htmlFor="name">
@@ -140,11 +197,14 @@ export default function ContactsPage() {
             </section>
 
             <aside className="space-y-4">
-              <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="quick-details bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
                 <h2 className="text-lg font-bold text-[#191c1b]">Quick Details</h2>
                 <div className="mt-4 space-y-3 text-[#3f4941]">
                   <p>
-                    <span className="font-semibold text-[#191c1b]">Email:</span> support@example.com
+                    <span className="font-semibold text-[#191c1b]">Email:</span> memonidok@gmail.com
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[#191c1b]">Facebook:</span> facebook.com
                   </p>
                   <p>
                     <span className="font-semibold text-[#191c1b]">Hours:</span> Mon–Sat, 9:00 AM–5:00 PM
@@ -155,7 +215,7 @@ export default function ContactsPage() {
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-md transition-shadow duration-300">
+              <div className="prefer-email bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-md transition-shadow duration-300">
                 <h3 className="text-lg font-bold text-[#191c1b]">Prefer email?</h3>
                 <p className="mt-2 text-[#3f4941]">
                   You can also reach us directly:
@@ -164,7 +224,7 @@ export default function ContactsPage() {
                   href="mailto:support@example.com"
                   className="mt-4 inline-flex items-center justify-center w-full py-3 rounded-xl font-bold bg-[#5C4138] text-white hover:bg-[#4a352d] hover:shadow-lg transition-all duration-300 active:scale-[0.98]"
                 >
-                  support@example.com
+                  memonidok@gmail.com
                 </a>
               </div>
             </aside>

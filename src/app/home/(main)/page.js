@@ -11,6 +11,70 @@ export default function HomePage() {
   return (
     <div className="bg-[#fafaf8] text-foreground font-sans selection:bg-[--success-color] selection:text-background">
 
+<style>{`
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(28px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+    .hero-headline {
+        opacity: 0;
+        animation: fadeUp 0.8s ease forwards;
+        animation-delay: 0.1s;
+    }
+    .hero-sub {
+        opacity: 0;
+        animation: fadeUp 0.8s ease forwards;
+        animation-delay: 0.3s;
+    }
+    .hero-ctas {
+        opacity: 0;
+        animation: fadeUp 0.8s ease forwards;
+        animation-delay: 0.5s;
+    }
+    .section-heading {
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards;
+        animation-delay: 0.2s;
+    }
+    .partner-logo {
+        opacity: 0;
+        animation: fadeIn 0.6s ease forwards;
+    }
+    .feature-eyebrow {
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards;
+        animation-delay: 0.1s;
+    }
+    .feature-title {
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards;
+        animation-delay: 0.2s;
+    }
+    .feature-text {
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards;
+        animation-delay: 0.3s;
+    }
+    .feature-image {
+        opacity: 0;
+        animation: fadeIn 0.7s ease forwards;
+        animation-delay: 0.2s;
+    }
+    .membership-header {
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards;
+        animation-delay: 0.2s;
+    }
+    .pricing-card {
+        opacity: 0;
+        animation: fadeUp 0.6s ease forwards;
+    }
+`}</style>
+
 <main className="relative min-h-screen mt-16">
         {/* ── HERO ── */}
         <section className="relative min-h-100 flex items-center overflow-hidden pb-10">
@@ -43,19 +107,19 @@ export default function HomePage() {
           {/* Hero content */}
           <div className="relative z-10 max-w-7xl mx-auto px-6 py-15 md:py-20">
             <div className="max-w-2xl">
-              <h1 className="font-serif text-5xl md:text-6xl font-bold text-white leading-tight mb-6 tracking-tight">
+              <h1 className="hero-headline font-serif text-5xl md:text-6xl font-bold text-white leading-tight mb-6 tracking-tight">
                 Cultivating{" "}
                 <span className="text-[#dc8b70] italic">Community</span> and
                 Wellness for All.
               </h1>
 
-              <p className="text-white/90 text-xl mb-10 leading-relaxed max-w-xl">
+              <p className="hero-sub text-white/90 text-xl mb-10 leading-relaxed max-w-xl">
                 Empowering local voices through collaborative initiatives,
                 wellness programs, and the shared prestige of an editorial
                 vision for our future.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="hero-ctas flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={() => router.push('/u/products')}
                   className="bg-[#5C4138] text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#4a352d] active:scale-[0.98] transition-all duration-300"
@@ -92,7 +156,7 @@ export default function HomePage() {
         {/* ── PARTNERS ── */}
         <section className="bg-white py-20 px-6">
           <div className="max-w-7xl mx-auto flex flex-col items-center">
-              <h2 className="font-sans text-sm font-bold text-[#5C4138] mb-12 tracking-[0.2em] uppercase">
+              <h2 className="section-heading font-sans text-sm font-bold text-[#5C4138] mb-12 tracking-[0.2em] uppercase">
               Our Partners
             </h2>
             <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 md:grayscale opacity-90 hover:grayscale-0 transition-all duration-500">
@@ -101,7 +165,8 @@ export default function HomePage() {
                 alt="Partner 1"
                 width={120}
                 height={80}
-                className="h-auto w-auto"
+                className="partner-logo h-auto w-auto"
+                style={{ animationDelay: "0.1s" }}
                 priority
               />
               <Image
@@ -109,7 +174,8 @@ export default function HomePage() {
                 alt="Partner 2"
                 width={120}
                 height={80}
-                className="h-auto w-auto"
+                className="partner-logo h-auto w-auto"
+                style={{ animationDelay: "0.2s" }}
                 priority
               />
               <Image
@@ -117,7 +183,8 @@ export default function HomePage() {
                 alt="Partner 3"
                 width={120}
                 height={80}
-                className="h-auto w-auto"
+                className="partner-logo h-auto w-auto"
+                style={{ animationDelay: "0.3s" }}
                 priority
               />
               <Image
@@ -125,7 +192,8 @@ export default function HomePage() {
                 alt="Partner 3"
                 width={120}
                 height={80}
-                className="h-auto w-auto"
+                className="partner-logo h-auto w-auto"
+                style={{ animationDelay: "0.4s" }}
                 priority
               />
               <Image
@@ -133,7 +201,8 @@ export default function HomePage() {
                 alt="Partner 3"
                 width={120}
                 height={80}
-                className="h-auto w-auto"
+                className="partner-logo h-auto w-auto"
+                style={{ animationDelay: "0.5s" }}
                 priority
               />
             </div>
@@ -144,7 +213,7 @@ export default function HomePage() {
         <section className="bg-[#f4f4f0] py-24 px-6 overflow-hidden">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
             {/* Image column */}
-            <div className="w-full md:w-1/2 relative aspect-4/5 overflow-hidden rounded-xl">
+            <div className="feature-image w-full md:w-1/2 relative aspect-4/5 overflow-hidden rounded-xl">
               <div className="aspect-square bg-(--primary)/20 absolute -top-10 -left-10 w-full h-full rounded-full blur-3xl" />
               <Image
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT0rBpcN2a-tjV4mS3gYH8zVVm-Dp7foNAQFbCkdbCUWkp6lOf7JD118QcKjcty8fkI-Q3kIYg3pFNz_10kUjoCtSd74bNKa1SsnqmoURH-JS0LItmX9xPPcfPbMPyZ0iVkyCP1dNpbxaIcS0p-7wUtjMJkhK1Ya-zFquYBq62K8zjaRkFHN4BwXIEaqZ3lvmCZ_zO4HFU51RIiEzhaAbFAkelnlZYmDfXhd68inCbLEaWglf1kGiycVRCjkWCTFq9RpkExSwS6Mkw"
@@ -158,22 +227,22 @@ export default function HomePage() {
 
             {/* Text column */}
             <div className="w-full  md:w-1/2">
-              <span className="text-[#5C4138] font-bold tracking-widest uppercase text-xs mb-4 block">
+              <span className="feature-eyebrow text-[#5C4138] font-bold tracking-widest uppercase text-xs mb-4 block">
                 Civic Vision
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl font-bold text-[#191c1b] leading-tight mb-8">
+              <h2 className="feature-title font-serif text-4xl md:text-5xl font-bold text-[#191c1b] leading-tight mb-8">
                 A New Standard for{" "}
                 <span className="text-[#5C4138] italic">Shared Growth</span>
               </h2>
               <div className="space-y-6 text-[#3f4941] text-lg">
-                <p>
+                <p className="feature-text">
                   We believe that wellness is not just an individual journey,
                   but a community-wide endeavor. By merging editorial prestige
                   with local action, we create a sanctuary for ideas and health.
                 </p>
                 <div className="flex items-start gap-4">
-                 
-                  <p>
+
+                  <p className="feature-text">
                     <span className="font-bold text-[#191c1b]">
                       Sustainable Impact:
                     </span>{" "}
@@ -195,7 +264,7 @@ export default function HomePage() {
                       d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4a4 4 0 11-8 0 4 4 0 018 0zM3 7a4 4 0 118 0"
                     />
                   </svg>
-                  <p>
+                  <p className="feature-text">
                     <span className="font-bold text-[#191c1b]">
                       Inclusive Access:
                     </span>{" "}
@@ -211,7 +280,7 @@ export default function HomePage() {
         <section className="bg-[#fafaf8] py-24 px-6">
           <div className="max-w-7xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-20">
+            <div className="membership-header text-center mb-20">
               <h2 className="font-serif text-4xl md:text-6xl font-bold text-[#191c1b] mb-6">
                 Join Our Growing Community
               </h2>
@@ -224,7 +293,7 @@ export default function HomePage() {
             {/* Pricing cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* ── Basic ── */}
-              <div className="bg-white p-8 rounded-2xl flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+              <div className="pricing-card bg-white p-8 rounded-2xl flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group" style={{ animationDelay: "0.3s" }}>
                 <div className="mb-8">
                   <h3 className="text-xl font-bold text-[#191c1b] mb-2">
                     Community Basic
@@ -254,7 +323,7 @@ export default function HomePage() {
               </div>
 
               {/* ── Elite (featured) ── */}
-              <div className="bg-white p-8 rounded-2xl flex flex-col ring-2 ring-[#5C4138] relative shadow-xl shadow-[#5C4138]/10 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+              <div className="pricing-card bg-white p-8 rounded-2xl flex flex-col ring-2 ring-[#5C4138] relative shadow-xl shadow-[#5C4138]/10 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" style={{ animationDelay: "0.45s" }}>
                 <div className="absolute top-0 right-8 -translate-y-1/2 bg-[#8D5D28] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                   Most Popular
                 </div>
@@ -290,7 +359,7 @@ export default function HomePage() {
               </div>
 
               {/* ── Premium ── */}
-              <div className="bg-white p-8 rounded-2xl flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+              <div className="pricing-card bg-white p-8 rounded-2xl flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group" style={{ animationDelay: "0.6s" }}>
                 <div className="mb-8">
                   <h3 className="text-xl font-bold text-[#191c1b] mb-2">
                     Community Premium
