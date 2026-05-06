@@ -5,15 +5,15 @@ import { calculateFees, validatePaymentMethod } from "@/lib/paymongo";
 
 export async function POST(req) {
   try {
-    const { 
-      user_id, 
-      amount, 
-      payment_method, 
-      account_info 
+    const {
+      user_id,
+      amount,
+      payment_method,
+      account_info // received but not stored (col doesn't exist)
     } = await req.json();
 
     // Validate required fields
-    if (!user_id || !amount || !payment_method || !account_info) {
+    if (!user_id || !amount || !payment_method) {
       return NextResponse.json(
         { success: false, message: "Missing required fields" },
         { status: 400 }
@@ -82,23 +82,20 @@ export async function POST(req) {
       // Create withdrawal transaction record
       await query(
         `INSERT INTO transactions (
-          user_id, 
-          type, 
-          amount, 
-          fee, 
-          net_amount, 
-          payment_method, 
-          account_info, 
-          reference_number, 
-          status, 
-          created_at
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW())`,
+          user_id,
+          type,
+          amount,
+          fee,
+          payment_method,
+          account_info,
+          reference_number,
+          status
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
         [
           user_id,
           'withdrawal',
           amount,
           feeCalculation.fee,
-          feeCalculation.netAmount,
           payment_method,
           account_info,
           reference_number,
@@ -116,12 +113,10 @@ export async function POST(req) {
           reference_number,
           amount,
           fee: feeCalculation.fee,
-          net_amount: feeCalculation.netAmount,
-          total_amount: totalDeduction,
+          total_deduction: totalDeduction,
           payment_method,
           status: 'pending',
-          fee_breakdown: feeCalculation.breakdown,
-          account_info: account_info.replace(/(\d{2})(\d{4})(\d{4})(\d{4})/, '$1-$2-$3-$4') // Mask account number
+          account_info: account_info.replace(/(\d{2})(\d{4})(\d{4})(\d{4})/, '$1-$2-$3-$4')
         }
       });
 
@@ -171,16 +166,16 @@ export async function GET(req) {
 
     // Get withdrawal transactions for the user
     const withdrawals = await query(
-      `SELECT id, amount, fee, net_amount, payment_method, reference_number, 
-              status, created_at, 
-              CASE 
+      `SELECT id, amount, fee, payment_method, reference_number,
+              status, created_at, account_info,
+              CASE
                 WHEN account_info ~ '^[0-9]{11}$' THEN CONCAT('****', SUBSTRING(account_info, 8, 4))
                 WHEN account_info ~ '^[0-9]{12,16}$' THEN CONCAT('****', SUBSTRING(account_info, -4))
                 ELSE '****'
               END as masked_account
-       FROM transactions 
-       WHERE user_id = $1 AND type = 'withdrawal' 
-       ORDER BY created_at DESC 
+       FROM transactions
+       WHERE user_id = $1 AND type = 'withdrawal'
+       ORDER BY created_at DESC
        LIMIT $2 OFFSET $3`,
       [userID, limit, offset]
     );

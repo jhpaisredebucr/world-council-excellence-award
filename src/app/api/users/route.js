@@ -58,7 +58,7 @@ export async function GET(req) {
     // 1. MAIN USER
     // -----------------------
     const userRes = await query(
-      `SELECT id, username, referral_code, referred_by, role, created_at, status, package FROM users WHERE id = $1`,
+      `SELECT id, username, referral_code, referred_by, role, created_at, status, package, balance FROM users WHERE id = $1`,
       [userID]
     );
 

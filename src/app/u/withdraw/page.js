@@ -19,7 +19,7 @@ export default function Withdraw() {
   const [userData, setUserData] = useState(null);
   const [userBalance, setUserBalance] = useState(0);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -37,7 +37,7 @@ export default function Withdraw() {
         if (!data.success) throw new Error("Failed to load user");
 
         setUserData(data);
-        setUserBalance(data.userInfo?.balance || 0);
+        setUserBalance(Number(data.userInfo?.balance) || 0);
 
       } catch (err) {
         console.error(err);
