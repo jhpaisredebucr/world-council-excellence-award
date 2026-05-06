@@ -32,7 +32,7 @@ export async function GET(req) {
     // If admin requests list all users, return users with their profile data
     if (listUsers === "true" && isAdmin) {
       const usersRes = await query(
-        `SELECT u.id, u.username, u.referral_code, u.referred_by, u.role, u.created_at, u.status, u.package,
+        `SELECT u.id, u.username, u.referral_code, u.referred_by, u.role, u.created_at, u.status, u.package, u.balance,
                 p.first_name, p.middle_name, p.last_name,
                 c.email, c.contact_no
          FROM users u

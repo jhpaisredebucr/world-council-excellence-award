@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Transactions from "@/app/components/member/Transactions";
+import TransactionModal from "@/app/components/admin/TransactionModal";
+import ProfileModal from "@/app/components/admin/ProfileModal";
 
 
 
@@ -13,11 +15,30 @@ export default function Page() {
   const [toDate, setToDate] = useState('');
   const [pagination, setPagination] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
   const limit = 20;
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
     fetchTransactions(newPage);
+  };
+
+  const handleTransactionClick = (transaction) => {
+    setSelectedTransaction(transaction);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTransaction(null);
+  };
+
+  const handleViewFullProfile = (userId) => {
+    const numericId = Number(userId);
+    setSelectedUserId(numericId);
+  };
+
+  const handleCloseProfileModal = () => {
+    setSelectedUserId(null);
   };
 
   const handleNextPage = () => {
@@ -32,10 +53,11 @@ export default function Page() {
     }
   };
 
-  const fetchTransactions = async (page = currentPage) => {
+  const fetchTransactions = async (page) => {
     try {
       setLoading(true);
-      const offset = page * limit;
+      const pageNum = typeof page === 'number' ? page : 0;
+      const offset = pageNum * limit;
       
       // TRANSACTION
       const resTx = await fetch(`/api/transaction?limit=${limit}&offset=${offset}`);
@@ -44,9 +66,12 @@ export default function Page() {
       setPagination(txData.pagination || null);
 
       // USER DATA
-      const resUser = await fetch("/api/users");
+      const resUser = await fetch("/api/users?list=true");
       const userDataRes = await resUser.json();
-      setUserData(userDataRes.success ? userDataRes : null);
+      setUserData({
+        ...userDataRes,
+        userInfo: { role: 'admin' }
+      });
     } catch (err) {
       console.error(err);
     } finally {
@@ -252,7 +277,21 @@ if (loading) {
                   </button>
                 </div>
             </div>
-            <Transactions transactions={transactions} userData={userData} onRefresh={() => fetchTransactions(currentPage)} pagination={pagination} />
+            <Transactions transactions={transactions} userData={userData} onRefresh={() => fetchTransactions(currentPage)} onTransactionClick={handleTransactionClick} pagination={pagination} />
+
+            <TransactionModal
+                isOpen={!!selectedTransaction}
+                onClose={handleCloseModal}
+                transaction={selectedTransaction}
+                userData={userData}
+                onViewFullProfile={handleViewFullProfile}
+            />
+
+            <ProfileModal
+                isOpen={!!selectedUserId}
+                onClose={handleCloseProfileModal}
+                userId={String(selectedUserId)}
+            />
         </div>
     )
 }

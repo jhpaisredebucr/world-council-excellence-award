@@ -4,7 +4,7 @@
 
 import { format } from "date-fns";
 
-export default function Transactions({ transactions = [], userData, onRefresh, limit=20, pagination }) {
+export default function Transactions({ transactions = [], userData, onRefresh, onTransactionClick, limit=20, pagination }) {
 
   const isAdminView = userData?.userInfo?.role === "admin";
 
@@ -56,7 +56,11 @@ export default function Transactions({ transactions = [], userData, onRefresh, l
 {Array.isArray(transactions) && transactions.map((t, i) => {
         const txnUser = userMap[t.user_id];
         return (
-        <div key={t.id || i} className={`mt-3 rounded-xl bg-white p-5 shadow-sm md:grid gap-4 ${isAdminView ? "md:grid-cols-8" : "md:grid-cols-7"}`}>
+        <div
+          key={t.id || i}
+          onClick={() => isAdminView && onTransactionClick && onTransactionClick(t)}
+          className={`mt-3 rounded-xl bg-white p-5 shadow-sm md:grid gap-4 cursor-pointer hover:bg-gray-50 transition ${isAdminView ? "md:grid-cols-8" : "md:grid-cols-7"}`}
+        >
           <div className="text-sm">
             <span className="text-xs text-gray-400 md:hidden">Date: </span>
             {format(new Date(t.created_at), "MMM dd, yyyy HH:mm")}
