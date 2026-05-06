@@ -136,11 +136,10 @@ const adminMenu = [
                         icon={item.icon}
                         className={`block px-5 py-3 transition ${
                             pathname.startsWith(item.path)
-                                ? "border-r-4 border-(--primary) scale-105 font-bold"
+                                ? "border-r-4 border-(--primary) font-bold"
                                 : "text-gray-500"
                         }`}
                     >
-
                         {item.label}
 
                     </SidebarButton>
