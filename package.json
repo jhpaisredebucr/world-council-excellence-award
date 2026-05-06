@@ -26,6 +26,7 @@
     "pg": "^8.20.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-google-recaptcha": "^3.1.0",
     "react-qr-code": "^2.0.21",
     "react-use": "^17.6.0",
     "reactflow": "^11.11.4",

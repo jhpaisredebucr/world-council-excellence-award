@@ -58,6 +58,7 @@ export default function SignUpForm({ refCode }) {
       paymentMethod: "gcash",
       paymentProof: null,
       paymentUrl: "",
+      captchaToken: null,
 
       status: "pending"
     };
@@ -86,6 +87,7 @@ export default function SignUpForm({ refCode }) {
     paymentMethod: "",
     paymentProof: null,
     paymentUrl: "",
+    captchaToken: null,
 
     status: "pending"
   });

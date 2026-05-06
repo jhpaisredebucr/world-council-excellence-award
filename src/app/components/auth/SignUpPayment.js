@@ -3,6 +3,7 @@
 import { useState } from "react";
 import UploadImageModal from "../modal/UploadPicture";
 import { useRouter } from "next/navigation";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function SignUpPayment({
     formData,
@@ -16,6 +17,7 @@ export default function SignUpPayment({
     const [error, setError] = useState(null);
     const [isUploadOpen, setIsUploadOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [captchaToken, setCaptchaToken] = useState(null);
 
 
     // -------------------------
@@ -113,6 +115,12 @@ export default function SignUpPayment({
             return;
         }
 
+        if (!captchaToken) {
+            console.warn("[ERROR] Missing captcha verification");
+            setError("Please verify you are not a robot.");
+            return;
+        }
+
 
         try {
 
@@ -129,7 +137,7 @@ export default function SignUpPayment({
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(formData)
+                    body: JSON.stringify({ ...formData, captchaToken })
                 }
             );
 
@@ -506,6 +514,16 @@ export default function SignUpPayment({
                         </p>
                     )}
 
+                </div>
+
+
+                {/* reCAPTCHA */}
+                <div className="mt-8">
+                    <ReCAPTCHA
+                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEbQjYyB8CR2Kw"}
+                        onChange={(token) => setCaptchaToken(token)}
+                        onExpired={() => setCaptchaToken(null)}
+                    />
                 </div>
 
 
