@@ -16,8 +16,6 @@ export default function Deposits() {
   const [userData, setUserData] = useState(null);
   const [feeInfo, setFeeInfo] = useState(null);
   const [calculatedFees, setCalculatedFees] = useState(null);
-  const [usePayMongo, setUsePayMongo] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -43,11 +41,6 @@ export default function Deposits() {
     
     setCalculatedFees(fees);
     setFeeInfo(feeDetails);
-    
-    // Auto-enable PayMongo for checkout method
-    if (method === 'paymongo_checkout') {
-      setUsePayMongo(true);
-    }
   };
 
   useEffect(() => {
@@ -165,8 +158,8 @@ export default function Deposits() {
       return;
     }
 
-    // For manual deposits, require proof
-    if (!usePayMongo && !proof) {
+    // Require proof for all deposits
+    if (!proof) {
       setError("Upload proof of payment.");
       return;
     }
@@ -175,26 +168,24 @@ export default function Deposits() {
 
       setLoading(true);
 
+      // Upload proof
+      const uploadData = new FormData();
+      uploadData.append("file", proof);
+      uploadData.append("folder", `users/${userData.userInfo.id}/deposits`);
 
-      // Only upload proof for manual deposits
-      if (!usePayMongo) {
-        const uploadData = new FormData();
-        uploadData.append("file", proof);
-
-        const cloudinaryRes = await fetch(
-          "/api/cloudinary/upload",
-          {
-            method: "POST",
-            body: uploadData
-          }
-        );
-
-        const cloudinaryData = await cloudinaryRes.json();
-
-        if (!cloudinaryData.url) {
-          setError("Upload failed.");
-          return;
+      const cloudinaryRes = await fetch(
+        "/api/cloudinary/upload",
+        {
+          method: "POST",
+          body: uploadData
         }
+      );
+
+      const cloudinaryData = await cloudinaryRes.json();
+
+      if (!cloudinaryData.url) {
+        setError("Upload failed.");
+        return;
       }
 
 
@@ -208,18 +199,13 @@ export default function Deposits() {
         payment_method: method,
         transaction_id: transactionId || null,
         reference_number: referenceNo || null,
-        use_paymongo: usePayMongo,
         customer_info: {
           name: `${userData.userInfo.first_name} ${userData.userInfo.last_name}`,
           email: userData.userInfo.email,
           phone: userData.userInfo.phone || ''
-        }
+        },
+        proof: cloudinaryData.url
       };
-
-      // Add proof for manual deposits
-      if (!usePayMongo && cloudinaryData.url) {
-        transactionData.proof = cloudinaryData.url;
-      }
 
       const res = await fetch(
         "/api/portal/member/deposits",
@@ -240,12 +226,6 @@ export default function Deposits() {
         return;
       }
 
-      // If PayMongo checkout was created, redirect to checkout
-      if (data.transaction?.checkout_url) {
-        window.location.href = data.transaction.checkout_url;
-        return;
-      }
-
       setSuccess(true);
       setMethod("");
       setAmount("");
@@ -255,7 +235,6 @@ export default function Deposits() {
       setPreview(null);
       setCalculatedFees(null);
       setFeeInfo(null);
-      setUsePayMongo(false);
 
 
     } catch (err) {
@@ -292,10 +271,7 @@ export default function Deposits() {
 
           <select
             value={method}
-            onChange={(e)=>{
-              setMethod(e.target.value);
-              setUsePayMongo(false);
-            }}
+            onChange={(e) => setMethod(e.target.value)}
             className="w-full border p-2 mt-1 rounded-lg"
           >
             <option value="">Select method</option>
@@ -330,25 +306,6 @@ export default function Deposits() {
                 <span className="text-green-600">₱{calculatedFees.netAmount.toFixed(2)}</span>
               </div>
             </div>
-          </div>
-        )}
-
-
-        {/* PAYMONGO OPTION */}
-        {method && method !== 'paymongo_checkout' && (
-          <div className="mt-5">
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                checked={usePayMongo}
-                onChange={(e) => setUsePayMongo(e.target.checked)}
-                className="rounded"
-              />
-              <span className="text-sm">Use PayMongo Secure Checkout</span>
-            </label>
-            <p className="text-xs text-gray-500 mt-1">
-              Pay directly using PayMongo&apos;s secure payment gateway
-            </p>
           </div>
         )}
 
@@ -397,21 +354,19 @@ export default function Deposits() {
         </div>
 
 
-        {/* FILE - Only show for manual deposits */}
-        {!usePayMongo && (
-          <div className="mt-5">
+        {/* FILE */}
+        <div className="mt-5">
 
-            <p className="text-sm">Upload Proof</p>
+          <p className="text-sm">Upload Proof</p>
 
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="mt-1"
-            />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="mt-1"
+          />
 
-          </div>
-        )}
+        </div>
 
 
         {/* PREVIEW */}
