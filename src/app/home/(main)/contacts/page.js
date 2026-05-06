@@ -95,7 +95,7 @@ export default function ContactsPage() {
       <main className="min-h-screen pb-16">
         <div className="mx-auto">
           {/* Hero Section */}
-          <section className="py-16 bg-gradient-to-br from-[#5C4138] to-[#8D5D28] text-white md:min-h-90">
+          <section className="py-16 px-4 bg-gradient-to-br from-[#5C4138] to-[#8D5D28] text-white md:min-h-90">
 
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="hero-title text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
@@ -105,15 +105,15 @@ export default function ContactsPage() {
               <div className="hero-badges flex flex-wrap justify-center gap-4 text-sm">
                   <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
                       <span className="font-bold">&lt;24hrs</span>
-                      <span className="ml-2 text-white/80">Response Time</span>
+                      <span className="ml-2 text-white/80">Response</span>
                   </div>
                   <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
                       <span className="font-bold">Mon–Sat</span>
-                      <span className="ml-2 text-white/80">Days Open</span>
+                      <span className="ml-2 text-white/80">Open</span>
                   </div>
                   <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
                       <span className="font-bold">9AM – 5PM</span>
-                      <span className="ml-2 text-white/80">Hours Open</span>
+                      <span className="ml-2 text-white/80">Hours</span>
                   </div>
               </div>
             </div>

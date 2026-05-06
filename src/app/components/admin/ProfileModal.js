@@ -50,7 +50,7 @@ const fetchUserData = async () => {
             />
 
             {/* Modal */}
-            <div className="relative z-10 w-full max-w-md max-h-[80vh] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="relative z-10 w-full max-w-md max-h-[80vh] overflow-y-auto rounded-2xl bg-white p-6 mx-2 shadow-2xl" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                 <div className="mb-4 flex items-center justify-between">
                     <h3 className="text-xl font-bold">User Details</h3>
                     <button
