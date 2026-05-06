@@ -112,19 +112,19 @@ export default function NotificationBell() {
             onClick={() => setIsOpen(false)}
           />
           
-          <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-20">
-            <div className="p-4 border-b border-gray-200">
+          <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-1/2 sm:top-auto sm:mt-2 -translate-y-1/2 sm:translate-y-0 w-full sm:w-80 max-w-none sm:max-w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-20">
+            <div className="p-3 sm:p-4 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-gray-900">Notifications</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">Notifications</h3>
                 {unreadCount > 0 && (
-                  <span className="text-sm text-blue-600">
+                  <span className="text-xs sm:text-sm text-blue-600 whitespace-nowrap">
                     {unreadCount} unread
                   </span>
                 )}
               </div>
             </div>
             
-            <div className="max-h-96 overflow-y-auto">
+            <div className="max-h-80 sm:max-h-96 overflow-y-auto">
               {recentNotifications.length === 0 ? (
                 <div className="p-4 text-center text-gray-500">
                   No notifications
@@ -136,30 +136,30 @@ export default function NotificationBell() {
                     return (
                       <div
                         key={notification.id}
-                        className={`p-4 hover:bg-gray-50 cursor-pointer transition ${
+                        className={`p-3 sm:p-4 hover:bg-gray-50 cursor-pointer transition ${
                           !notification.read ? "bg-blue-50" : ""
                         }`}
                         onClick={() => handleMarkAsRead(notification.id)}
                       >
-                        <div className="flex items-start justify-between">
+                        <div className="flex items-start justify-between gap-2">
                           <div className="flex-1 min-w-0">
-                            <h4 className={`text-sm font-medium truncate ${
+                            <h4 className={`text-sm sm:text-base font-medium truncate ${
                               !notification.read ? "text-gray-900" : "text-gray-600"
                             }`}>
                               {notification.title}
                             </h4>
-                            <p className={`text-sm text-gray-500 mt-1 ${
+                            <p className={`text-xs sm:text-sm text-gray-500 mt-1 break-word ${
                               isExpanded ? "whitespace-pre-wrap" : "line-clamp-2"
                             }`}>
                               {notification.message}
                             </p>
-                            <div className="flex items-center justify-between mt-2">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2 mt-2">
                               <p className="text-xs text-gray-400">
                                 {formatDate(notification.created_at)}
                               </p>
-<button
+                              <button
                                 onClick={(e) => handleToggleExpand(notification.id, e)}
-                                className="text-xs text-gray-400 hover:text-gray-500 font-medium"
+                                className="text-xs text-gray-400 hover:text-gray-500 font-medium py-1 px-2 rounded hover:bg-gray-100 transition min-h-8"
                               >
                                 {isExpanded ? "Show less" : "Read more"}
                               </button>
@@ -167,7 +167,7 @@ export default function NotificationBell() {
                           </div>
                           
                           {!notification.read && (
-                            <div className="ml-2 mt-1">
+                            <div className="ml-2 mt-1 shrink-0">
                               <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                             </div>
                           )}
@@ -180,9 +180,9 @@ export default function NotificationBell() {
             </div>
             
             {recentNotifications.length > 0 && (
-              <div className="p-3 border-t border-gray-200">
+              <div className="p-3 sm:p-3 border-t border-gray-200">
                 <button
-                  className="block w-full text-center text-sm text-blue-600 hover:text-blue-800 transition"
+                  className="block w-full text-center text-sm text-blue-600 hover:text-blue-800 transition py-2 px-3 rounded hover:bg-blue-50 min-h-11"
                   onClick={() => {
                     setIsOpen(false);
                     setIsModalOpen(true);

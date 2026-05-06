@@ -212,46 +212,48 @@ export default function NotificationsModal({ isOpen, onClose }) {
       />
 
       {/* Modal */}
-      <div className="flex min-h-full items-center justify-center p-4">
+      <div className="flex min-h-full items-center justify-center p-2 sm:p-4">
         <div 
-          className="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+          className="relative bg-white rounded-lg shadow-xl w-full max-w-4xl sm:max-w-3xl md:max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden mx-2 sm:mx-0"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900">My Notifications</h2>
-                <div className="flex items-center gap-4 mt-2">
-                  <span className="text-sm text-gray-600">
+          <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200 bg-gray-50">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 truncate">My Notifications</h2>
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2">
+                  <span className="text-xs sm:text-sm text-gray-600">
                     Total: <span className="font-medium">{stats.total}</span>
                   </span>
-                  <span className="text-sm text-orange-600">
+                  <span className="text-xs sm:text-sm text-orange-600">
                     Unread: <span className="font-medium">{stats.unread}</span>
                   </span>
-                  <span className="text-sm text-green-600">
+                  <span className="text-xs sm:text-sm text-green-600">
                     Today: <span className="font-medium">{stats.today}</span>
                   </span>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 sm:gap-2">
                 {stats.unread > 0 && (
                   <button
                     onClick={handleMarkAllAsRead}
-                    className="text-sm px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                    className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition min-w-0"
                   >
-                    Mark All as Read
+                    <span className="hidden sm:inline">Mark All as Read</span>
+                    <span className="sm:hidden">All Read</span>
                   </button>
                 )}
                 <button
                   onClick={() => fetchNotifications(1, false)}
-                  className="text-sm px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition"
+                  className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition"
                 >
-                  Refresh
+                  <span className="hidden sm:inline">Refresh</span>
+                  <span className="sm:hidden">↻</span>
                 </button>
                 <button
                   onClick={onClose}
-                  className="p-2 text-gray-400 hover:text-gray-600 transition"
+                  className="p-2 sm:p-2 text-gray-400 hover:text-gray-600 transition"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -262,17 +264,17 @@ export default function NotificationsModal({ isOpen, onClose }) {
           </div>
 
           {/* Filters */}
-          <div className="px-6 py-3 border-b border-gray-200 bg-gray-50">
-            <div className="flex items-center gap-4">
+          <div className="px-3 sm:px-6 py-2 sm:py-3 border-b border-gray-200 bg-gray-50">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <div className="flex items-center">
                 <input
                   type="checkbox"
                   id="modalUnreadOnly"
                   checked={filterUnreadOnly}
                   onChange={(e) => setFilterUnreadOnly(e.target.checked)}
-                  className="mr-2"
+                  className="mr-2 h-4 w-4"
                 />
-                <label htmlFor="modalUnreadOnly" className="text-sm text-gray-700">
+                <label htmlFor="modalUnreadOnly" className="text-xs sm:text-sm text-gray-700">
                   Show unread only
                 </label>
               </div>
@@ -281,7 +283,7 @@ export default function NotificationsModal({ isOpen, onClose }) {
                   setFilterUnreadOnly(false);
                   fetchNotifications(1, false);
                 }}
-                className="text-sm px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition"
+                className="text-xs sm:text-sm px-2 sm:px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition self-start"
               >
                 Clear
               </button>
@@ -289,7 +291,7 @@ export default function NotificationsModal({ isOpen, onClose }) {
           </div>
 
           {/* Content */}
-          <div className="overflow-y-auto" style={{ maxHeight: 'calc(90vh - 200px)' }}>
+          <div className="overflow-y-auto" style={{ maxHeight: 'calc(95vh - 200px)' }}>
             {loading && notifications.length === 0 ? (
               <div className="p-12">
                 <div style={{
@@ -306,55 +308,57 @@ export default function NotificationsModal({ isOpen, onClose }) {
                 </div>
               </div>
             ) : notifications.length === 0 ? (
-              <div className="p-12 text-center text-gray-500">
-                <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-6 sm:p-12 text-center text-gray-500">
+                <svg className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                 </svg>
-                <p className="text-lg font-medium mb-2">No notifications found</p>
-                <p className="text-sm">You're all caught up! Check back later for new notifications.</p>
+                <p className="text-base sm:text-lg font-medium mb-2">No notifications found</p>
+                <p className="text-xs sm:text-sm">You're all caught up! Check back later for new notifications.</p>
               </div>
             ) : (
               <div className="divide-y divide-gray-200">
                 {notifications.map((notification) => (
-                  <div key={notification.id} className={`p-4 transition-colors ${!notification.read ? 'bg-blue-50' : 'hover:bg-gray-50'}`}>
-                    <div className="flex items-start justify-between">
+                  <div key={notification.id} className={`p-3 sm:p-4 transition-colors ${!notification.read ? 'bg-blue-50' : 'hover:bg-gray-50'}`}>
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h4 className={`font-medium ${!notification.read ? 'text-gray-900' : 'text-gray-700'}`}>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                          <h4 className={`text-sm sm:text-base font-medium ${!notification.read ? 'text-gray-900' : 'text-gray-700'} truncate`}>
                             {notification.title}
                           </h4>
-                          <span className={`text-xs px-2 py-1 rounded-full border ${getTypeStyles(notification.type)}`}>
-                            {notification.type}
-                          </span>
-                          {!notification.read && (
-                            <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full font-medium">
-                              New
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className={`text-xs px-2 py-1 rounded-full border ${getTypeStyles(notification.type)}`}>
+                              {notification.type}
                             </span>
-                          )}
+                            {!notification.read && (
+                              <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full font-medium">
+                                New
+                              </span>
+                            )}
+                          </div>
                         </div>
-                        <p className="text-sm text-gray-600 mb-2 whitespace-pre-wrap">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-2 whitespace-pre-wrap break-word">
                           {notification.message}
                         </p>
-                        <div className="flex items-center gap-4 text-xs text-gray-500 mb-2">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs text-gray-500 mb-2">
                           <span>
-                            <strong>Date:</strong> {formatDate(notification.created_at)}
+                            <strong>Date:</strong> <span className="break-all">{formatDate(notification.created_at)}</span>
                           </span>
-                          <span>
+                          <span className="hidden sm:inline">
                             <strong>ID:</strong> {notification.id}
                           </span>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2">
                           {!notification.read && (
                             <button
                               onClick={() => handleMarkAsRead(notification.id)}
-                              className="text-xs px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                              className="text-xs px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition min-h-8"
                             >
                               Mark as Read
                             </button>
                           )}
                           <button
                             onClick={() => handleDelete(notification.id)}
-                            className="text-xs px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
+                            className="text-xs px-3 py-1.5 bg-red-600 text-white rounded hover:bg-red-700 transition min-h-8"
                           >
                             Delete
                           </button>
@@ -367,11 +371,11 @@ export default function NotificationsModal({ isOpen, onClose }) {
             )}
             
             {hasMore && (
-              <div className="p-4 text-center border-t border-gray-200">
+              <div className="p-3 sm:p-4 text-center border-t border-gray-200">
                 <button
                   onClick={loadMore}
                   disabled={loading}
-                  className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition disabled:opacity-50"
+                  className="px-4 sm:px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition disabled:opacity-50 min-h-10"
                 >
                   {loading ? "Loading..." : "Load More"}
                 </button>
