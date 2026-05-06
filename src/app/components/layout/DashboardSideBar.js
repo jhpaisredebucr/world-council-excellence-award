@@ -32,6 +32,7 @@ const adminMenu = [
         { id: "products", label: "Products", path: "/u/admin/products", icon: "/icons/product-shop.svg" },
         { id: "packages", label: "Packages", path: "/u/admin/packages", icon: "/icons/product-shop.svg" },
         { id: "transactions", label: "Transactions", path: "/u/admin/transactions", icon: "/icons/money-thin.svg" },
+        { id: "deposits", label: "Deposits", path: "/u/admin/deposits", icon: "/icons/building-bank.svg" },
         { id: "notifications", label: "Notifications", path: "/u/admin/notifications", icon: "/icons/announcement.svg" },
         { id: "tickets", label: "Tickets", path: "/u/admin/tickets", icon: "/icons/announcement.svg" },
     ];

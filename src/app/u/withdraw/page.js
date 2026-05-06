@@ -3,7 +3,13 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { calculateFees, getFeeInfo, getAvailablePaymentMethods } from "@/lib/paymongo";
+
+// Basic withdrawal methods (no PayMongo)
+const WITHDRAWAL_METHODS = [
+  { id: 'gcash', name: 'GCash', description: 'Instant mobile wallet payment', icon: '📱' },
+  { id: 'maya', name: 'PayMaya', description: 'Instant mobile wallet payment', icon: '📱' },
+  { id: 'bank', name: 'Bank Transfer', description: 'Direct bank deposit', icon: '🏦' },
+];
 
 export default function Withdraw() {
 
@@ -12,33 +18,11 @@ export default function Withdraw() {
   const [accountInfo, setAccountInfo] = useState(""); // gcash number / bank acct etc
   const [userData, setUserData] = useState(null);
   const [userBalance, setUserBalance] = useState(0);
-  const [feeInfo, setFeeInfo] = useState(null);
-  const [calculatedFees, setCalculatedFees] = useState(null);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
-
-  // -----------------------
-  // CALCULATE FEES
-  // -----------------------
-  const calculateWithdrawalFees = () => {
-    if (!amount || !method) return;
-    
-    const amountNum = parseFloat(amount);
-    if (isNaN(amountNum) || amountNum <= 0) return;
-    
-    const fees = calculateFees(amountNum, method, 'withdrawal');
-    const feeDetails = getFeeInfo(method, 'withdrawal');
-    
-    setCalculatedFees(fees);
-    setFeeInfo(feeDetails);
-  };
-
-  useEffect(() => {
-    calculateWithdrawalFees();
-  }, [amount, method]);
 
   // -----------------------
   // FETCH USER
@@ -116,7 +100,7 @@ export default function Withdraw() {
     }
 
     // Check if user has sufficient balance
-    const totalDeduction = calculatedFees?.totalAmount || parseFloat(amount);
+    const totalDeduction = parseFloat(amount);
     if (userBalance < totalDeduction) {
       setError(`Insufficient balance. Available: ₱${userBalance.toFixed(2)}, Required: ₱${totalDeduction.toFixed(2)}`);
       return;
@@ -155,8 +139,6 @@ export default function Withdraw() {
       setMethod("");
       setAmount("");
       setAccountInfo("");
-      setCalculatedFees(null);
-      setFeeInfo(null);
 
     } catch (err) {
       setError("Network error.");
@@ -189,7 +171,7 @@ export default function Withdraw() {
             className="w-full border p-2 mt-1 rounded-lg"
           >
             <option value="">Select method</option>
-            {getAvailablePaymentMethods().filter(pm => pm.id !== 'paymongo_checkout').map((pm) => (
+            {WITHDRAWAL_METHODS.map((pm) => (
               <option key={pm.id} value={pm.id}>
                 {pm.icon} {pm.name} - {pm.description}
               </option>
@@ -224,32 +206,6 @@ export default function Withdraw() {
           <p className="text-lg font-bold text-green-600">₱{userBalance.toFixed(2)}</p>
         </div>
 
-        {/* FEE INFORMATION */}
-        {calculatedFees && (
-          <div className="mt-5 bg-blue-50 p-4 rounded-lg">
-            <h3 className="font-semibold text-sm mb-2">Fee Information</h3>
-            <div className="space-y-1 text-sm">
-              <div className="flex justify-between">
-                <span>Withdrawal Amount:</span>
-                <span className="font-medium">₱{calculatedFees.totalAmount.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Processing Fee ({feeInfo?.description}):</span>
-                <span className="font-medium text-red-600">-₱{calculatedFees.fee.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between font-semibold pt-2 border-t">
-                <span>Net Amount:</span>
-                <span className="text-green-600">₱{calculatedFees.netAmount.toFixed(2)}</span>
-              </div>
-            </div>
-            {userBalance < calculatedFees.totalAmount && (
-              <p className="text-xs text-red-600 mt-2">
-                Insufficient balance. Need ₱{(calculatedFees.totalAmount - userBalance).toFixed(2)} more.
-              </p>
-            )}
-          </div>
-        )}
-
         {/* AMOUNT */}
         <div className="mt-5">
           <p className="text-sm">Withdrawal Amount</p>
@@ -278,7 +234,7 @@ export default function Withdraw() {
           <div className="mt-4 text-green-600 text-sm bg-green-50 p-3 rounded">
             <p className="font-semibold mb-2">Withdrawal request submitted successfully!</p>
             <p>Reference: Processing...</p>
-            <p>Net amount to be received: ₱{calculatedFees?.netAmount?.toFixed(2) || '0.00'}</p>
+            <p>Amount: ₱{parseFloat(amount).toFixed(2)}</p>
             <p className="text-xs mt-2">Your withdrawal will be processed within 1-3 business days.</p>
           </div>
         )}
