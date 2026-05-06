@@ -8,7 +8,7 @@ export default function About() {
   const router = useRouter();
 
   return (
-    <div className="bg-background text-foreground font-sans selection:bg-[--success-color] selection:text-background">
+    <div className="bg-background text-foreground font-sans selection:bg-[--success-color] selection:text-background mt-16">
 <main className="relative min-h-screen">
 
 {/* ── HERO ── */}

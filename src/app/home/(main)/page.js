@@ -11,9 +11,9 @@ export default function HomePage() {
   return (
     <div className="bg-background text-foreground font-sans selection:bg-[--success-color] selection:text-background">
 
-<main className="relative min-h-screen">
+<main className="relative min-h-screen mt-16">
         {/* ── HERO ── */}
-        <section className="relative min-h-100 flex items-center overflow-hidden py-10">
+        <section className="relative min-h-100 flex items-center overflow-hidden pb-10">
 
           {/* Background image */}
           <div className="absolute inset-0 z-0">
