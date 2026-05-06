@@ -51,7 +51,7 @@ export default function DashboardMember({dashboardData, userData}) {
 
     return (
         <div className="grid w-full grid-cols-1 gap-4 auto-rows-auto sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[130px]">
-<Card 
+            <Card 
             title="Available Balance" 
             src="/icons/wallet.svg" 
             bold="font-bold"
@@ -81,10 +81,9 @@ export default function DashboardMember({dashboardData, userData}) {
                         Deposit
                     </Button>
                 </div>
-                
             </Card>
 
-<Card title="PC Balance"
+            <Card title="PC Balance"
             src="/icons/money.svg" 
             color="bg-orange-200" 
             value={`${dashboardData?.pc_credit} CREDITS`} 
@@ -147,7 +146,7 @@ export default function DashboardMember({dashboardData, userData}) {
             value="" 
             valueSize="text-base sm:text-lg" 
             bold="" 
-            info=" " 
+            info="" 
             colSpan="sm:col-span-2 lg:col-span-4">
                 <div className="flex flex-col gap-3 border-2 border-dotted border-gray-200 p-3 rounded-xl md:flex-row md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">

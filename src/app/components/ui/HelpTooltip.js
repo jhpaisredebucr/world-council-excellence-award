@@ -11,7 +11,7 @@ export default function HelpTooltip({ title, content }) {
                 onMouseEnter={() => setIsVisible(true)}
                 onMouseLeave={() => setIsVisible(false)}
                 onClick={() => setIsVisible(!isVisible)}
-                className="ml-1 w-4 h-4 rounded-full bg-(--primary) hover:bg-(--primary)/80 text-white text-xs font-bold flex items-center justify-center transition-colors duration-200"
+                className="ml-1 w-4 h-4 rounded-full bg-(--primary)/50 hover:bg-(--primary)/90 text-white text-xs font-bold flex items-center justify-center transition-colors duration-200"
             >
                 ?
             </button>
