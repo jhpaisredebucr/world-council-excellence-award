@@ -94,6 +94,7 @@ export async function getAdminAnalytics() {
             SELECT SUM(amount)
             FROM transactions
             WHERE status = 'approved'
+            AND type = 'plan'
           ), 0
         )
         -
@@ -104,7 +105,17 @@ export async function getAdminAnalytics() {
           ), 0
         )::float AS admin_revenue;
     `);
+
+    const totalProductsSold = await query(`
+      SELECT
+        COALESCE(SUM(amount), 0)::float AS total_products_sold
+      FROM transactions
+      WHERE status = 'approved'
+        AND type = 'purchase';
+    `);
+
     const revenue = revenueResult[0];
+    const productsSold = totalProductsSold[0];
 
     const totalPendingRequest = await query("SELECT COUNT(*) FROM users where status=$1", ["pending"]);
     const totalRequest = Number(totalPendingRequest[0].count);
@@ -114,6 +125,7 @@ export async function getAdminAnalytics() {
       totalRequest,
       topReferrer,
       revenue,
+      productsSold,
       pendingRequest,
       approvedMembers,
       bannedMembers,

@@ -10,7 +10,8 @@ export default function DashboardAdmin({dashboardData}) {
             <Card title="Total Members" value={dashboardData?.totalMembers ?? 0} valueSize="text-lg sm:text-xl lg:text-2xl" info=" "/>
             <Card title="Pending Requests" value={dashboardData?.totalRequest ?? 0} valueSize="text-lg sm:text-xl lg:text-2xl" info=" "/>
             <Card title="Top Referrers" value={topReferrerName} valueSize="text-base sm:text-lg lg:text-xl" info=" " colSpan="col-span-1 sm:col-span-2 lg:col-span-2 xl:col-span-2" rowSpan="row-span-1 sm:row-span-2 lg:row-span-2"/>
-            <Card title="Revenue" value={`₱${dashboardData?.revenue?.admin_revenue ?? 0}`} valueSize="text-lg sm:text-xl lg:text-2xl" info=" "/>
+            <Card title="Referrals Revenue" value={`₱${dashboardData?.revenue?.admin_revenue ?? 0}`} valueSize="text-lg sm:text-xl lg:text-2xl" info=" "/>
+            <Card title="Products Sold" value={`₱${dashboardData?.productsSold?.total_products_sold ?? 0}`} valueSize="text-lg sm:text-xl lg:text-2xl" info=" "/>
             <Card title="Total Pending Orders" value={dashboardData?.totalPendingOrders ?? 0} valueSize="text-lg sm:text-xl lg:text-2xl" info=" " rowSpan="row-span-1 sm:row-span-2 lg:row-span-2"/>
             <Card title="Approved Members" value={dashboardData?.approvedMembers?.length ?? 0} valueSize="text-lg sm:text-xl lg:text-2xl" info=" " rowSpan="row-span-1 sm:row-span-2 lg:row-span-2"/>
             <Card title="Banned Members" value={dashboardData?.bannedMembers?.length ?? 0} valueSize="text-lg sm:text-xl lg:text-2xl" info=""/>
