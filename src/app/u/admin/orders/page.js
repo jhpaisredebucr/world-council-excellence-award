@@ -213,13 +213,15 @@ return (
               <div className="text-sm md:mt-0 mt-1">
                 <span className="text-xs text-gray-400 md:hidden">Status: </span>
                 <span
-                  className={
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${
                     order.status === "approved"
-                      ? "text-green-600"
+                      ? "bg-green-100 text-green-800"
                       : order.status === "rejected"
-                      ? "text-red-600"
-                      : "text-yellow-500"
-                  }
+                      ? "bg-red-100 text-red-800"
+                      : order.status === "pending"
+                      ? "bg-orange-100 text-orange-800"
+                      : "bg-gray-100 text-gray-800"
+                  }`}
                 >
                   {order.status || "pending"}
                 </span>

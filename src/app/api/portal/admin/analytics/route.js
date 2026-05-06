@@ -24,9 +24,13 @@ export async function GET(req) {
           u.referred_by,
           u.created_at,
           p.first_name,
-          p.last_name
+          p.last_name,
+          t.proof as payment_proof,
+          t.payment_method,
+          t.amount as package_price
         FROM users u
         JOIN user_profiles p ON p.user_id = u.id
+        LEFT JOIN transactions t ON t.user_id = u.id AND t.type = 'plan' AND t.status = 'pending'
         WHERE u.status = $1
           AND u.role = $2`,
       ["pending", "member"]
@@ -41,9 +45,13 @@ export async function GET(req) {
           u.referred_by,
           u.created_at,
           p.first_name,
-          p.last_name
+          p.last_name,
+          t.proof as payment_proof,
+          t.payment_method,
+          t.amount as package_price
         FROM users u
         JOIN user_profiles p ON p.user_id = u.id
+        LEFT JOIN transactions t ON t.user_id = u.id AND t.type = 'plan' AND t.status = 'approved'
         WHERE u.status = $1
           AND u.role = $2`,
       ["approved", "member"]
@@ -58,9 +66,13 @@ export async function GET(req) {
           u.referred_by,
           u.created_at,
           p.first_name,
-          p.last_name
+          p.last_name,
+          t.proof as payment_proof,
+          t.payment_method,
+          t.amount as package_price
         FROM users u
         JOIN user_profiles p ON p.user_id = u.id
+        LEFT JOIN transactions t ON t.user_id = u.id AND t.type = 'plan'
         WHERE u.status = $1
           AND u.role = $2`,
       ["banned", "member"]

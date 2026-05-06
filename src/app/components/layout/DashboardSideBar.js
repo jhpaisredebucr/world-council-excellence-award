@@ -73,7 +73,7 @@ const adminMenu = [
             />
         </div>
 
-        <div className={`fixed left-0 top-0 z-40 h-screen w-72 max-w-[85vw] bg-white py-5 shadow-xl transition-transform duration-200 md:hidden ${
+        <div className={`fixed left-0 top-0 z-40 h-screen w-72 max-w-[85vw] bg-white py-4 sm:py-5 shadow-xl transition-transform duration-200 md:hidden ${
             isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}>
             <div className="flex items-center justify-between px-4 pb-3">
@@ -111,7 +111,7 @@ const adminMenu = [
             </div>
         </div>
 
-<div className="relative hidden h-full w-56 shrink-0 overflow-y-auto bg-white py-6 no-scrollbar md:block">
+<div className="relative hidden h-full w-56 lg:w-64 shrink-0 overflow-y-auto bg-white py-4 sm:py-5 lg:py-6 no-scrollbar md:block border-r border-gray-200">
 
             {/* TITLE */}
             {/* <p className="text-3xl font-semibold mb-6 pl-6">
