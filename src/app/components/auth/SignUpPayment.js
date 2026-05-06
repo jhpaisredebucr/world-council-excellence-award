@@ -314,6 +314,178 @@ export default function SignUpPayment({
                 </div>
 
 
+                {/* PAYMENT DETAILS */}
+                {formData.paymentMethod === "GCASH" && (
+                    <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                            GCash Payment Details
+                        </h3>
+                        
+                        <div className="space-y-3">
+                            <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                                <div>
+                                    <p className="font-medium text-gray-700">Account Name</p>
+                                    <p className="text-sm text-gray-500">WCEA Network</p>
+                                </div>
+                                <button
+                                    onClick={() => navigator.clipboard.writeText('WCEA Network')}
+                                    className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                                >
+                                    Copy
+                                </button>
+                            </div>
+                            
+                            <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                                <div>
+                                    <p className="font-medium text-gray-700">GCash Number</p>
+                                    <p className="text-sm text-gray-500">0912-345-6789</p>
+                                </div>
+                                <button
+                                    onClick={() => navigator.clipboard.writeText('0912-345-6789')}
+                                    className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                                >
+                                    Copy
+                                </button>
+                            </div>
+                            
+                            <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                                <p className="text-sm font-medium text-yellow-800 mb-1">
+                                    Transaction Fees
+                                </p>
+                                <p className="text-xs text-yellow-600">
+                                    Additional transaction fees may apply depending on your payment provider.
+                                </p>
+                            </div>
+                            
+                            <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                <p className="text-xs text-blue-700">
+                                    <strong>Important:</strong> Please take a screenshot of your successful GCash transaction and upload it as proof of payment.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+
+                {/* BANK TRANSFER DETAILS */}
+                {formData.paymentMethod === "BANK" && (
+                    <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                            Bank Transfer Details
+                        </h3>
+                        
+                        <div className="space-y-3">
+                            <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                                <div>
+                                    <p className="font-medium text-gray-700">Bank Name</p>
+                                    <p className="text-sm text-gray-500">Banco de Oro (BDO)</p>
+                                </div>
+                                <button
+                                    onClick={() => navigator.clipboard.writeText('Banco de Oro (BDO)')}
+                                    className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                                >
+                                    Copy
+                                </button>
+                            </div>
+                            
+                            <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                                <div>
+                                    <p className="font-medium text-gray-700">Account Name</p>
+                                    <p className="text-sm text-gray-500">WCEA Network Corporation</p>
+                                </div>
+                                <button
+                                    onClick={() => navigator.clipboard.writeText('WCEA Network Corporation')}
+                                    className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                                >
+                                    Copy
+                                </button>
+                            </div>
+                            
+                            <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                                <div>
+                                    <p className="font-medium text-gray-700">Account Number</p>
+                                    <p className="text-sm text-gray-500">1234-5678-9012</p>
+                                </div>
+                                <button
+                                    onClick={() => navigator.clipboard.writeText('1234-5678-9012')}
+                                    className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                                >
+                                    Copy
+                                </button>
+                            </div>
+                            
+                            <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                                <p className="text-sm font-medium text-yellow-800 mb-1">
+                                    Transaction Fees
+                                </p>
+                                <p className="text-xs text-yellow-600">
+                                    Additional transaction fees may apply depending on your bank.
+                                </p>
+                            </div>
+                            
+                            <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                <p className="text-xs text-blue-700">
+                                    <strong>Important:</strong> Please take a screenshot of your successful bank transfer and upload it as proof of payment.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+
+                {/* PAYMAYA DETAILS */}
+                {formData.paymentMethod === "PAYMAYA" && (
+                    <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                            PayMaya Payment Details
+                        </h3>
+                        
+                        <div className="space-y-3">
+                            <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                                <div>
+                                    <p className="font-medium text-gray-700">Account Name</p>
+                                    <p className="text-sm text-gray-500">WCEA Network</p>
+                                </div>
+                                <button
+                                    onClick={() => navigator.clipboard.writeText('WCEA Network')}
+                                    className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                                >
+                                    Copy
+                                </button>
+                            </div>
+                            
+                            <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                                <div>
+                                    <p className="font-medium text-gray-700">PayMaya Number</p>
+                                    <p className="text-sm text-gray-500">0998-765-4321</p>
+                                </div>
+                                <button
+                                    onClick={() => navigator.clipboard.writeText('0998-765-4321')}
+                                    className="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                                >
+                                    Copy
+                                </button>
+                            </div>
+                            
+                            <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                                <p className="text-sm font-medium text-yellow-800 mb-1">
+                                    Transaction Fees
+                                </p>
+                                <p className="text-xs text-yellow-600">
+                                    Additional transaction fees may apply depending on your payment provider.
+                                </p>
+                            </div>
+                            
+                            <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                <p className="text-xs text-blue-700">
+                                    <strong>Important:</strong> Please take a screenshot of your successful PayMaya transaction and upload it as proof of payment.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+
                 {/* UPLOAD */}
                 <div className="mt-8">
 
