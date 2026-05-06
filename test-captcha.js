@@ -1,9 +1,16 @@
 // Test script to verify captcha functionality
 const testCaptcha = async () => {
   try {
+    // Use the correct API URL based on current environment
+    const apiUrl = window.location.origin === 'https://worldcouncilexcellenceaward.vercel.app' 
+      ? 'https://worldcouncilexcellenceaward.vercel.app/api/auth/signup/check-availability'
+      : 'http://localhost:3000/api/auth/signup/check-availability';
+    
+    console.log('Testing API URL:', apiUrl);
+    
     // Test 1: Request without captcha token should fail
     console.log('Testing without captcha token...');
-    const response1 = await fetch('http://localhost:3000/api/auth/signup/check-availability', {
+    const response1 = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -19,7 +26,7 @@ const testCaptcha = async () => {
     
     // Test 2: Request with invalid captcha token should fail
     console.log('\nTesting with invalid captcha token...');
-    const response2 = await fetch('http://localhost:3000/api/auth/signup/check-availability', {
+    const response2 = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
