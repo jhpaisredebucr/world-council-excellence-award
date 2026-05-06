@@ -49,25 +49,33 @@ return (
                             ₱{product?.price ? (product.price * order.quantity).toFixed(2) : '0.00'}
                         </div>
 
-                        <div className="mb-1 md:mb-0 break-all">
+                        <div className="mb-1 md:mb-0 font-mono">
                             <span className="text-xs text-gray-500 md:hidden">Order ID: </span>
-                            {order.id || `ORD-${order.id || "-"}`}
+                            <span className="bg-gray-50 px-2 py-0.5 rounded text-xs">
+                                #{order.id || `ORD-${order.id || "-"}`}
+                            </span>
                         </div>
 
                         <div className="mb-1 md:mb-0">
                             <span className="text-xs text-gray-500 md:hidden">Status: </span>
-                            <span className={
-                                status === 'approved' ? 'text-green-600' :
-                                status === 'rejected' ? 'text-red-600' :
-                                'text-yellow-500'
-                            }>
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                status === 'approved' 
+                                    ? 'bg-green-100 text-green-800'
+                                    : status === 'rejected'
+                                    ? 'bg-red-100 text-red-800'
+                                    : status === 'pending'
+                                    ? 'bg-orange-100 text-orange-800'
+                                    : 'bg-gray-100 text-gray-800'
+                            }`}>
                                 {status}
                             </span>
                         </div>
 
-                        <div className="mb-1 md:mb-0 break-all">
+                        <div className="mb-1 md:mb-0 font-mono">
                             <span className="text-xs text-gray-500 md:hidden">Reference No: </span>
-                            {order.reference_number || 'N/A'}
+                            <span className="bg-gray-50 px-2 py-0.5 rounded text-xs">
+                                {order.reference_number || 'N/A'}
+                            </span>
                         </div>
                     </div>
                 );

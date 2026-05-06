@@ -70,26 +70,31 @@ export default function Transactions({ transactions = [], userData, onRefresh, l
             {t.payment_method || 'N/A'}
           </div>
 
-          <div className="text-sm font-mono text-gray-500 md:mt-0 mt-1">
+          <div className="text-sm font-mono md:mt-0 mt-1">
             <span className="text-xs text-gray-400 md:hidden">Transaction ID: </span>
-            <span className="bg-gray-50 px-2 py-0.5 rounded text-xs">{t.transaction_id || `TXN-${t.id || "-"}`}</span>
+            <span className="bg-gray-50 px-2 py-0.5 rounded text-xs">
+              {t.transaction_id || `TXN-${t.id || "-"}`}
+            </span>
           </div>
 
-          <div className="text-sm font-mono text-gray-500 md:mt-0 mt-1">
+          <div className="text-sm font-mono md:mt-0 mt-1">
             <span className="text-xs text-gray-400 md:hidden">Reference No: </span>
-            <span className="bg-gray-50 px-2 py-0.5 rounded text-xs">{t.reference_number || 'N/A'}</span>
+            <span className="bg-gray-50 px-2 py-0.5 rounded text-xs">
+              {t.reference_number || 'N/A'}
+            </span>
           </div>
 
           <div className="mt-3 flex items-center gap-3 md:mt-0">
-
             <span
-              className={
+              className={`px-2 py-1 rounded-full text-xs font-medium ${
                 t.status === "approved"
-                  ? "text-green-600"
+                  ? "bg-green-100 text-green-800"
                   : t.status === "pending"
-                  ? "text-yellow-500"
-                  : "text-red-600"
-              }
+                  ? "bg-orange-100 text-orange-800"
+                  : t.status === "rejected"
+                  ? "bg-red-100 text-red-800"
+                  : "bg-gray-100 text-gray-800"
+              }`}
             >
               {t.status || 'unknown'}
             </span>
