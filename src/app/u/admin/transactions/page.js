@@ -11,15 +11,37 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
+  const [pagination, setPagination] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const limit = 20;
 
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    fetchTransactions(newPage);
+  };
 
+  const handleNextPage = () => {
+    if (pagination?.hasMore) {
+      handlePageChange(currentPage + 1);
+    }
+  };
 
-  const fetchTransactions = async () => {
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      handlePageChange(currentPage - 1);
+    }
+  };
+
+  const fetchTransactions = async (page = currentPage) => {
     try {
+      setLoading(true);
+      const offset = page * limit;
+      
       // TRANSACTION
-      const resTx = await fetch("/api/transaction");
+      const resTx = await fetch(`/api/transaction?limit=${limit}&offset=${offset}`);
       const txData = await resTx.json();
       setTransactions(txData.transactions || []);
+      setPagination(txData.pagination || null);
 
       // USER DATA
       const resUser = await fetch("/api/users");
@@ -230,7 +252,33 @@ if (loading) {
                   </button>
                 </div>
             </div>
-            <Transactions transactions={transactions} userData={userData} onRefresh={fetchTransactions} />
+            <Transactions transactions={transactions} userData={userData} onRefresh={() => fetchTransactions(currentPage)} pagination={pagination} />
+            
+            {/* Pagination Controls */}
+            {pagination && (
+              <div className="flex justify-between items-center mt-6 text-sm text-gray-500 pb-6">
+                <div className="flex items-center gap-2">
+                  <span>Page {currentPage + 1} of {Math.ceil(pagination.total / pagination.limit)}</span>
+                  <span className="text-gray-400">({pagination.total} total transactions)</span>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 0}
+                    className="px-4 py-2 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={handleNextPage}
+                    disabled={!pagination.hasMore}
+                    className="px-4 py-2 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
         </div>
     )
 }

@@ -6,7 +6,12 @@ import Transactions from "@/app/components/member/Transactions";
 
 export default function TransactionsContainer({
   transactions = [],
-  onRefresh
+  onRefresh,
+  pagination,
+  currentPage,
+  onPageChange,
+  onNextPage,
+  onPrevPage
 }) {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
@@ -213,7 +218,33 @@ export default function TransactionsContainer({
       </div>
 
       {/* TABLE */}
-      <Transactions transactions={transactions} />
+      <Transactions transactions={transactions} pagination={pagination} />
+      
+      {/* Pagination Controls */}
+      {pagination && (
+        <div className="flex justify-between items-center mt-6 text-sm text-gray-500 pb-6">
+          <div className="flex items-center gap-2">
+            <span>Page {currentPage + 1} of {Math.ceil(pagination.total / pagination.limit)}</span>
+            <span className="text-gray-400">({pagination.total} total transactions)</span>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={onPrevPage}
+              disabled={currentPage === 0}
+              className="px-4 py-2 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              Previous
+            </button>
+            <button
+              onClick={onNextPage}
+              disabled={!pagination.hasMore}
+              className="px-4 py-2 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

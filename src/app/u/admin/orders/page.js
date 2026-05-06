@@ -14,28 +14,55 @@ export default function Page() {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [filterStatus, setFilterStatus] = useState("pending");
   const [actionLoading, setActionLoading] = useState(false);
+  const [pagination, setPagination] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const limit = 20;
 
-const fetchData = async () => {
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    fetchData(newPage);
+  };
+
+  const handleNextPage = () => {
+    if (pagination?.hasMore) {
+      handlePageChange(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      handlePageChange(currentPage - 1);
+    }
+  };
+
+const fetchData = async (page = currentPage) => {
     try {
-      // Fetch orders
-      const resOrders = await fetch("/api/products/orders");
+      const offset = page * limit;
+      
+      // Fetch orders with pagination
+      const resOrders = await fetch(`/api/products/orders?limit=${limit}&offset=${offset}`);
       const ordersData = await resOrders.json();
       setOrders(ordersData.orders || []);
+      setPagination(ordersData.pagination || null);
 
-      // Fetch products and packages for display
-      const resProducts = await fetch("/api/products");
-      const productsData = await resProducts.json();
-      // Combine products and packages into one array for name/price lookup
-      const allProducts = [
-        ...(productsData.products || []),
-        ...(productsData.packages || [])
-      ];
-      setProducts(allProducts);
+      // Fetch products and packages for display (only on first load)
+      if (products.length === 0) {
+        const resProducts = await fetch("/api/products");
+        const productsData = await resProducts.json();
+        // Combine products and packages into one array for name/price lookup
+        const allProducts = [
+          ...(productsData.products || []),
+          ...(productsData.packages || [])
+        ];
+        setProducts(allProducts);
+      }
 
-      // Fetch users
-      const resUsers = await fetch("/api/users?list=true");
-      const usersData = await resUsers.json();
-      setUsers(usersData.users || []);
+      // Fetch users (only on first load)
+      if (users.length === 0) {
+        const resUsers = await fetch("/api/users?list=true");
+        const usersData = await resUsers.json();
+        setUsers(usersData.users || []);
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -274,6 +301,32 @@ return (
         onClose={() => setSelectedUserId(null)}
         userId={selectedUserId}
       />
+
+      {/* Pagination Controls */}
+      {pagination && (
+        <div className="flex justify-between items-center mt-6 text-sm text-gray-500 pb-6">
+          <div className="flex items-center gap-2">
+            <span>Page {currentPage + 1} of {Math.ceil(pagination.total / pagination.limit)}</span>
+            <span className="text-gray-400">({pagination.total} total orders)</span>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 0}
+              className="px-4 py-2 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              Previous
+            </button>
+            <button
+              onClick={handleNextPage}
+              disabled={!pagination.hasMore}
+              className="px-4 py-2 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
