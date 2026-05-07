@@ -4,7 +4,8 @@ export default function BuyModal({
   setBuying,
   product: cart,
   dashboardData,
-  userData
+  userData,
+  onSuccess
 }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -77,6 +78,20 @@ async function Buy() {
       }
 
       setSuccess(true);
+
+      // Optimistically update the balance on the frontend
+      const newBalanceData = { ...dashboardData };
+      if (selectedWallet === "balance") {
+        newBalanceData.balance = (Number(dashboardData.balance) || 0) - total;
+      } else if (selectedWallet === "pc_credit") {
+        newBalanceData.pc_credit = (Number(dashboardData.pc_credit) || 0) - total;
+      } else if (selectedWallet === "ppv_credit") {
+        newBalanceData.ppv_credit = (Number(dashboardData.ppv_credit) || 0) - total;
+      }
+
+      if (onSuccess) {
+        onSuccess(newBalanceData);
+      }
 
     } catch (err) {
       setError("Network error. Please try again.");

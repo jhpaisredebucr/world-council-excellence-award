@@ -9,6 +9,7 @@ export default function Shop({ products, packages, dashboardData, userData }) {
   const [isBuying, setBuying] = useState(false);
   const [productCart, setProductCart] = useState([]);
   const [packageCart, setPackageCart] = useState([]);
+  const [localDashboardData, setLocalDashboardData] = useState(dashboardData);
 
   // Cart and items change based on active tab
   const cart = activeTab === 'products' ? productCart : packageCart;
@@ -90,7 +91,13 @@ export default function Shop({ products, packages, dashboardData, userData }) {
           setBuying={setBuying}
           product={cart}
           userData={userData}
-          dashboardData={dashboardData}
+          dashboardData={localDashboardData}
+          onSuccess={(newBalanceData) => {
+            setLocalDashboardData((prev) => ({
+              ...prev,
+              ...newBalanceData,
+            }));
+          }}
         />
       )}
 
