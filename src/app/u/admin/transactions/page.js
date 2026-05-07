@@ -270,14 +270,24 @@ if (loading) {
                     Download CSV
                   </button>
                   <button 
-                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                    className="px-4 py-2 bg-(--primary) text-white rounded hover:bg-(--secondary)"
                     onClick={() => downloadPDF(transactions, fromDate, toDate)}
                   >
                     Download PDF
                   </button>
                 </div>
             </div>
-            <Transactions transactions={transactions} userData={userData} onRefresh={() => fetchTransactions(currentPage)} onTransactionClick={handleTransactionClick} pagination={pagination} />
+            <Transactions
+              transactions={transactions}
+              userData={userData}
+              onRefresh={() => fetchTransactions(currentPage)}
+              onTransactionClick={handleTransactionClick}
+              pagination={pagination}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+              onNextPage={handleNextPage}
+              onPrevPage={handlePrevPage}
+            />
 
             <TransactionModal
                 isOpen={!!selectedTransaction}

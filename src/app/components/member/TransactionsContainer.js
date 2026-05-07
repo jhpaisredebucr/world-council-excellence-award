@@ -208,7 +208,7 @@ export default function TransactionsContainer({
           />
 
           <button
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+            className="px-4 py-2 bg-(--primary) text-white rounded hover:bg-(--secondary)"
             onClick={() => downloadPDF(transactions, fromDate, toDate)}
           >
             Download PDF
@@ -218,7 +218,14 @@ export default function TransactionsContainer({
       </div>
 
       {/* TABLE */}
-      <Transactions transactions={transactions} pagination={pagination} />
+      <Transactions
+        transactions={transactions}
+        pagination={pagination}
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+        onNextPage={onNextPage}
+        onPrevPage={onPrevPage}
+      />
     </div>
   );
 }

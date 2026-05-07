@@ -4,7 +4,7 @@
 
 import { format } from "date-fns";
 
-export default function Transactions({ transactions = [], userData, onRefresh, onTransactionClick, limit=20, pagination }) {
+export default function Transactions({ transactions = [], userData, onRefresh, onTransactionClick, limit=20, pagination, currentPage, onPageChange, onNextPage, onPrevPage }) {
 
   const isAdminView = userData?.userInfo?.role === "admin";
 
@@ -126,27 +126,27 @@ export default function Transactions({ transactions = [], userData, onRefresh, o
         </div>
       )}
       {pagination && (
-        <div className="flex justify-center items-center mt-6 text-sm text-gray-500 pb-6">
-          <div className="flex items-center">
+        <div className="flex justify-between items-center mt-6 text-sm text-gray-500 pb-6">
+          <div className="flex items-center gap-2">
+            <span>Page {currentPage + 1} of {Math.ceil(pagination.total / pagination.limit)}</span>
+            <span className="text-gray-400">({pagination.total} total transactions)</span>
+          </div>
+          <div className="flex gap-2">
             <button
-              onClick={onRefresh}
-              disabled={pagination.offset === 0}
-              className="px-3 py-1.5 border rounded-l-lg disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 text-sm"
+              onClick={onPrevPage}
+              disabled={currentPage === 0}
+              className="px-4 py-2 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
             >
-              ← Prev
+              Previous
             </button>
-            <span className="px-4 py-1.5 border-t border-b text-gray-600 text-sm">
-              {Math.floor(pagination.offset / pagination.limit) + 1} <span className="text-gray-400">/</span> {Math.ceil(pagination.total / pagination.limit)}
-            </span>
             <button
-              onClick={onRefresh}
+              onClick={onNextPage}
               disabled={!pagination.hasMore}
-              className="px-3 py-1.5 border rounded-r-lg disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 text-sm"
+              className="px-4 py-2 border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
             >
-              Next →
+              Next
             </button>
           </div>
-          <span className="ml-4 text-xs text-gray-400">{pagination.total} total</span>
         </div>
       )}
     </div>

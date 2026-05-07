@@ -63,8 +63,8 @@ export default function Page() {
 
   return (
     <div>
-      <TransactionsContainer 
-        transactions={transactions} 
+      <TransactionsContainer
+        transactions={transactions}
         onRefresh={() => fetchTransactions(currentPage)}
         pagination={pagination}
         currentPage={currentPage}
