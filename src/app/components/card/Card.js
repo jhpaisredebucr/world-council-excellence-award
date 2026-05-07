@@ -3,7 +3,7 @@ import HelpTooltip from "../ui/HelpTooltip";
 
 export default function Card({ className, textColor, title, color, value, valueSize, bold, info, colSpan="col-span-1", rowSpan="row-span-1", src, children, helpTitle, helpContent}) {
     return (
-        <div className={`bg-white rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-shadow duration-200 p-4 sm:p-5 lg:p-6 flex flex-col justify-between ${colSpan} ${rowSpan} border border-gray-100`}>
+        <div className={`bg-white rounded-2xl shadow-sm  transition-shadow duration-200 p-4 sm:p-5 lg:p-6 flex flex-col justify-between ${colSpan} ${rowSpan} border border-gray-100`}>
             <div className="flex gap-x-2 sm:gap-x-3 items-center">
                 {src && <div className={`${color} rounded-xl p-2 sm:p-3 bg-linear-to-br from-opacity-80 to-opacity-100`}><Image src={src} alt="icon" width={16} height={16} className="sm:w-5 sm:h-5 w-4 h-4"></Image></div>}
                 <p className="text-gray-500 text-xs sm:text-sm font-medium">{title}</p>
