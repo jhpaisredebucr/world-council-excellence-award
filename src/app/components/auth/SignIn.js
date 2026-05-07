@@ -91,13 +91,13 @@ export default function SignInForm() {
 
     return (
 
-        <div className="w-full flex justify-center px-4">
+        <div className="w-full flex justify-center">
 
             {/* CARD */}
             <div className="w-full max-w-lg bg-white shadow-xl rounded-2xl border border-gray-100 p-8 md:p-10">
 
                 {/* HEADER */}
-                <div className="mb-8 text-center md:text-left flex justify-between">
+                <div className="mb-8 text-center md:text-left flex justify-center md:justify-between">
                     <div>
                         <h2 className="text-2xl font-semibold text-gray-800">
                             Welcome Back
@@ -111,7 +111,7 @@ export default function SignInForm() {
 
                     <button
                         onClick={() => router.push("/home")}
-                        className="mb-4 inline-flex items-center gap-1 rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                        className="hidden md:inline-flex items-center gap-1 rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
                     >
                         ← Back to Homepage
                     </button>
@@ -181,6 +181,13 @@ export default function SignInForm() {
                     `}
                 >
                     {loading ? "Signing in..." : "Sign In"}
+                </button>
+
+                <button
+                    onClick={() => router.push("/home")}
+                    className="md:hidden inline-flex items-center w-full my-2 py-3 gap-1 rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                >
+                    ← Back to Homepage
                 </button>
 
 
