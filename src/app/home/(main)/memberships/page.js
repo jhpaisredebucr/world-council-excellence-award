@@ -5,8 +5,9 @@ import { useState } from "react";
 
 const membershipPlans = [
     {
-        name: "Basic",
+        name: "HP - Basic",
         price: 99,
+        billingLabel: "1 year",
         levelDepth: 3,
         features: [
             "3 levels deep network",
@@ -16,8 +17,9 @@ const membershipPlans = [
         ]
     },
     {
-        name: "Standard",
+        name: "HP - Standard",
         price: 199,
+        billingLabel: "1 year",
         levelDepth: 5,
         features: [
             "5 levels deep network",
@@ -27,8 +29,9 @@ const membershipPlans = [
         ]
     },
     {
-        name: "Pro",
+        name: "HP - Pro",
         price: 999,
+        billingLabel: "1 year",
         levelDepth: 7,
         features: [
             "7 levels deep network",
@@ -38,39 +41,43 @@ const membershipPlans = [
         ]
     },
     {
-        name: "Elite",
+        name: "HP - Elite",
         price: 1999,
+        billingLabel: "2 year",
         levelDepth: 10,
         features: [
             "10 levels deep network",
-            "Benefits",
+            "100k Accident Insurance",
             "Benefits",
             "Benefits",
         ]
     },
     {
-        name: "Council",
+        name: "HP - Council",
         price: 5000,
+        billingLabel: "2 year",
         levelDepth: 13,
         features: [
             "13 levels deep network",
-            "Benefits",
+            "1M Accident Insurance",
             "Benefits",
             "Benefits",
         ]
     },
     {
-        name: "World Council International",
+        name: "HP - Global President",
         price: 17000,
+        billingLabel: "5 year",
         levelDepth: 15,
         features: [
             "15 levels deep network",
-            "Benefits",
+            "2m Accident Insurance",
             "Benefits",
             "Benefits",
         ]
     }
 ];
+
 
 export default function Membership() {
     const router = useRouter();
@@ -177,8 +184,9 @@ export default function Membership() {
 
                             <div className="mb-6">
                                 <span className="text-4xl font-bold text-gray-800">₱{plan.price.toLocaleString()}</span>
-                                <span className="text-gray-600 text-sm ml-1">/lifetime</span>
+                                <span className="text-gray-600 text-sm ml-1">/{plan.billingLabel}</span>
                             </div>
+
 
                             <div className="flex-1 mb-6">
                                 <ul className="space-y-2">
