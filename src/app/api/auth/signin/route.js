@@ -3,8 +3,26 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { query } from "@/lib/db";
 import { nanoid } from "nanoid";
+import { applyRateLimit, authRateLimit } from "@/lib/rateLimit";
 
 export async function POST(req) {
+  // Apply rate limiting
+  const rateLimitResult = await applyRateLimit(req, authRateLimit);
+  
+  if (!rateLimitResult.success) {
+    const response = NextResponse.json(
+      { success: false, message: "Too many requests. Please try again later." },
+      { status: 429 }
+    );
+    
+    // Add rate limit headers
+    Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
+      response.headers.set(key, value);
+    });
+    
+    return response;
+  }
+
   try {
     const body = await req.json();
     const { username, password } = body;
@@ -85,6 +103,11 @@ export async function POST(req) {
       sameSite: "strict",
       path: "/",
       maxAge: 60 * 60 * 24 * 2,
+    });
+
+    // Add rate limit headers to successful response
+    Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
+      res.headers.set(key, value);
     });
 
     return res;
