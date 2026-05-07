@@ -398,39 +398,6 @@ export default function HomePage() {
         </section>
         {/* <AdsSidebar /> */}
       </main>
-
-{/* Footer */}
-            <footer className="bg-zinc-100 border-t border-zinc-200">
-                <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12">
-                    <div className="flex flex-col md:flex-row justify-between items-center text-sm gap-6">
-                        <div className="text-center md:text-left">
-                            <div className="text-lg font-serif text-primary mb-1">
-                                World Council Executive Alliances
-                            </div>
-                            <p className="text-zinc-600">
-                                © World Council Executive Alliances. Built for the community.
-                            </p>
-                        </div>
-                        <div className="flex flex-wrap justify-center gap-6">
-                            {["Privacy Policy", "Terms of Service", "Contact Us"].map((link) => (
-                                <a
-                                    key={link}
-                                    href={link === "Privacy Policy" ? "/privacy-policy.html" : link === "Terms of Service" ? "/terms-of-service.html" : "#"}
-                                    className="text-zinc-600 hover:text-primary transition-colors"
-                                >
-                                    {link}
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="border-t border-zinc-200 mt-6 pt-4 text-center text-xs text-zinc-500">
-                        Website designed & developed by{" "}
-                        <a href="https://www.facebook.com/profile.php?id=100063680607062" target="_blank" className="font-semibold text-primary underline">
-                            Bok Tech
-                        </a>
-                    </div>
-                </div>
-            </footer>
     </div>
   );
 }
