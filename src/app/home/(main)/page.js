@@ -296,98 +296,101 @@ export default function HomePage() {
               <div className="pricing-card bg-white p-8 rounded-2xl flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group" style={{ animationDelay: "0.3s" }}>
                 <div className="mb-8">
                   <h3 className="text-xl font-bold text-[#191c1b] mb-2">
-                    Community Basic
+                    Basic
                   </h3>
+                  <p className="text-sm text-[#3f4941] mb-2">3 levels deep network</p>
                   <div className="flex items-baseline gap-1">
                     <span className="text-3xl font-serif font-bold text-primary">
-                      ₱350
+                      ₱99
                     </span>
-                    <span className="text-[#3f4941] text-sm">/month</span>
+                    <span className="text-[#3f4941] text-sm">/lifetime</span>
                   </div>
                 </div>
                 <ul className="space-y-4 mb-10 grow">
-                  {["Monthly newsletter", "Community forum access", "Basic wellness tips"].map(
-                    (item) => (
-                      <li key={item} className="flex items-center gap-3 text-[#3f4941]">
+                  {["3 levels deep network", "Benefits", "Benefits", "Benefits"].map(
+                    (item, i) => (
+                      <li key={i} className="flex items-center gap-3 text-[#3f4941]">
                         <CheckIcon />
                         <span>{item}</span>
                       </li>
                     )
                   )}
                 </ul>
-                <button 
-                  onClick={() => router.push('/home/memberships')} 
+                <button
+                  onClick={() => router.push('/home/memberships')}
                   className="w-full py-4 rounded-xl font-bold border-2 border-[#5C4138] text-[#5C4138] hover:bg-[#5C4138] hover:text-white transition-all duration-300 active:scale-[0.98]">
-                  Select Plan
+                  Get Started
                 </button>
               </div>
 
-              {/* ── Elite (featured) ── */}
+              {/* ── Standard (featured) ── */}
               <div className="pricing-card bg-white p-8 rounded-2xl flex flex-col ring-2 ring-[#5C4138] relative shadow-xl shadow-[#5C4138]/10 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" style={{ animationDelay: "0.45s" }}>
                 <div className="absolute top-0 right-8 -translate-y-1/2 bg-[#8D5D28] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                   Most Popular
                 </div>
                 <div className="mb-8">
                   <h3 className="text-xl font-bold text-[#191c1b] mb-2">
-                    Community Elite
+                    Standard
                   </h3>
+                  <p className="text-sm text-[#3f4941] mb-2">5 levels deep network</p>
                   <div className="flex items-baseline gap-1">
                     <span className="text-3xl font-serif font-bold text-primary">
-                      ₱900
+                      ₱199
                     </span>
-                    <span className="text-[#3f4941] text-sm">/month</span>
+                    <span className="text-[#3f4941] text-sm">/lifetime</span>
                   </div>
                 </div>
                 <ul className="space-y-4 mb-10 grow">
                   {[
-                    "All Basic features",
-                    "Bi-weekly workshops",
-                    "Digital resource library",
-                    "Priority program booking",
-                  ].map((item) => (
-                    <li key={item} className="flex items-center gap-3">
+                    "5 levels deep network",
+                    "Benefits",
+                    "Benefits",
+                    "Benefits",
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center gap-3">
                       <CheckIcon />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-                <button 
-                  onClick={() => router.push('/home/signup')} 
+                <button
+                  onClick={() => router.push('/home/signup?plan=standard')}
                   className="w-full py-4 rounded-xl font-bold bg-[#5C4138] text-white shadow-lg hover:shadow-xl hover:bg-[#4a352d] active:scale-[0.98] transition-all duration-300">
                   Get Started
                 </button>
               </div>
 
-              {/* ── Premium ── */}
+              {/* ── Pro ── */}
               <div className="pricing-card bg-white p-8 rounded-2xl flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group" style={{ animationDelay: "0.6s" }}>
                 <div className="mb-8">
                   <h3 className="text-xl font-bold text-[#191c1b] mb-2">
-                    Community Premium
+                    Pro
                   </h3>
+                  <p className="text-sm text-[#3f4941] mb-2">7 levels deep network</p>
                   <div className="flex items-baseline gap-1">
                     <span className="text-3xl font-serif font-bold text-primary">
-                      ₱1,500
+                      ₱999
                     </span>
-                    <span className="text-[#3f4941] text-sm">/month</span>
+                    <span className="text-[#3f4941] text-sm">/lifetime</span>
                   </div>
                 </div>
                 <ul className="space-y-4 mb-10 grow">
                   {[
-                    "All Elite features",
-                    "1-on-1 wellness coaching",
-                    "VIP event access",
-                    "Voting rights on initiatives",
-                  ].map((item) => (
-                    <li key={item} className="flex items-center gap-3 text-[#3f4941]">
+                    "7 levels deep network",
+                    "Benefits",
+                    "Benefits",
+                    "Benefits",
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center gap-3 text-[#3f4941]">
                       <CheckIcon />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-                <button 
-                  onClick={() => router.push('/home/memberships')} 
+                <button
+                  onClick={() => router.push('/home/memberships')}
                   className="w-full py-4 rounded-xl font-bold border-2 border-[#5C4138] text-[#5C4138] hover:bg-[#5C4138] hover:text-white transition-all duration-300 active:scale-[0.98]">
-                  Select Plan
+                  Get Started
                 </button>
               </div>
             </div>
