@@ -98,6 +98,7 @@ export default function MembersAdmin({ dashboardData, onRefresh }) {
                     isOpen={isProofModalOpen}
                     onClose={closeProofModal}
                     user={selectedUser}
+                    onApprove={(u) => Approve(u.id, u.package, u.referred_by)}
                 />
             )}
 
