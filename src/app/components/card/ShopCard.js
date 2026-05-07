@@ -1,7 +1,6 @@
 'use client';
 
 import { CldImage } from "next-cloudinary";
-import Image from "next/image";
 import { useState } from "react";
 import ProductDetailModal from "@/app/components/modal/ProductDetailModal";
 
@@ -68,31 +67,27 @@ export default function ShopCard({ item, cartQuantity, AddToCart }) {
           </button>
         ) : (
           <div className="flex items-center justify-between gap-2">
-            <Image
-              src="/icons/minus-circle-filled.svg"
-              alt="remove"
-              width={32}
-              height={32}
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 AddToCart(cartItem, "del");
                 setQuantity((q) => Math.max(0, q - 1));
               }}
-              className="cursor-pointer"
-            />
+              className="w-8 h-8 pb-1 rounded-full bg-(--primary) text-white font-bold flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity leading-none text-center"
+            >
+              −
+            </button>
             <p className="text-lg font-bold min-w-5 text-center">{cartQuantity}</p>
-            <Image
-              src="/icons/plus-circle-filled.svg"
-              alt="add"
-              width={32}
-              height={32}
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 AddToCart(cartItem);
                 setQuantity((q) => q + 1);
               }}
-              className="cursor-pointer"
-            />
+              className="w-8 h-8 pb-1 rounded-full bg-(--primary) text-white font-bold flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity leading-none text-center"
+            >
+              +
+            </button>
           </div>
         )}
       </div>

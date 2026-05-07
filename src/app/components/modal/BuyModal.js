@@ -5,7 +5,8 @@ export default function BuyModal({
   product: cart,
   dashboardData,
   userData,
-  onSuccess
+  onSuccess,
+  onClose
 }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -13,6 +14,7 @@ export default function BuyModal({
   const [selectedWallet, setSelectedWallet] = useState("balance");
 
   function Close() {
+    if (onClose) onClose();
     setBuying(false);
   }
 

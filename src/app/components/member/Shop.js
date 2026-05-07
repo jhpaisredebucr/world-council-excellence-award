@@ -98,6 +98,10 @@ export default function Shop({ products, packages, dashboardData, userData }) {
               ...newBalanceData,
             }));
           }}
+          onClose={() => {
+            setProductCart([]);
+            setPackageCart([]);
+          }}
         />
       )}
 
