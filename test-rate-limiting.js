@@ -3,6 +3,50 @@
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
+// Node.js fetch polyfill for older Node versions
+if (typeof fetch === 'undefined') {
+  global.fetch = async (url, options) => {
+    const https = require('https');
+    const http = require('http');
+    const { URL } = require('url');
+    
+    return new Promise((resolve, reject) => {
+      const parsedUrl = new URL(url);
+      const isHttps = parsedUrl.protocol === 'https:';
+      const lib = isHttps ? https : http;
+      
+      const postData = options.body ? Buffer.from(options.body) : null;
+      
+      const req = lib.request({
+        hostname: parsedUrl.hostname,
+        port: parsedUrl.port || (isHttps ? 443 : 80),
+        path: parsedUrl.pathname + parsedUrl.search,
+        method: options.method || 'GET',
+        headers: options.headers || {},
+      }, (res) => {
+        let data = '';
+        res.on('data', chunk => data += chunk);
+        res.on('end', () => {
+          resolve({
+            status: res.statusCode,
+            headers: {
+              get: (name) => res.headers[name.toLowerCase()]
+            },
+            json: async () => JSON.parse(data),
+            text: async () => data
+          });
+        });
+      });
+      
+      req.on('error', reject);
+      if (postData) {
+        req.write(postData);
+      }
+      req.end();
+    });
+  };
+}
+
 async function testRateLimit(endpoint, method = 'POST', body = {}) {
   console.log(`\n=== Testing rate limiting for ${endpoint} ===`);
   

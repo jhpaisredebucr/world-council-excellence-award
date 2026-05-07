@@ -201,10 +201,10 @@ export default function ContactsPage() {
                 <h2 className="text-lg font-bold text-[#191c1b]">Quick Details</h2>
                 <div className="mt-4 space-y-3 text-[#3f4941]">
                   <p>
-                    <span className="font-semibold text-[#191c1b]">Email:</span> <a href="mailto:memonidok0217@gmail.com" className="text-blue-500 cursor-pointer">memonidok0217@gmail.com</a> 
+                    <span className="font-semibold text-[#191c1b]">Email:</span> <a href="mailto:wceaministryinc17@gmail.com" className="text-blue-500 cursor-pointer">wceaministryinc17@gmail.com</a> 
                   </p>
                   <p>
-                    <span className="font-semibold text-[#191c1b]">Facebook:</span> facebook.com
+                    <span className="font-semibold text-[#191c1b]">Facebook:</span> <a href="https://www.facebook.com/WCEAMinistry17" target="_blank" className="text-blue-500 cursor-pointer">World Council Excellence Awards Ministry Inc</a>
                   </p>
                   <p>
                     <span className="font-semibold text-[#191c1b]">Hours:</span> Mon–Sat, 9:00 AM–5:00 PM
