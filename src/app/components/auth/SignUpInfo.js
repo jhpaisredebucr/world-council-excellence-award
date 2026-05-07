@@ -11,6 +11,7 @@ export default function SignUpInfo({ formData, setFormData, nextStep, isLoading,
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [agreeToTerms, setAgreeToTerms] = useState(false);
 
     function validate() {
         const {
@@ -31,6 +32,8 @@ export default function SignUpInfo({ formData, setFormData, nextStep, isLoading,
         if (!password) newErrors.password = "Password is required.";
         if (!confirmPassword)
             newErrors.confirmPassword = "Please confirm your password.";
+        
+        if (!agreeToTerms) newErrors.terms = "You must agree to the Terms of Service and Privacy Policy.";
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (email && !emailRegex.test(email)) {
@@ -234,11 +237,45 @@ export default function SignUpInfo({ formData, setFormData, nextStep, isLoading,
                         />
                     </FormField>
 
+                    {/* Legal Agreement */}
+                    <div className="col-span-1 sm:col-span-2">
+                        <FormField error={errors.terms}>
+                            <label className="flex items-start gap-3 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={agreeToTerms}
+                                    onChange={(e) => setAgreeToTerms(e.target.checked)}
+                                    className="mt-1 w-4 h-4 text-(--primary) border-gray-300 rounded focus:ring-(--primary) focus:ring-2"
+                                />
+                                <span className="text-sm text-gray-600 leading-relaxed">
+                                    I agree to the{" "}
+                                    <a 
+                                        href="/terms" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="text-(--primary) hover:underline font-medium"
+                                    >
+                                        Terms of Service
+                                    </a>
+                                    {" "}and{" "}
+                                    <a 
+                                        href="/privacy" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="text-(--primary) hover:underline font-medium"
+                                    >
+                                        Privacy Policy
+                                    </a>
+                                    {" "}and acknowledge that I have read and understood them.
+                                </span>
+                            </label>
+                        </FormField>
+                    </div>
 
                     {/* BUTTON - Mobile Optimized */}
                     <button
                         onClick={HandleSignUp}
-                        disabled={isLoading}
+                        disabled={isLoading || !agreeToTerms}
                         className="
                         col-span-1 sm:col-span-2
                         mt-4 sm:mt-6 h-12 sm:h-14

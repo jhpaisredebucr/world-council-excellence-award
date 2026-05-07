@@ -1,6 +1,7 @@
 import "../../globals.css";
 import Navbar from "../../components/layout/NavBar";
 import TopBar from "../../components/layout/TopBar";
+import Footer from "../../components/layout/Footer";
 import AdsSidebar from "@/app/components/ui/AdsSidebar";
 
 export const metadata = {
@@ -10,10 +11,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <div className="overflow-hidden">
+    <div className="min-h-screen flex flex-col">
       {/* <TopBar/> */}
       <Navbar/>
-      {children}
+      <main className="flex-grow">
+        {children}
+      </main>
+      <Footer />
       <AdsSidebar />
     </div>
   );

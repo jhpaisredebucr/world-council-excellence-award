@@ -518,12 +518,14 @@ export default function SignUpPayment({
 
 
                 {/* reCAPTCHA */}
-                <div className="mt-8">
-                    <ReCAPTCHA
-                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEbQjYyB8CR2Kw"}
-                        onChange={(token) => setCaptchaToken(token)}
-                        onExpired={() => setCaptchaToken(null)}
-                    />
+                <div className="mt-8 flex justify-center">
+                    <div className="max-w-sm sm:max-w-md transform scale-75 sm:scale-90 md:scale-100 origin-center">
+                        <ReCAPTCHA
+                            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEbQjYyB8CR2Kw"}
+                            onChange={(token) => setCaptchaToken(token)}
+                            onExpired={() => setCaptchaToken(null)}
+                        />
+                    </div>
                 </div>
 
 

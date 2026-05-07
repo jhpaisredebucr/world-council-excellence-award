@@ -406,7 +406,7 @@ export default function Deposits() {
             type="file"
             accept="image/*"
             onChange={handleFileChange}
-            className="mt-1"
+            className="mt-1 file:rounded-lg file:border file:border-gray-300 file:px-2 file:py-2"
           />
 
         </div>

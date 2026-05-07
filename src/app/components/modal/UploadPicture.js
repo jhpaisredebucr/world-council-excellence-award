@@ -43,6 +43,7 @@ export default function UploadImageModal({ isOpen, onClose, onUpload }) {
           type="file"
           accept="image/*"
           onChange={handleFileChange}
+          className="file:rounded-lg file:border file:border-gray-300 file:px-2 file:py-2"
         />
 
         {preview && (
