@@ -31,8 +31,8 @@ export async function POST(req) {
     const formData = await req.formData();
 
     const file = formData.get("file");
-    const folder = formData.get("folder") || "unkown";
-    const public_id = formData.get("public_id") || "unkown";
+    const folder = formData.get("folder") || "unknown";
+    const providedPublicId = formData.get("public_id");
     const overwrite = formData.get("overwrite") === "true";
 
     if (!file) {
@@ -56,8 +56,16 @@ export async function POST(req) {
       );
     }
 
+    // Generate a unique public_id based on folder and file hash to ensure same file = same URL
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+    const crypto = await import('crypto');
+    const fileHash = crypto.createHash('md5').update(buffer).digest('hex').substring(0, 12);
+    const fileExt = file.name.split('.').pop() || 'jpg';
+    const timestamp = Date.now();
+    const public_id = providedPublicId && providedPublicId !== 'unknown'
+      ? providedPublicId.replace(/[^a-zA-Z0-9_-]/g, '_')
+      : `${folder.replace(/[^a-zA-Z0-9]/g, '_')}_${fileHash}_${timestamp}`;
 
     const uploadResult = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_stream(
