@@ -170,7 +170,7 @@ export default function About() {
 
             <button
               onClick={() => router.push("/home/signup")}
-              className="bg-[--primary] px-6 sm:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold text-base shadow-lg hover:shadow-xl hover:opacity-90 active:scale-95 transition-all duration-300"
+              className="bg-(--primary) text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl font-semibold text-base shadow-lg hover:shadow-xl hover:opacity-90 active:scale-95 transition-all duration-300"
             >
               Become a Member
             </button>

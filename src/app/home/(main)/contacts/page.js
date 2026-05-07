@@ -201,7 +201,7 @@ export default function ContactsPage() {
                 <h2 className="text-lg font-bold text-[#191c1b]">Quick Details</h2>
                 <div className="mt-4 space-y-3 text-[#3f4941]">
                   <p>
-                    <span className="font-semibold text-[#191c1b]">Email:</span> memonidok@gmail.com
+                    <span className="font-semibold text-[#191c1b]">Email:</span> <a href="mailto:memonidok0217@gmail.com" className="text-blue-500 cursor-pointer">memonidok0217@gmail.com</a> 
                   </p>
                   <p>
                     <span className="font-semibold text-[#191c1b]">Facebook:</span> facebook.com
@@ -221,10 +221,10 @@ export default function ContactsPage() {
                   You can also reach us directly:
                 </p>
                 <a
-                  href="mailto:support@example.com"
+                  href="mailto:memonidok0217@gmail.com"
                   className="mt-4 inline-flex items-center justify-center w-full py-3 rounded-xl font-bold bg-[#5C4138] text-white hover:bg-[#4a352d] hover:shadow-lg transition-all duration-300 active:scale-[0.98]"
                 >
-                  memonidok@gmail.com
+                  memonidok0217@gmail.com
                 </a>
               </div>
             </aside>
