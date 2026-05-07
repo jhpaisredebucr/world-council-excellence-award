@@ -54,10 +54,15 @@ export default function SignInForm() {
                         : "/u/dashboard"
                 );
             } else {
-                setErrors(prev => ({
-                    ...prev,
-                    general: data.message || "Login failed"
-                }));
+                // Check if the error message indicates pending status
+                if (data.message === "Still waiting for approval") {
+                    router.replace("/pending");
+                } else {
+                    setErrors(prev => ({
+                        ...prev,
+                        general: data.message || "Login failed"
+                    }));
+                }
             }
 
         } catch (err) {

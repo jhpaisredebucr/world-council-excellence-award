@@ -1,9 +1,28 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
+import { applyRateLimit, adminRateLimit, getUserIdFromRequest } from "@/lib/rateLimit";
 
 export async function PATCH(req) {
   try {
+    // Apply rate limiting for admin endpoints
+    const rateLimitUserId = await getUserIdFromRequest(req);
+    const rateLimitResult = await applyRateLimit(req, adminRateLimit, rateLimitUserId);
+    
+    if (!rateLimitResult.success) {
+      const response = NextResponse.json(
+        { success: false, message: "Too many admin requests. Please try again later." },
+        { status: 429 }
+      );
+      
+      // Add rate limit headers
+      Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
+        response.headers.set(key, value);
+      });
+      
+      return response;
+    }
+
     // ─── Auth ────────────────────────────────────────────────────────────────
     const decoded = await requireAdmin(req);
     if (decoded instanceof NextResponse) return decoded;
@@ -69,7 +88,7 @@ export async function PATCH(req) {
       [userIdNum, planType]
     );
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       message: "User approved successfully",
       userId: user.id,
@@ -77,6 +96,13 @@ export async function PATCH(req) {
       referrerId,
       transactionApproved: txResult.length > 0,
     });
+
+    // Add rate limit headers to successful response
+    Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
+      response.headers.set(key, value);
+    });
+
+    return response;
 
   } catch (error) {
     console.error("[portal/admin/members] error:", error);

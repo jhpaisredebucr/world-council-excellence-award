@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import { NextResponse } from "next/server";
+import { applyRateLimit, uploadRateLimit, getUserIdFromRequest } from "@/lib/rateLimit";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -9,6 +10,24 @@ cloudinary.config({
 
 export async function POST(req) {
   try {
+    // Apply rate limiting for uploads
+    const userId = await getUserIdFromRequest(req);
+    const rateLimitResult = await applyRateLimit(req, uploadRateLimit, userId);
+    
+    if (!rateLimitResult.success) {
+      const response = NextResponse.json(
+        { success: false, message: "Too many upload requests. Please try again later." },
+        { status: 429 }
+      );
+      
+      // Add rate limit headers
+      Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
+        response.headers.set(key, value);
+      });
+      
+      return response;
+    }
+
     const formData = await req.formData();
 
     const file = formData.get("file");
@@ -55,11 +74,18 @@ export async function POST(req) {
       ).end(buffer);
     });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       url: uploadResult.secure_url,
       public_id: uploadResult.public_id
     });
+
+    // Add rate limit headers to successful response
+    Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
+      response.headers.set(key, value);
+    });
+
+    return response;
 
   } catch (error) {
     console.error("Cloudinary Upload Error:", error);

@@ -1,9 +1,28 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 import jwt from "jsonwebtoken";
+import { applyRateLimit, generalRateLimit, getUserIdFromRequest } from "@/lib/rateLimit";
 
 export async function GET(req) {
   try {
+    // Apply rate limiting
+    const userId = await getUserIdFromRequest(req);
+    const rateLimitResult = await applyRateLimit(req, generalRateLimit, userId);
+    
+    if (!rateLimitResult.success) {
+      const response = NextResponse.json(
+        { success: false, message: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+      
+      // Add rate limit headers
+      Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
+        response.headers.set(key, value);
+      });
+      
+      return response;
+    }
+
     const { searchParams } = new URL(req.url);
     const targetUserId = searchParams.get("userId"); // Optional: fetch specific user by ID (for admin)
     const listUsers = searchParams.get("list"); // Optional: list all users (for admin)
@@ -41,10 +60,17 @@ export async function GET(req) {
          ORDER BY u.created_at DESC`
       );
 
-      return NextResponse.json({
+      const response = NextResponse.json({
         success: true,
         users: usersRes
       });
+
+      // Add rate limit headers to successful response
+      Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
+        response.headers.set(key, value);
+      });
+
+      return response;
     }
 
     // If userId is provided and requester is admin, fetch that user; otherwise fetch self
@@ -112,7 +138,7 @@ export async function GET(req) {
     // -----------------------
     // FINAL RESPONSE
     // -----------------------
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
 
       userInfo: user,
@@ -121,6 +147,13 @@ export async function GET(req) {
       address: addressRes[0] || null,
       referredBy
     });
+
+    // Add rate limit headers to successful response
+    Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
+      response.headers.set(key, value);
+    });
+
+    return response;
 
   } catch (err) {
     console.error("Error fetching user:", err);
