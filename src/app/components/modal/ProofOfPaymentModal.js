@@ -6,6 +6,7 @@ export default function ProofOfPaymentModal({
   isOpen,
   onClose,
   user,
+  onApprove,
   loading = false
 }) {
   if (!isOpen || !user) return null;
@@ -106,8 +107,9 @@ export default function ProofOfPaymentModal({
                 {user.status === "pending" && (
                   <button
                     onClick={() => {
-                      // This would trigger the approve action
-                      // The parent component will handle the actual approval logic
+                      if (onApprove) {
+                        onApprove(user);
+                      }
                       onClose();
                     }}
                     className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"

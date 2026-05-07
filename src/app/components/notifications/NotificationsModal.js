@@ -207,7 +207,7 @@ export default function NotificationsModal({ isOpen, onClose }) {
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/50 transition-opacity"
         onClick={onClose}
       />
 
@@ -313,7 +313,7 @@ export default function NotificationsModal({ isOpen, onClose }) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                 </svg>
                 <p className="text-base sm:text-lg font-medium mb-2">No notifications found</p>
-                <p className="text-xs sm:text-sm">You're all caught up! Check back later for new notifications.</p>
+                <p className="text-xs sm:text-sm">You&apos;re all caught up! Check back later for new notifications.</p>
               </div>
             ) : (
               <div className="divide-y divide-gray-200">
@@ -358,7 +358,7 @@ export default function NotificationsModal({ isOpen, onClose }) {
                           )}
                           <button
                             onClick={() => handleDelete(notification.id)}
-                            className="text-xs sm:text-sm px-3 py-1.5 bg-red-600 text-white rounded hover:bg-red-700 transition min-h-8 flex-1 sm:flex-none"
+                            className="text-xs sm:text-sm px-3 py-1.5 bg-red-400 text-white rounded hover:bg-red-700 transition min-h-8 flex-1 sm:flex-none"
                           >
                             Delete
                           </button>
