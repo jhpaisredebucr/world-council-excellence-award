@@ -184,16 +184,17 @@ export async function PATCH(req) {
           [
             withdrawal.user_id,
             "Withdrawal Approved",
-            `Your withdrawal of ₱${Number(withdrawal.amount).toLocaleString()} has been approved. Reference: ${withdrawal.reference_number}`,
+            `Your withdrawal of ₱${Number(withdrawal.net_amount ?? withdrawal.amount).toLocaleString()} has been approved. Reference: ${withdrawal.reference_number}`,
             "success"
           ]
         );
 
       } else if (action === "reject") {
         // Refund the balance back to user (since it was deducted on submission)
+        // Refund the full deducted total (amount + processing fee)
         await query(
           `UPDATE users SET balance = balance + $1 WHERE id = $2`,
-          [withdrawal.amount, withdrawal.user_id]
+          [withdrawal.total_deduction ?? withdrawal.amount, withdrawal.user_id]
         );
 
         // Update withdrawal status
@@ -209,7 +210,7 @@ export async function PATCH(req) {
           [
             withdrawal.user_id,
             "Withdrawal Rejected",
-            `Your withdrawal of ₱${Number(withdrawal.amount).toLocaleString()} has been rejected. The amount has been credited back to your balance. Reference: ${withdrawal.reference_number}. Please contact support for more information.`,
+            `Your withdrawal of ₱${Number(withdrawal.net_amount ?? withdrawal.amount).toLocaleString()} has been rejected. The total deducted amount (₱${Number(withdrawal.total_deduction ?? withdrawal.amount).toLocaleString()}) has been credited back to your balance. Reference: ${withdrawal.reference_number}. Please contact support for more information.`, 
             "warning"
           ]
         );

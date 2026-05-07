@@ -171,10 +171,10 @@ export async function PATCH(req) {
 
     try {
       if (action === "approve") {
-        // Credit the user's main balance using the amount field
+        // Credit the user's main balance using NET amount (amount minus processing fee)
         await query(
           `UPDATE users SET balance = balance + $1 WHERE id = $2`,
-          [deposit.amount, deposit.user_id]
+          [deposit.net_amount ?? deposit.amount, deposit.user_id]
         );
 
         // Update deposit status
@@ -190,7 +190,7 @@ export async function PATCH(req) {
           [
             deposit.user_id,
             "Deposit Approved",
-            `Your deposit of ₱${Number(deposit.amount).toLocaleString()} has been approved and credited to your main balance. Reference: ${deposit.reference_number}`,
+            `Your deposit of ₱${Number(deposit.net_amount ?? deposit.amount).toLocaleString()} has been approved and credited to your main balance. Reference: ${deposit.reference_number}`,
             "success"
           ]
         );

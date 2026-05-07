@@ -88,9 +88,11 @@ export default function TransactionModal({ isOpen, onClose, transaction, userDat
                                     </span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">Amount:</span>
+                                    <span className="text-gray-600">
+                                        {transaction.type === "deposit" ? "Net Amount:" : transaction.type === "withdrawal" ? "Net Amount:" : "Amount:"}
+                                    </span>
                                     <span className="font-bold text-lg text-gray-600">
-                                        ₱{Number(transaction.amount).toLocaleString()}
+                                        ₱{Number(transaction.net_amount ?? transaction.amount ?? 0).toLocaleString()}
                                     </span>
                                 </div>
                                 <div className="flex justify-between">

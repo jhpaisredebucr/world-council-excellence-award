@@ -197,7 +197,7 @@ export default function Page() {
 
               <div className="text-sm font-medium text-green-600 md:mt-0 mt-1">
                 <span className="text-xs text-gray-400 md:hidden">Net: </span>
-                ₱{Number(deposit.amount || 0).toLocaleString()}
+                ₱{Number(deposit.net_amount ?? deposit.amount ?? 0).toLocaleString()}
               </div>
 
               <div className="text-sm md:mt-0 mt-1">

@@ -55,8 +55,10 @@ export async function POST(req) {
         reference_number,
         status,
         payment_session_id,
-        proof
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
+        proof,
+        net_amount,
+        total_deduction
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
       [
         user_id,
         'deposit',
@@ -66,7 +68,9 @@ export async function POST(req) {
         reference_number,
         payment_status,
         null,
-        proof || null
+        proof || null,
+        feeCalculation.netAmount,
+        feeCalculation.totalAmount
       ]
     );
 

@@ -53,7 +53,7 @@ export default function DepositApproveModal({ isOpen, deposit, loading, onClose,
           )}
           <div className="flex justify-between">
             <span className="font-medium">Net Amount:</span>
-            <span className="text-green-600">₱{Number(deposit.amount || 0).toLocaleString()}</span>
+            <span className="text-green-600">₱{Number(deposit.net_amount ?? deposit.amount ?? 0).toLocaleString()}</span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium">Payment Method:</span>

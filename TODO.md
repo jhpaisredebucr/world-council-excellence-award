@@ -1,11 +1,10 @@
 # TODO
 
-- [ ] Unify design for home pages: `src/app/home/(main)/page.js`, `src/app/home/(main)/contacts/page.js`, `src/app/home/(main)/memberships/page.js`
-  - [ ] Make consistent containers, spacing, typography
-  - [ ] Simplify hero sections to clean modern layout
-  - [ ] Standardize cards/buttons (subtle borders/shadows, rounded corners)
-  - [ ] Keep existing functionality and links intact
-- [ ] Run `npm run lint` and `npm run build`
-- [ ] Smoke test in browser for `/home`, `/home/contacts`, `/home/memberships`
+- [ ] Add **net amount** handling for deposits and withdrawals so admin approval credits/debits the correct amount after processing fees.
+- [ ] Update API payloads and transaction records to persist `net_amount` (and related fields) instead of using raw `amount`.
+- [ ] Update admin approve/reject logic to use persisted `net_amount` for balance updates.
+- [ ] Update any UI/admin modals to display net amount where relevant.
+- [ ] Run quick sanity check (lint/build or targeted tests) if available.
+- [x] DB SQL prepared: add-netamount-columns.sql
 
 
