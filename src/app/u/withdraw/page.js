@@ -24,6 +24,7 @@ export default function Withdraw() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [successData, setSuccessData] = useState(null);
   const [initialLoading, setInitialLoading] = useState(true);
   const [feeInfo, setFeeInfo] = useState(null);
   const [calculatedFees, setCalculatedFees] = useState(null);
@@ -135,6 +136,7 @@ export default function Withdraw() {
       }
 
       setSuccess(true);
+      setSuccessData({ amount: parseFloat(amount), fee: calculatedFees?.fee || 0 });
       setMethod("");
       setAmount("");
       setAccountInfo("");
@@ -241,7 +243,7 @@ export default function Withdraw() {
               <span className="font-bold text-red-600">₱{calculatedFees.totalAmount.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm mt-1">
-              <span className="font-semibold">You'll Receive:</span>
+              <span className="font-semibold">You&apos;ll Receive:</span>
               <span className="font-bold text-green-600">₱{parseFloat(amount).toFixed(2)}</span>
             </div>
           </div>
@@ -252,7 +254,7 @@ export default function Withdraw() {
           <div className="mt-4 text-green-600 text-sm bg-green-50 p-3 rounded">
             <p className="font-semibold mb-2">Withdrawal request submitted successfully!</p>
             <p>Reference: Processing...</p>
-            <p>Amount: ₱{parseFloat(amount).toFixed(2)}</p>
+            <p>Amount: ₱{successData?.amount?.toFixed(2)}</p>
             <p className="text-xs mt-2">Your withdrawal will be processed within 1-3 business days.</p>
           </div>
         )}

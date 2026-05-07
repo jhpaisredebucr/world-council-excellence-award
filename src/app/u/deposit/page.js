@@ -19,6 +19,7 @@ export default function Deposits() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [successData, setSuccessData] = useState(null);
   const [initialLoading, setInitialLoading] = useState(true);
 
 
@@ -268,6 +269,7 @@ export default function Deposits() {
       }
 
       setSuccess(true);
+      setSuccessData({ netAmount: calculatedFees.netAmount, reference_number: transactionId || referenceNo || 'Processing...' });
       setMethod("");
       setAmount("");
       setTransactionId("");
@@ -442,8 +444,8 @@ export default function Deposits() {
 
           <div className="mt-4 text-green-600 text-sm bg-green-50 p-3 rounded">
             <p className="font-semibold mb-2">Deposit submitted successfully!</p>
-            <p>Reference: {calculatedFees?.reference_number || 'Processing...'}</p>
-            <p>Net amount to be credited: ₱{calculatedFees?.netAmount?.toFixed(2) || '0.00'}</p>
+            <p>Reference: {successData?.reference_number}</p>
+            <p>Net amount to be credited: ₱{successData?.netAmount?.toFixed(2)}</p>
             <p className="text-xs mt-2">Your deposit will be processed within 24 hours.</p>
           </div>
 
