@@ -3,6 +3,8 @@
 'use client'
 
 import { useEffect, useState } from "react";
+import { calculateFees, getFeeInfo, getAvailablePaymentMethods } from "@/lib/paymongo";
+
 
 // Basic withdrawal methods (no PayMongo)
 const WITHDRAWAL_METHODS = [
@@ -23,6 +25,9 @@ export default function Withdraw() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [feeInfo, setFeeInfo] = useState(null);
+  const [calculatedFees, setCalculatedFees] = useState(null);
+
 
   // -----------------------
   // FETCH USER
@@ -50,40 +55,23 @@ export default function Withdraw() {
     loadData();
   }, []);
 
-  if (initialLoading) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-dashed"></div>
-          <div className="text-xl text-gray-700">Loading...</div>
-        </div>
-      </div>
-    );
-  }
+  // -----------------------
+  // CALCULATE FEES (UI preview)
+  // -----------------------
+  useEffect(() => {
 
-  // Only show full page error for serious errors, not validation messages
-  const isValidationError = error && (
-    error.includes("Select withdrawal method") ||
-    error.includes("Enter valid amount") ||
-    error.includes("Enter account details") ||
-    error.includes("Insufficient balance")
-  );
+    const amountNum = parseFloat(amount);
+    if (!method || !amount || isNaN(amountNum) || amountNum <= 0) {
+      setCalculatedFees(null);
+      setFeeInfo(null);
+      return;
+    }
 
-  if (error && !success && !isValidationError) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="flex max-w-md flex-col items-center gap-4 text-center text-xl text-red-500">
-          <p>{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-4 rounded bg-primary px-4 py-2 text-white hover:bg-secondary"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
+    const fees = calculateFees(amountNum, method, 'withdrawal');
+    const details = getFeeInfo(method, 'withdrawal');
+    setCalculatedFees(fees);
+    setFeeInfo(details);
+  }, [amount, method]);
 
   // -----------------------
   // VALIDATE + SUBMIT
@@ -91,6 +79,7 @@ export default function Withdraw() {
   async function SubmitWithdraw() {
 
     setError(null);
+
 
     if (!userData?.userInfo?.id) {
       setError("User not loaded.");
@@ -107,10 +96,12 @@ export default function Withdraw() {
       return;
     }
 
-    // Check if user has sufficient balance
-    const totalDeduction = parseFloat(amount);
+    // Check if user has sufficient balance (amount + fees must not exceed balance)
+    const amountNum = parseFloat(amount);
+    const feesNum = calculatedFees ? calculatedFees.fee : 0;
+    const totalDeduction = amountNum + feesNum;
     if (userBalance < totalDeduction) {
-      setError(`Insufficient balance. Available: ₱${userBalance.toFixed(2)}, Required: ₱${totalDeduction.toFixed(2)}`);
+      setError(`Insufficient balance. Available: ₱${userBalance.toFixed(2)}, Required: ₱${totalDeduction.toFixed(2)} (includes ₱${feesNum.toFixed(2)} fee)`);
       return;
     }
 
@@ -229,6 +220,32 @@ export default function Withdraw() {
             max={userBalance}
           />
         </div>
+
+        {/* FEES PREVIEW */}
+        {calculatedFees !== null && (
+          <div className="mt-4 bg-blue-50 p-3 rounded-lg">
+            <p className="text-sm font-semibold">Fee Breakdown</p>
+            <div className="flex justify-between text-sm mt-1">
+              <span>Withdrawal Amount:</span>
+              <span className="font-medium">₱{parseFloat(amount).toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-sm mt-1">
+              <span>Fee ({feeInfo?.name || 'Processing Fee'}):</span>
+              <span className="font-medium">₱{calculatedFees.fee.toFixed(2)}</span>
+            </div>
+            {feeInfo?.percentage > 0 && (
+              <p className="text-xs text-gray-500 mt-1">{feeInfo.percentage}% of amount</p>
+            )}
+            <div className="flex justify-between text-sm mt-2 pt-2 border-t border-blue-200">
+              <span className="font-semibold">Total Deduction:</span>
+              <span className="font-bold text-red-600">₱{calculatedFees.totalAmount.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-sm mt-1">
+              <span className="font-semibold">You'll Receive:</span>
+              <span className="font-bold text-green-600">₱{parseFloat(amount).toFixed(2)}</span>
+            </div>
+          </div>
+        )}
 
         {/* SUCCESS */}
         {success && (
