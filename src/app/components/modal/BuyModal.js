@@ -139,7 +139,7 @@ async function Buy() {
             {/* Balance (Main Wallet) */}
             <label 
               className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
-                selectedWallet === "balance" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-50"
+                selectedWallet === "balance" ? "border-(--primary) bg-(--primary)/10" : "border-gray-200 hover:bg-gray-50"
               }`}
             >
               <div className="flex items-center gap-2">
@@ -149,7 +149,7 @@ async function Buy() {
                   value="balance"
                   checked={selectedWallet === "balance"}
                   onChange={(e) => setSelectedWallet(e.target.value)}
-                  className="w-4 h-4 text-blue-500"
+                  className="w-4 h-4 accent-(--primary)"
                 />
                 <span className="font-medium">Main Wallet</span>
               </div>
@@ -159,7 +159,7 @@ async function Buy() {
             {/* PC Credits */}
             <label 
               className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
-                selectedWallet === "pc_credit" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-50"
+                selectedWallet === "pc_credit" ? "border-(--primary) bg-(--primary)/10" : "border-gray-200 hover:bg-gray-50"
               }`}
             >
               <div className="flex items-center gap-2">
@@ -169,7 +169,7 @@ async function Buy() {
                   value="pc_credit"
                   checked={selectedWallet === "pc_credit"}
                   onChange={(e) => setSelectedWallet(e.target.value)}
-                  className="w-4 h-4 text-blue-500"
+                  className="w-4 h-4 accent-(--primary)"
                 />
                 <span className="font-medium">PC Credits</span>
               </div>
@@ -179,7 +179,7 @@ async function Buy() {
             {/* PPV Credits */}
             <label 
               className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
-                selectedWallet === "ppv_credit" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-50"
+                selectedWallet === "ppv_credit" ? "border-(--primary) bg-(--primary)/10" : "border-gray-200 hover:bg-gray-50"
               }`}
             >
               <div className="flex items-center gap-2">
@@ -189,7 +189,7 @@ async function Buy() {
                   value="ppv_credit"
                   checked={selectedWallet === "ppv_credit"}
                   onChange={(e) => setSelectedWallet(e.target.value)}
-                  className="w-4 h-4 text-blue-500"
+                  className="w-4 h-4 accent-(--primary)"
                 />
                 <span className="font-medium">PPV Credits</span>
               </div>
@@ -218,7 +218,7 @@ async function Buy() {
             <button
               onClick={Buy}
               disabled={loading}
-              className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 w-full sm:w-auto"
+              className="px-4 py-2 bg-(--primary) text-white rounded disabled:opacity-50 w-full sm:w-auto"
             >
               {loading ? "Processing..." : "Buy All"}
             </button>
