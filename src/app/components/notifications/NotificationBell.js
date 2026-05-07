@@ -112,7 +112,7 @@ export default function NotificationBell() {
             onClick={() => setIsOpen(false)}
           />
           
-          <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-1/2 sm:top-auto sm:mt-2 -translate-y-1/2 sm:translate-y-0 w-full sm:w-80 max-w-none sm:max-w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-20">
+          <div className="fixed sm:absolute inset-x-2 sm:inset-x-auto sm:right-0 top-1/2 sm:top-auto sm:mt-2 -translate-y-1/2 sm:translate-y-0 w-[calc(100vw-1rem)] sm:w-80 max-w-none sm:max-w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-20">
             <div className="p-3 sm:p-4 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">Notifications</h3>
@@ -124,7 +124,7 @@ export default function NotificationBell() {
               </div>
             </div>
             
-            <div className="max-h-80 sm:max-h-96 overflow-y-auto">
+            <div className="max-h-72 sm:max-h-96 overflow-y-auto">
               {recentNotifications.length === 0 ? (
                 <div className="p-4 text-center text-gray-500">
                   No notifications
@@ -148,7 +148,7 @@ export default function NotificationBell() {
                             }`}>
                               {notification.title}
                             </h4>
-                            <p className={`text-xs sm:text-sm text-gray-500 mt-1 break-word ${
+                            <p className={`text-xs sm:text-sm text-gray-500 mt-1 wrap-break-word ${
                               isExpanded ? "whitespace-pre-wrap" : "line-clamp-2"
                             }`}>
                               {notification.message}

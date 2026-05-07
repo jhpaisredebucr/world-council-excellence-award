@@ -214,7 +214,7 @@ export default function NotificationsModal({ isOpen, onClose }) {
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-2 sm:p-4">
         <div 
-          className="relative bg-white rounded-lg shadow-xl w-full max-w-4xl sm:max-w-3xl md:max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden mx-2 sm:mx-0"
+          className="relative bg-white rounded-lg shadow-xl w-full max-w-[95vw] sm:max-w-3xl md:max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden mx-2 sm:mx-0"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
@@ -291,7 +291,7 @@ export default function NotificationsModal({ isOpen, onClose }) {
           </div>
 
           {/* Content */}
-          <div className="overflow-y-auto" style={{ maxHeight: 'calc(95vh - 200px)' }}>
+          <div className="overflow-y-auto" style={{ maxHeight: 'calc(95vh - 220px)' }}>
             {loading && notifications.length === 0 ? (
               <div className="p-12">
                 <div style={{
@@ -351,14 +351,14 @@ export default function NotificationsModal({ isOpen, onClose }) {
                           {!notification.read && (
                             <button
                               onClick={() => handleMarkAsRead(notification.id)}
-                              className="text-xs px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition min-h-8"
+                              className="text-xs sm:text-sm px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition min-h-8 flex-1 sm:flex-none"
                             >
                               Mark as Read
                             </button>
                           )}
                           <button
                             onClick={() => handleDelete(notification.id)}
-                            className="text-xs px-3 py-1.5 bg-red-600 text-white rounded hover:bg-red-700 transition min-h-8"
+                            className="text-xs sm:text-sm px-3 py-1.5 bg-red-600 text-white rounded hover:bg-red-700 transition min-h-8 flex-1 sm:flex-none"
                           >
                             Delete
                           </button>
