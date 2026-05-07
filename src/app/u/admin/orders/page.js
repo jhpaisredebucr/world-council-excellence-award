@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 import OrderApproveModal from "./OrderApproveModal";
 import ProfileModal from "@/app/components/admin/ProfileModal";
 
@@ -17,6 +18,8 @@ export default function Page() {
   const [pagination, setPagination] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const limit = 20;
+
+  const router = useRouter();
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -145,7 +148,7 @@ return (
         <h2 className="text-xl font-bold">Order Approvals</h2>
         <div className="flex flex-wrap gap-2">
           <button
-            onClick={fetchData}
+            onClick={() => {fetchData();}}
             className="px-4 py-2 bg-primary text-white rounded hover:bg-secondary"
           >
             Refresh
