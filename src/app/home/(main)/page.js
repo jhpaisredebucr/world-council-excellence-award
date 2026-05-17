@@ -251,6 +251,18 @@ export default function HomePage() {
             {/* Media Card 1 - Video Placeholder */}
             <div className="media-card bg-wcea-gradient-soft rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300" style={{ animationDelay: "0.1s" }}>
               <div className="relative aspect-video bg-wcea-gradient-dark flex items-center justify-center group cursor-pointer">
+                {/* Slide image placeholder (path in public/). Replace file at this path to change the visuals. */}
+                <Image
+                  src="/images/carousel/slide-1.png"
+                  alt="WCEA Humanitarian Mission"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover opacity-40"
+                  priority={true}
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <svg className="w-6 h-6 text-[#5C4138] ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
@@ -267,7 +279,18 @@ export default function HomePage() {
             {/* Media Card 2 - Image Placeholder */}
             <div className="media-card bg-wcea-gradient-soft rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300" style={{ animationDelay: "0.2s" }}>
               <div className="relative aspect-video bg-wcea-gradient flex items-center justify-center">
-                <div className="text-center p-4">
+                {/* Slide image placeholder (path in public/). Replace file at this path to change the visuals. */}
+                <Image
+                  src="/images/carousel/slide-2.png"
+                  alt="Community Wellness Event"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover opacity-40"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+                <div className="relative text-center p-4">
                   <svg className="w-12 h-12 text-white/60 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
@@ -283,7 +306,18 @@ export default function HomePage() {
             {/* Media Card 3 - Image Placeholder */}
             <div className="media-card bg-wcea-gradient-soft rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300" style={{ animationDelay: "0.3s" }}>
               <div className="relative aspect-video bg-wcea-gradient-gold flex items-center justify-center">
-                <div className="text-center p-4">
+                {/* Slide image placeholder (path in public/). Replace file at this path to change the visuals. */}
+                <Image
+                  src="/images/carousel/slide-4.png"
+                  alt="Leadership Training"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover opacity-40"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+                <div className="relative text-center p-4">
                   <svg className="w-12 h-12 text-white/60 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -502,6 +536,7 @@ function CheckIcon() {
 /* ── AUTO-ROTATING CAROUSEL ── */
 const CAROUSEL_SLIDES = [
   {
+    imageSrc: "/images/carousel/slide-1.png",
     gradient: "from-[#5C4138] to-[#8D5D28]",
     icon: (
       <svg className="w-16 h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -512,6 +547,7 @@ const CAROUSEL_SLIDES = [
     desc: "Community health and wellness initiatives"
   },
   {
+    imageSrc: "/images/carousel/slide-2.png",
     gradient: "from-[#8D5D28] to-[#c49a6c]",
     icon: (
       <svg className="w-16 h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -522,6 +558,7 @@ const CAROUSEL_SLIDES = [
     desc: "Wellness programs for every family"
   },
   {
+    imageSrc: "/images/carousel/slide-3.png",
     gradient: "from-[#3d2b25] to-[#5C4138]",
     icon: (
       <svg className="w-16 h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -533,6 +570,7 @@ const CAROUSEL_SLIDES = [
     desc: "Making a difference worldwide"
   },
   {
+    imageSrc: "/images/carousel/slide-4.png",
     gradient: "from-[#6e4f3e] to-[#a67c4a]",
     icon: (
       <svg className="w-16 h-16 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -570,14 +608,28 @@ function Carousel() {
   return (
     <div className="feature-image w-full md:w-1/2 relative overflow-hidden rounded-xl">
       <div className="aspect-4/5 relative overflow-hidden rounded-xl">
-        {/* Gradient background instead of image */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${slide.gradient} rounded-xl`} />
+        {/* Slide image (path in public/). Replace the file at this path to change the carousel visuals. */}
+        {slide.imageSrc ? (
+            <Image
+            src={slide.imageSrc}
+            alt={slide.label}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover opacity-100"
+            priority={current === CAROUSEL_SLIDES.length - 1}
+          />
+        ) : null}
+
+        {/* Gradient overlay */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${slide.gradient} rounded-xl opacity-70`} />
+
         {/* Decorative pattern circles */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-10 left-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
           <div className="absolute bottom-10 right-10 w-60 h-60 bg-white/10 rounded-full blur-3xl" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/5 rounded-full blur-xl" />
         </div>
+
         {/* Icon and label */}
         <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
           <div className="mb-4 opacity-80">{slide.icon}</div>
