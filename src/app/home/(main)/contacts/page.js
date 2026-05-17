@@ -95,23 +95,32 @@ export default function ContactsPage() {
       <main className="min-h-screen pb-16">
         <div className="mx-auto">
           {/* Hero Section */}
-          <section className="py-16 px-4 bg-gradient-to-br from-[#5C4138] to-[#8D5D28] text-white md:min-h-90">
+          <section className="py-20 px-4 bg-wcea-animated text-white md:min-h-90 relative overflow-hidden">
+            {/* Animated gradient particles */}
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-20 left-20 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse" />
+              <div className="absolute bottom-10 right-20 w-80 h-80 bg-[#c49a6c]/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2.5s' }} />
+            </div>
 
-            <div className="max-w-3xl mx-auto text-center">
+            <div className="max-w-3xl mx-auto text-center relative z-10">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 text-white/90 text-sm mb-6">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13l-4.5-2.5L8 15l1-4.5L5 7l4.5-.5L12 3l2.5 3.5L19 7l-4 3.5 1 4.5z"/></svg>
+                <span>Get In Touch</span>
+              </div>
               <h1 className="hero-title text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
               <p className="hero-sub text-lg md:text-xl text-white/90 mb-8">
-                Have a question or need support? Send us a message and we&apos;ll respond as soon as possible.
+                Have a question or need support? Send us a message and we'll respond as soon as possible.
               </p>
               <div className="hero-badges flex flex-wrap justify-center gap-4 text-sm">
-                  <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
-                      <span className="font-bold">&lt;24hrs</span>
+                  <div className="glass-wcea px-4 py-2 rounded-lg">
+                      <span className="font-bold">{'<24hrs'}</span>
                       <span className="ml-2 text-white/80">Response</span>
                   </div>
-                  <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
+                  <div className="glass-wcea px-4 py-2 rounded-lg">
                       <span className="font-bold">Mon–Sat</span>
                       <span className="ml-2 text-white/80">Open</span>
                   </div>
-                  <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
+                  <div className="glass-wcea px-4 py-2 rounded-lg">
                       <span className="font-bold">9AM – 5PM</span>
                       <span className="ml-2 text-white/80">Hours</span>
                   </div>
@@ -132,7 +141,7 @@ export default function ContactsPage() {
                     name="name"
                     value={form.name}
                     onChange={onChange}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-[#5C4138]/30 focus:border-[#5C4138] transition-all duration-200"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-[#8D5D28]/30 focus:border-[#8D5D28] transition-all duration-200"
                     placeholder="Your name"
                     autoComplete="name"
                   />
@@ -147,7 +156,7 @@ export default function ContactsPage() {
                     name="email"
                     value={form.email}
                     onChange={onChange}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-[#5C4138]/30 focus:border-[#5C4138] transition-all duration-200"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-[#8D5D28]/30 focus:border-[#8D5D28] transition-all duration-200"
                     placeholder="you@example.com"
                     autoComplete="email"
                   />
@@ -163,7 +172,7 @@ export default function ContactsPage() {
                     value={form.message}
                     onChange={onChange}
                     rows={6}
-                    className="w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-[#5C4138]/30 focus:border-[#5C4138] transition-all duration-200"
+                    className="w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-[#8D5D28]/30 focus:border-[#8D5D28] transition-all duration-200"
                     placeholder="How can we help?"
                   />
                 </div>
@@ -185,7 +194,7 @@ export default function ContactsPage() {
                 <button
                   type="submit"
                   disabled={!canSubmit || status.type === "idle" && status.message === "Sending..."}
-                  className="w-full py-4 rounded-xl font-bold bg-[#5C4138] text-white hover:bg-[#4a352d] hover:shadow-lg transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 rounded-xl font-bold btn-wcea disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Send Message
                 </button>
@@ -198,13 +207,13 @@ export default function ContactsPage() {
 
             <aside className="space-y-4">
               <div className="quick-details bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
-                <h2 className="text-lg font-bold text-[#191c1b]">Quick Details</h2>
+                <h2 className="text-lg font-bold text-wcea-gradient">Quick Details</h2>
                 <div className="mt-4 space-y-3 text-[#3f4941]">
                   <p>
-                    <span className="font-semibold text-[#191c1b]">Email:</span> <a href="mailto:wceaministryinc17@gmail.com" className="text-blue-500 cursor-pointer">wceaministryinc17@gmail.com</a> 
+                    <span className="font-semibold text-[#191c1b]">Email:</span> <a href="mailto:wceaministryinc17@gmail.com" className="text-[#8D5D28] cursor-pointer hover:text-[#5C4138]">wceaministryinc17@gmail.com</a> 
                   </p>
                   <p>
-                    <span className="font-semibold text-[#191c1b]">Facebook:</span> <a href="https://www.facebook.com/WCEAMinistry17" target="_blank" className="text-blue-500 cursor-pointer">World Council Excellence Awards Ministry Inc</a>
+                    <span className="font-semibold text-[#191c1b]">Facebook:</span> <a href="https://www.facebook.com/WCEAMinistry17" target="_blank" className="text-[#8D5D28] cursor-pointer hover:text-[#5C4138]">World Council Excellence Awards Ministry Inc</a>
                   </p>
                   <p>
                     <span className="font-semibold text-[#191c1b]">Hours:</span> Mon–Sat, 9:00 AM–5:00 PM
@@ -216,13 +225,13 @@ export default function ContactsPage() {
               </div>
 
               <div className="prefer-email bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-md transition-shadow duration-300">
-                <h3 className="text-lg font-bold text-[#191c1b]">Prefer email?</h3>
+                <h3 className="text-lg font-bold text-wcea-gradient">Prefer email?</h3>
                 <p className="mt-2 text-[#3f4941]">
                   You can also reach us directly:
                 </p>
                 <a
                   href="mailto:memonidok0217@gmail.com"
-                  className="mt-4 inline-flex items-center justify-center w-full py-3 rounded-xl font-bold bg-[#5C4138] text-white hover:bg-[#4a352d] hover:shadow-lg transition-all duration-300 active:scale-[0.98]"
+                  className="mt-4 inline-flex items-center justify-center w-full py-3 rounded-xl font-bold btn-wcea"
                 >
                   memonidok0217@gmail.com
                 </a>
@@ -234,4 +243,3 @@ export default function ContactsPage() {
     </div>
   );
 }
-

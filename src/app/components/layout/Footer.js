@@ -4,17 +4,22 @@ export default function Footer() {
     const currentYear = new Date().getFullYear();
     
     return (
-        <footer className="bg-gray-900 text-gray-300 mt-auto">
+        <footer className="bg-wcea-gradient-dark text-gray-300 mt-auto">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                {/* Top decorative gradient line */}
+                <div className="h-1 w-20 bg-gradient-to-r from-[#8D5D28] to-[#c49a6c] rounded-full mb-8" />
+                
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Company Info */}
                     <div className="col-span-1 md:col-span-2">
                         <div className="flex items-center gap-2 mb-4">
-                            <img 
-                                src="/images/logos/wcea.png" 
-                                alt="WCEA Logo" 
-                                className="w-8 h-8"
-                            />
+                            <div className="bg-white/20 rounded-full p-1">
+                                <img 
+                                    src="/images/logos/wcea.png" 
+                                    alt="WCEA Logo" 
+                                    className="w-8 h-8 "
+                                />
+                            </div>
                             <h3 className="text-white text-lg font-semibold">
                                 World Council Excellence Award
                             </h3>
@@ -27,12 +32,15 @@ export default function Footer() {
 
                     {/* Quick Links */}
                     <div>
-                        <h4 className="text-white font-semibold mb-4">Quick Links</h4>
+                        <h4 className="text-white font-semibold mb-4 relative inline-block">
+                            Quick Links
+                            <span className="absolute -bottom-1 left-0 w-8 h-0.5 bg-[#8D5D28] rounded-full" />
+                        </h4>
                         <ul className="space-y-2 text-sm">
                             <li>
                                 <Link 
                                     href="/home" 
-                                    className="hover:text-white transition-colors"
+                                    className="hover:text-[#f0d5b8] transition-colors"
                                 >
                                     Home
                                 </Link>
@@ -40,7 +48,7 @@ export default function Footer() {
                             <li>
                                 <Link 
                                     href="/home/memberships" 
-                                    className="hover:text-white transition-colors"
+                                    className="hover:text-[#f0d5b8] transition-colors"
                                 >
                                     Memberships
                                 </Link>
@@ -48,7 +56,7 @@ export default function Footer() {
                             <li>
                                 <Link 
                                     href="/home/about" 
-                                    className="hover:text-white transition-colors"
+                                    className="hover:text-[#f0d5b8] transition-colors"
                                 >
                                     About Us
                                 </Link>
@@ -56,7 +64,7 @@ export default function Footer() {
                             <li>
                                 <Link 
                                     href="/home/contacts" 
-                                    className="hover:text-white transition-colors"
+                                    className="hover:text-[#f0d5b8] transition-colors"
                                 >
                                     Contact
                                 </Link>
@@ -66,12 +74,15 @@ export default function Footer() {
 
                     {/* Legal */}
                     <div>
-                        <h4 className="text-white font-semibold mb-4">Legal</h4>
+                        <h4 className="text-white font-semibold mb-4 relative inline-block">
+                            Legal
+                            <span className="absolute -bottom-1 left-0 w-8 h-0.5 bg-[#8D5D28] rounded-full" />
+                        </h4>
                         <ul className="space-y-2 text-sm">
                             <li>
                                 <Link 
                                     href="/privacy" 
-                                    className="hover:text-white transition-colors"
+                                    className="hover:text-[#f0d5b8] transition-colors"
                                 >
                                     Privacy Policy
                                 </Link>
@@ -79,7 +90,7 @@ export default function Footer() {
                             <li>
                                 <Link 
                                     href="/terms" 
-                                    className="hover:text-white transition-colors"
+                                    className="hover:text-[#f0d5b8] transition-colors"
                                 >
                                     Terms of Service
                                 </Link>
@@ -87,7 +98,7 @@ export default function Footer() {
                             <li>
                                 <Link 
                                     href="/refund-policy" 
-                                    className="hover:text-white transition-colors"
+                                    className="hover:text-[#f0d5b8] transition-colors"
                                 >
                                     Refund Policy
                                 </Link>
@@ -97,7 +108,7 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="border-t border-gray-800 mt-8 pt-8">
+                <div className="border-t border-white/10 mt-8 pt-8">
                     <div className="flex flex-col md:flex-row justify-between items-center">
                         <div className="flex flex-col items-center md:items-start">
                             <p className="text-gray-400 text-sm">
@@ -108,7 +119,7 @@ export default function Footer() {
                                 <a 
                                     href="https://www.facebook.com/profile.php?id=100063680607062" 
                                     target="_blank" 
-                                    className="text-gray-300 hover:text-white underline"
+                                    className="text-[#f0d5b8] hover:text-white underline"
                                 >
                                     Bok Tech
                                 </a>

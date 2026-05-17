@@ -17,6 +17,12 @@
 --status-approved: var(--success-color);
 --status-pending: var(--warn-color);
 --status-declined: var(--error-color);
+
+/* WCEA Gradient Colors */
+--wcea-brown: #5C4138;
+--wcea-gold: #8D5D28;
+--wcea-cream: #f5efe6;
+--wcea-light: #fafaf8;
 }
 
 /* ---------- Theme 2: Dark ---------- */
@@ -144,4 +150,183 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
+}
+
+/* ─── WCEA GRADIENT UTILITY CLASSES ─── */
+
+/* Primary WCEA gradient (brown → gold) */
+.bg-wcea-gradient {
+  background: linear-gradient(135deg, #5C4138 0%, #8D5D28 50%, #a67c4a 100%);
+}
+
+.bg-wcea-gradient-soft {
+  background: linear-gradient(135deg, #f5efe6 0%, #fafaf8 50%, #fff9f0 100%);
+}
+
+.bg-wcea-gradient-gold {
+  background: linear-gradient(135deg, #8D5D28 0%, #c49a6c 50%, #e8d5b7 100%);
+}
+
+.bg-wcea-gradient-dark {
+  background: linear-gradient(135deg, #3d2b25 0%, #5C4138 50%, #6e4f3e 100%);
+}
+
+/* Text gradients */
+.text-wcea-gradient {
+  background: linear-gradient(135deg, #5C4138, #8D5D28);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-wcea-gradient-gold {
+  background: linear-gradient(135deg, #8D5D28, #c49a6c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated gradient background for hero sections */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.bg-wcea-animated {
+  background: linear-gradient(-45deg, #5C4138, #8D5D28, #7a5540, #a67c4a);
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+}
+
+/* Glass morphism utility */
+.glass-wcea {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-wcea-dark {
+  background: rgba(92, 65, 56, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(92, 65, 56, 0.15);
+}
+
+/* Glow effects */
+.glow-wcea {
+  box-shadow: 0 0 30px rgba(92, 65, 56, 0.15), 0 0 60px rgba(141, 93, 40, 0.1);
+}
+
+.glow-wcea-gold {
+  box-shadow: 0 0 30px rgba(141, 93, 40, 0.2), 0 0 60px rgba(141, 93, 40, 0.1);
+}
+
+/* WCEA border accents */
+.border-wcea-gradient {
+  border-image: linear-gradient(135deg, #5C4138, #8D5D28) 1;
+  border-width: 2px;
+  border-style: solid;
+}
+
+/* WCEA Button style */
+.btn-wcea {
+  background: linear-gradient(135deg, #5C4138, #8D5D28);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-wcea:hover {
+  background: linear-gradient(135deg, #4a352d, #7a4e22);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(92, 65, 56, 0.3);
+}
+
+.btn-wcea-outline {
+  background: transparent;
+  border: 2px solid transparent;
+  border-image: linear-gradient(135deg, #5C4138, #8D5D28) 1;
+  color: #5C4138;
+  transition: all 0.3s ease;
+}
+
+.btn-wcea-outline:hover {
+  background: linear-gradient(135deg, #5C4138, #8D5D28);
+  color: white;
+}
+
+/* Animated card with WCEA gradient border */
+.card-wcea {
+  position: relative;
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.card-wcea::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #5C4138, #8D5D28, #c49a6c, #5C4138);
+  background-size: 400% 400%;
+  border-radius: inherit;
+  z-index: -1;
+  animation: gradientShift 6s ease infinite;
+  opacity: 0.5;
+}
+
+/* Shimmer effect for cards */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-wcea {
+  background: linear-gradient(90deg, transparent, rgba(141, 93, 40, 0.08), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Heading underline accent */
+.wcea-heading-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.wcea-heading-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #5C4138, #8D5D28);
+  border-radius: 2px;
+}
+
+.wcea-heading-underline-center::after {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Pulse glow for CTA buttons */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(141, 93, 40, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(141, 93, 40, 0.5), 0 0 60px rgba(92, 65, 56, 0.2); }
+}
+
+.btn-wcea-pulse {
+  background: linear-gradient(135deg, #5C4138, #8D5D28);
+  color: white;
+  animation: pulseGlow 2s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+.btn-wcea-pulse:hover {
+  transform: translateY(-2px) scale(1.02);
+  animation: pulseGlow 1.5s ease-in-out infinite;
 }

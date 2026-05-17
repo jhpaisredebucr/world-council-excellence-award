@@ -32,13 +32,13 @@ useEffect(() => {
     if (loading) return null; // or a spinner
 
     return (
-        <div className="h-10 bg-(--primary) text-(--background) 
+        <div className="h-10 bg-wcea-gradient-dark text-white 
             font-semibold flex items-center text-xs sm:text-sm md:text-base px-4
             "> 
             
             <span className="mr-4">☎ +63 999 676 6767</span>
             <span>✉ placeholder@gmail.com</span>
-            <a className="hover:scale-104 hover:text-(--secondary) transition duration-75 ml-auto cursor-pointer" onClick={GoDashboard}>
+            <a className="hover:scale-104 hover:text-[#f0d5b8] transition duration-75 ml-auto cursor-pointer" onClick={GoDashboard}>
                 {loggedIn ? "Go to Dashboard >" : "Sign In >"}
             </a>
         </div>

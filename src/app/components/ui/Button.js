@@ -32,7 +32,7 @@ function Button({ children, onClick, icon, bgColor="bg-(--primary)", textColor="
 /* ─────────────────────────────
    NAVBAR BUTTON (ACTIVE UNDERLINE)
 ───────────────────────────── */
-function NavBarButton({ children, href, onClick, className = "" }) {
+function NavBarButton({ children, href, onClick, className = "", isNavbar }) {
     const router = useRouter();
     const pathname = usePathname();
 
@@ -53,25 +53,45 @@ function NavBarButton({ children, href, onClick, className = "" }) {
                 active:scale-95
 
                 ${isActive
-                    ? "text-(--primary)"
-                    : "text-gray-700 hover:text-(--primary)"
+                    ? "text-white font-semibold"
+                    : isNavbar
+                        ? "text-white/80 hover:text-white"
+                        : "text-gray-700 hover:text-(--primary)"
                 }
 
-                after:content-['']
-                after:absolute
-                after:left-0
-                after:-bottom-1
-                after:h-[2px]
-                after:w-full
-                after:bg-(--primary)
-                after:origin-left
-                after:transition-transform
-                after:duration-300
+                ${isNavbar ? `
+                    after:content-['']
+                    after:absolute
+                    after:left-2
+                    after:-bottom-1
+                    after:h-[2px]
+                    after:w-[calc(100%-16px)]
+                    after:bg-white
+                    after:origin-left
+                    after:transition-transform
+                    after:duration-300
 
-                ${isActive
-                    ? "after:scale-x-100"
-                    : "after:scale-x-0 hover:after:scale-x-100"
-                }
+                    ${isActive
+                        ? "after:scale-x-100"
+                        : "after:scale-x-0 hover:after:scale-x-100"
+                    }
+                ` : `
+                    after:content-['']
+                    after:absolute
+                    after:left-0
+                    after:-bottom-1
+                    after:h-[2px]
+                    after:w-full
+                    after:bg-(--primary)
+                    after:origin-left
+                    after:transition-transform
+                    after:duration-300
+
+                    ${isActive
+                        ? "after:scale-x-100"
+                        : "after:scale-x-0 hover:after:scale-x-100"
+                    }
+                `}
                 ${className}
             `}
         >

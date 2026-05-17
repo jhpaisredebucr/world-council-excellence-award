@@ -1,45 +1,3 @@
-// "use client";
-
-// import { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
-
-
-// export default function Home() {
-//   const router = useRouter();
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const checkAuth = async () => {
-//       try {
-//         const res = await fetch('/api/auth/logged-in');
-//         const data = await res.json();
-//         const isLoggedIn = data.loggedIn;
-//         if (isLoggedIn) {
-//           router.push("/u/dashboard");
-//         } else {
-//           router.push("/home");
-//         }
-//       } catch (error) {
-//         router.push("/home");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     checkAuth();
-//   }, [router]);
-
-//   if (loading) {
-//     return (
-//       <div>
-//         <p>Loading WCEA Networking Website...</p>
-//       </div>
-//     );
-//   }
-
-//   return null;
-// }
-
 "use client";
 
 import { useEffect } from "react";
@@ -53,7 +11,7 @@ export default function Home() {
   useEffect(() => {
     const isLoggedIn = false;
     if (!isLoggedIn? router.push("/home") : router.push("/dashboard/admin"));  
-     
+    
     // router.push("/dashboard/admin")
   });
 
@@ -64,15 +22,27 @@ return (
       justifyContent: 'center',
       alignItems: 'center',
       height: '100vh',
-      backgroundColor: '#f5f5f5'
+      background: 'linear-gradient(135deg, #5C4138 0%, #8D5D28 50%, #a67c4a 100%)'
     }}>
-      <img 
-        src="/images/logos/wcea.png" 
-        alt="WCEA Logo" 
-        width={100} 
-        height={100}
-        style={{ objectFit: 'contain' }}
-      />
+      {/* White Badge with Logo */}
+      <div style={{
+        padding: '24px 40px',
+        borderRadius: '60px',
+        backgroundColor: '#ffffff',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: '20px'
+      }}>
+        <img 
+          src="/images/logos/wcea.png" 
+          alt="WCEA Logo" 
+          width={100} 
+          height={100}
+          style={{ objectFit: 'contain' }}
+        />
+      </div>
       <div style={{
         position: 'absolute',
         bottom: '30px',
@@ -82,12 +52,12 @@ return (
       }}>
         <p style={{
           fontSize: '12px',
-          color: '#888'
+          color: 'rgba(255,255,255,0.7)'
         }}>FROM</p>
         <p style={{
           fontSize: '20px',
           fontWeight: 'bold',
-          color: '#333'
+          color: '#ffffff'
         }}>World Council Excellence Award</p>
       </div>
     </div>

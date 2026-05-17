@@ -19,43 +19,46 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="flex w-full h-16 items-center justify-between px-4 sm:px-6 md:px-8 fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
+            <nav className="flex w-full h-16 items-center justify-between px-4 sm:px-6 md:px-8 fixed top-0 left-0 right-0 bg-wcea-gradient shadow-lg z-50">
+                {/* Decorative shine overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white/5 via-white/10 to-transparent pointer-events-none" />
+
                 {/* Logo and Brand */}
-                <div className="flex items-center gap-2 sm:gap-3">
-                    <Image 
-                        src="/images/logos/wcea.png" 
-                        alt="logo" 
-                        width={35} 
-                        height={35}
-                        className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10"
-                    />
-                    <h1 className="text-sm sm:text-base md:text-lg font-semibold whitespace-nowrap">
+                <div className="flex items-center gap-2 sm:gap-3 relative z-10">
+                    <div className="bg-white/20 rounded-full p-1 backdrop-blur-sm">
+                        <Image 
+                            src="/images/logos/wcea.png" 
+                            alt="logo" 
+                            width={35} 
+                            height={35}
+                            className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10"
+                        />
+                    </div>
+                    <h1 className="text-sm sm:text-base md:text-lg font-semibold whitespace-nowrap text-white drop-shadow-sm">
                         World Council Excellence Award
                     </h1>
                 </div>
 
                 {/* Desktop Navigation */}
-                <div className="hidden md:flex items-center gap-1 lg:gap-2">
+                <div className="hidden md:flex items-center gap-1 lg:gap-2 relative z-10">
                     {navItems.map((item) => (
-                        <NavBarButton key={item.label} href={item.href}>
+                        <NavBarButton key={item.label} href={item.href} isNavbar>
                             {item.label}
                         </NavBarButton>
                     ))}
                 </div>
 
-                {/* Mobile Hamborhgaaaa Button */}
+                {/* Mobile Hamburger Button */}
                 <button 
                     onClick={() => setOpen(!open)}
-                    className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="md:hidden p-2 rounded-lg hover:bg-white/20 transition-colors relative z-10 text-white"
                     aria-label="Toggle menu"
                 >
                     {open ? (
-                        // (X)
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     ) : (
-                        // hamborga
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -63,7 +66,7 @@ export default function Navbar() {
                 </button>
             </nav>
 
-            {/* Mobile Side thing */}
+            {/* Mobile Side Drawer */}
             <>
                 {/* Backdrop Overlay */}
                 <div 
@@ -74,15 +77,15 @@ export default function Navbar() {
                 />
                 
                 {/* Side Drawer */}
-                <div className={`fixed top-0 right-0 h-full w-70 bg-white shadow-xl z-50 md:hidden transform transition-transform
+                <div className={`fixed top-0 right-0 h-full w-70 bg-wcea-gradient shadow-2xl z-50 md:hidden transform transition-transform
                     duration-300 ease-in-out ${
                     open ? 'translate-x-0' : 'translate-x-full'
                 }`}>
                     {/* Close Button */}
-                    <div className="flex justify-end p-4 border-b border-gray-200">
+                    <div className="flex justify-end p-4 border-b border-white/20">
                         <button 
                             onClick={() => setOpen(false)}
-                            className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                            className="p-2 rounded-lg hover:bg-white/20 transition-colors text-white"
                             aria-label="Close menu"
                         >
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,7 +103,8 @@ export default function Navbar() {
                                 onClick={() => {
                                     setOpen(false);
                                 }}
-                                className="w-full justify-start"
+                                className="w-full justify-start text-white/90 hover:text-white hover:bg-white/10"
+                                isNavbar
                             >
                                 {item.label}
                             </NavBarButton>

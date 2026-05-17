@@ -7,37 +7,40 @@ export const metadata = {
 
 export default function TermsOfService() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-wcea-gradient-soft py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white shadow-lg rounded-lg p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Terms of Service</h1>
+        <div className="bg-white shadow-xl rounded-2xl p-8 relative overflow-hidden">
+          {/* Decorative top gradient */}
+          <div className="absolute top-0 left-0 right-0 h-2 bg-wcea-gradient" />
+          
+          <h1 className="text-3xl font-bold text-wcea-gradient mb-8">Terms of Service</h1>
           
           <div className="prose prose-lg max-w-none">
             <p className="text-gray-600 mb-6">
               <strong>Last updated:</strong> {new Date().toLocaleDateString()}
             </p>
 
-            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
-              <p className="text-blue-700">
+            <div className="bg-[#f5efe6] border-l-4 border-[#8D5D28] p-4 mb-6 rounded-r-lg">
+              <p className="text-[#5C4138] font-medium">
                 <strong>Important:</strong> By accessing and using WCEA ("the Service"), you accept and agree 
                 to be bound by the terms and provision of this agreement.
               </p>
             </div>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Acceptance of Terms</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">1. Acceptance of Terms</h2>
             <p className="text-gray-600 mb-6">
               By accessing or using our service, you agree to be bound by these Terms of Service. 
               If you do not agree to these terms, you may not access or use the service.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. Description of Service</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">2. Description of Service</h2>
             <p className="text-gray-600 mb-6">
               WCEA provides a platform for health and wellness data management, progress tracking, 
               and personalized recommendations. The service includes member accounts, transaction 
               processing, and various administrative features.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">3. User Accounts</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">3. User Accounts</h2>
             <p className="text-gray-600 mb-4">
               To use certain features of the service, you must register for an account. You agree to:
             </p>
@@ -49,7 +52,7 @@ export default function TermsOfService() {
               <li>Notify us immediately of any unauthorized use</li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">4. Acceptable Use</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">4. Acceptable Use</h2>
             <p className="text-gray-600 mb-4">
               You agree not to use the service to:
             </p>
@@ -63,7 +66,7 @@ export default function TermsOfService() {
               <li>Spam or send unsolicited communications</li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">5. Payments and Refunds</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">5. Payments and Refunds</h2>
             <p className="text-gray-600 mb-4">
               Regarding payments and refunds:
             </p>
@@ -75,7 +78,7 @@ export default function TermsOfService() {
               <li>Chargebacks may result in account suspension</li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">6. Intellectual Property</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">6. Intellectual Property</h2>
             <p className="text-gray-600 mb-6">
               The service and its original content, features, and functionality are owned by WCEA 
               and are protected by international copyright, trademark, and other intellectual 
@@ -83,13 +86,13 @@ export default function TermsOfService() {
               without our express written permission.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">7. Privacy</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">7. Privacy</h2>
             <p className="text-gray-600 mb-6">
               Your privacy is important to us. Please review our Privacy Policy, which also governs 
               your use of the service, to understand our practices.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">8. Termination</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">8. Termination</h2>
             <p className="text-gray-600 mb-4">
               We may terminate or suspend your account immediately, without prior notice or liability, 
               for any reason, including if you:
@@ -101,7 +104,7 @@ export default function TermsOfService() {
               <li>Fail to pay for services when due</li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">9. Limitation of Liability</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">9. Limitation of Liability</h2>
             <p className="text-gray-600 mb-6">
               In no event shall WCEA, its directors, employees, partners, agents, suppliers, or 
               affiliates be liable for any indirect, incidental, special, consequential, or punitive 
@@ -109,31 +112,31 @@ export default function TermsOfService() {
               from your use of the service.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">10. Disclaimer of Warranties</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">10. Disclaimer of Warranties</h2>
             <p className="text-gray-600 mb-6">
               The service is provided on an "AS IS" and "AS AVAILABLE" basis. We make no representations 
               or warranties of any kind, express or implied, regarding the operation or availability 
               of the service.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">11. Governing Law</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">11. Governing Law</h2>
             <p className="text-gray-600 mb-6">
               These Terms of Service shall be interpreted and governed by the laws of the jurisdiction 
               in which WCEA operates, without regard to conflict of law provisions.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">12. Changes to Terms</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">12. Changes to Terms</h2>
             <p className="text-gray-600 mb-6">
               We reserve the right to modify these terms at any time. If we make material changes, 
               we will notify you by email or by posting a notice on our site prior to the change 
               becoming effective.
             </p>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">13. Contact Information</h2>
+            <h2 className="text-2xl font-semibold text-[#5C4138] mt-8 mb-4">13. Contact Information</h2>
             <p className="text-gray-600 mb-4">
               If you have any questions about these Terms of Service, please contact us:
             </p>
-            <div className="bg-gray-100 p-4 rounded-lg mb-6">
+            <div className="bg-wcea-gradient-soft p-4 rounded-lg mb-6 border border-[#8D5D28]/20">
               <p className="text-gray-600">Email: legal@wcea.com</p>
               <p className="text-gray-600">Address: [Your Business Address]</p>
             </div>
@@ -142,7 +145,7 @@ export default function TermsOfService() {
           <div className="mt-8 pt-6 border-t border-gray-200">
             <Link 
               href="/" 
-              className="text-blue-600 hover:text-blue-800 font-medium"
+              className="text-[#8D5D28] hover:text-[#5C4138] font-medium transition-colors"
             >
               ← Back to Home
             </Link>

@@ -4,6 +4,7 @@ import Input from "../ui/Input";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import SemanticCard from "../card/SemanticCard";
+import Image from "next/image";
 
 export default function SignInForm() {
     const router = useRouter();
@@ -96,10 +97,23 @@ export default function SignInForm() {
             {/* CARD */}
             <div className="w-full max-w-lg bg-white shadow-xl rounded-2xl border border-gray-100 p-8 md:p-10">
 
+                {/* Logo - White Pill Badge */}
+                <div className="flex justify-center mb-6">
+                    <div className="bg-white border border-gray-200 rounded-full px-6 py-3 shadow-sm inline-flex items-center gap-3">
+                        <Image 
+                            src="/images/logos/wcea.png" 
+                            alt="WCEA" 
+                            width={36} 
+                            height={36}
+                        />
+                        <span className="text-sm font-semibold text-[#5C4138]">WCEA</span>
+                    </div>
+                </div>
+
                 {/* HEADER */}
-                <div className="mb-8 text-center md:text-left flex justify-center md:justify-between">
+                <div className="mb-8 text-center">
                     <div>
-                        <h2 className="text-2xl font-semibold text-gray-800">
+                        <h2 className="text-2xl font-semibold text-wcea-gradient">
                             Welcome Back
                         </h2>
 
@@ -107,14 +121,6 @@ export default function SignInForm() {
                             Sign in to access your account
                         </p>
                     </div>
-                    
-
-                    <button
-                        onClick={() => router.push("/home")}
-                        className="hidden md:inline-flex items-center gap-1 rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
-                    >
-                        ← Back to Homepage
-                    </button>
                 </div>
 
 
@@ -176,7 +182,7 @@ export default function SignInForm() {
 
                         ${loading
                             ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-(--primary) hover:opacity-90"
+                            : "btn-wcea"
                         }
                     `}
                 >
@@ -193,10 +199,10 @@ export default function SignInForm() {
 
                 {/* SIGN UP LINK */}
                 <p className="text-sm text-gray-600 mt-5 text-center">
-                    Don’t have an account?
+                    Don't have an account?
                     <button
                         onClick={HandleSignUp}
-                        className="ml-2 text-(--primary) font-medium hover:underline"
+                        className="ml-2 text-[#8D5D28] font-medium hover:text-[#5C4138] transition-colors"
                     >
                         Create one
                     </button>
