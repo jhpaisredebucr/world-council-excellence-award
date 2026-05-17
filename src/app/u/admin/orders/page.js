@@ -43,13 +43,15 @@ export default function Page() {
   };
 
   const fetchData = async (page = currentPage, userId = filterUserId) => {
+    // Ensure we always use the latest filter before requesting data
+    const effectiveUserId = userId || filterUserId;
     try {
       const offset = page * limit;
 
       // Build URL with optional userId filter
       let ordersUrl = `/api/products/orders?limit=${limit}&offset=${offset}`;
-      if (userId) {
-        ordersUrl += `&userId=${userId}`;
+      if (effectiveUserId) {
+        ordersUrl += `&userId=${effectiveUserId}`;
       }
 
       // Fetch orders with pagination
@@ -110,7 +112,8 @@ export default function Page() {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData(0, filterUserId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Helper functions

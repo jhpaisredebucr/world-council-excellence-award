@@ -28,7 +28,7 @@ const fetchData = async () => {
                 const prodData = await prodRes.json();
                 setProducts(prodData.products);
 
-                const orderRes = await fetch("/api/products/orders");
+                const orderRes = await fetch(`/api/products/orders?userId=${user?.id}`);
                 const orderData = await orderRes.json();
                 setOrders(orderData.orders);
                 
