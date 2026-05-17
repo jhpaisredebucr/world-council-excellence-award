@@ -99,9 +99,21 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="border-t border-gray-800 mt-8 pt-8">
                     <div className="flex flex-col md:flex-row justify-between items-center">
-                        <p className="text-gray-400 text-sm">
-                            © {currentYear} World Council Excellence Award. All rights reserved.
-                        </p>
+                        <div className="flex flex-col items-center md:items-start">
+                            <p className="text-gray-400 text-sm">
+                                © {currentYear} World Council Excellence Award. All rights reserved.
+                            </p>
+                            <p className="text-gray-400 text-xs mt-1">
+                                Website designed & developed by{" "}
+                                <a 
+                                    href="https://www.facebook.com/profile.php?id=100063680607062" 
+                                    target="_blank" 
+                                    className="text-gray-300 hover:text-white underline"
+                                >
+                                    Bok Tech
+                                </a>
+                            </p>
+                        </div>
                         <div className="flex items-center gap-6 mt-4 md:mt-0">
                             <span className="text-gray-400 text-sm">
                                 Compliance with GDPR, CCPA, and PIPEDA
