@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { useRouter } from "next/navigation";
 import OrderApproveModal from "./OrderApproveModal";
 import ProfileModal from "@/app/components/admin/ProfileModal";
 
@@ -14,16 +13,15 @@ export default function Page() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [filterStatus, setFilterStatus] = useState("pending");
+  const [filterUserId, setFilterUserId] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
   const [pagination, setPagination] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const limit = 20;
 
-  const router = useRouter();
-
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
-    fetchData(newPage);
+    fetchData(newPage, filterUserId);
   };
 
   const handleNextPage = () => {
@@ -38,12 +36,24 @@ export default function Page() {
     }
   };
 
-const fetchData = async (page = currentPage) => {
+  const handleUserFilterChange = (userId) => {
+    setFilterUserId(userId);
+    setCurrentPage(0);
+    fetchData(0, userId);
+  };
+
+  const fetchData = async (page = currentPage, userId = filterUserId) => {
     try {
       const offset = page * limit;
-      
+
+      // Build URL with optional userId filter
+      let ordersUrl = `/api/products/orders?limit=${limit}&offset=${offset}`;
+      if (userId) {
+        ordersUrl += `&userId=${userId}`;
+      }
+
       // Fetch orders with pagination
-      const resOrders = await fetch(`/api/products/orders?limit=${limit}&offset=${offset}`);
+      const resOrders = await fetch(ordersUrl);
       const ordersData = await resOrders.json();
       setOrders(ordersData.orders || []);
       setPagination(ordersData.pagination || null);
@@ -103,7 +113,7 @@ const fetchData = async (page = currentPage) => {
     fetchData();
   }, []);
 
-// Helper functions
+  // Helper functions
   const getProductName = (productId) => {
     const product = products.find((p) => p.id === productId);
     return product?.package_name || product?.product_name || product?.name || `Product #${productId}`;
@@ -120,12 +130,7 @@ const fetchData = async (page = currentPage) => {
     return `${user.first_name} ${user.last_name}`;
   };
 
-  const getUserEmail = (userId) => {
-    const user = users.find((u) => u.id === userId);
-    return user?.email || "";
-  };
-
-  // Filter orders
+  // Filter orders by status (client-side)
   const filteredOrders = orders.filter((order) => {
     if (filterStatus === "all") return true;
     return order.status === filterStatus;
@@ -142,17 +147,31 @@ const fetchData = async (page = currentPage) => {
     );
   }
 
-return (
+  return (
     <div>
       <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <h2 className="text-xl font-bold">Order Approvals</h2>
         <div className="flex flex-wrap gap-2">
           <button
-            onClick={() => {fetchData();}}
+            onClick={() => { fetchData(); }}
             className="px-4 py-2 bg-primary text-white rounded hover:bg-secondary"
           >
             Refresh
           </button>
+          {/* User Filter */}
+          <select
+            value={filterUserId}
+            onChange={(e) => handleUserFilterChange(e.target.value)}
+            className="px-4 py-2 border rounded max-w-[200px]"
+          >
+            <option value="">All Users</option>
+            {users.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.first_name} {user.last_name}
+              </option>
+            ))}
+          </select>
+          {/* Status Filter */}
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
@@ -165,6 +184,23 @@ return (
           </select>
         </div>
       </div>
+
+      {/* Active User Filter Badge */}
+      {filterUserId && (
+        <div className="mb-3 flex items-center gap-2">
+          <span className="text-sm text-gray-500">Showing orders for:</span>
+          <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700">
+            {getUserName(Number(filterUserId))}
+            <button
+              onClick={() => handleUserFilterChange("")}
+              className="ml-1 text-blue-400 hover:text-blue-700 font-bold"
+              title="Clear filter"
+            >
+              ✕
+            </button>
+          </span>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="mb-4 grid grid-cols-3 gap-4">
@@ -182,11 +218,11 @@ return (
         </div>
         <div className="rounded-lg bg-white p-4 shadow-sm">
           <p className="text-sm text-gray-500">Total Orders</p>
-          <p className="text-2xl font-bold text-gray-600">{orders.length}</p>
+          <p className="text-2xl font-bold text-gray-600">{pagination?.total ?? orders.length}</p>
         </div>
       </div>
 
-{/* Table Header */}
+      {/* Table Header */}
       <div className="hidden md:grid md:grid-cols-6 gap-4 p-4 bg-white font-semibold rounded-xl shadow-sm text-sm text-gray-500">
         <div>Date</div>
         <div>Order ID</div>
@@ -206,7 +242,7 @@ return (
           const productPrice = getProductPrice(order.product_id);
           const total = Number(productPrice) * Number(order.quantity || 1);
 
-return (
+          return (
             <div
               key={order.id || i}
               className="mt-3 rounded-xl bg-white p-5 shadow-sm md:grid md:grid-cols-6 md:gap-4"
@@ -230,7 +266,7 @@ return (
                 <div className="font-medium">{getUserName(order.user_id)}</div>
               </div>
 
-<div className="text-sm md:mt-0 mt-1">
+              <div className="text-sm md:mt-0 mt-1">
                 <span className="text-xs text-gray-400 md:hidden">Product: </span>
                 {getProductName(order.product_id)} x{order.quantity || 1}
               </div>
@@ -257,7 +293,7 @@ return (
                 </span>
               </div>
 
-<div className="mt-2 flex flex-wrap items-center gap-2 md:flex-nowrap md:mt-0">
+              <div className="mt-2 flex flex-wrap items-center gap-2 md:flex-nowrap md:mt-0">
                 <button
                   onClick={() => setSelectedUserId(order.user_id)}
                   className="rounded-lg border-2 border-blue-500 bg-white px-3 py-1.5 text-xs font-semibold text-blue-500 hover:bg-blue-500 hover:text-white transition-all duration-200"
@@ -287,7 +323,7 @@ return (
         })
       )}
 
-{/* Modal */}
+      {/* Modal */}
       <OrderApproveModal
         isOpen={!!selectedOrder}
         order={selectedOrder}
@@ -309,7 +345,7 @@ return (
       {pagination && (
         <div className="flex justify-between items-center mt-6 text-sm text-gray-500 pb-6">
           <div className="flex items-center gap-2">
-            <span>Page {currentPage + 1} of {Math.ceil(pagination.total / pagination.limit)}</span>
+            <span>Page {currentPage + 1} of {Math.max(1, Math.ceil(pagination.total / pagination.limit))}</span>
             <span className="text-gray-400">({pagination.total} total orders)</span>
           </div>
           <div className="flex gap-2">

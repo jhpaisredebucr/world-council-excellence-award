@@ -6,15 +6,27 @@ export async function GET(req) {
         const { searchParams } = new URL(req.url);
         const limit = Math.min(parseInt(searchParams.get("limit") || "20"), 100);
         const offset = parseInt(searchParams.get("offset") || "0");
+        const userId = searchParams.get("userId") || null;
 
-        // Fetch orders with pagination
-        const orders = await query(
-            "SELECT * FROM orders ORDER BY created_at DESC LIMIT $1 OFFSET $2",
-            [limit, offset]
-        );
+        let orders;
+        let totalResult;
 
-        // Get total count for pagination
-        const totalResult = await query("SELECT COUNT(*) FROM orders");
+        if (userId) {
+            // Fetch orders filtered by user_id
+            orders = await query(
+                "SELECT * FROM orders WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3",
+                [userId, limit, offset]
+            );
+            totalResult = await query("SELECT COUNT(*) FROM orders WHERE user_id = $1", [userId]);
+        } else {
+            // Fetch all orders with pagination
+            orders = await query(
+                "SELECT * FROM orders ORDER BY created_at DESC LIMIT $1 OFFSET $2",
+                [limit, offset]
+            );
+            totalResult = await query("SELECT COUNT(*) FROM orders");
+        }
+
         const total = Number(totalResult[0].count);
 
         return NextResponse.json({

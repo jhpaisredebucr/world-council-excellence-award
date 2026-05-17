@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
     <div className="min-h-screen flex flex-col">
       {/* <TopBar/> */}
       <Navbar/>
-      <main className="flex-grow">
+      <main className="grow">
         {children}
       </main>
       <Footer />
